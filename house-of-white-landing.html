@@ -9,9 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#15120D; --ink-2:#1C1812; --bone:#EDE6D8; --cream:#E9E2D4;
+    --ink:#000000; --ink-2:#0D0D0D; --bone:#EDE6D8; --cream:#E9E2D4;
     --muted:#9A9180; --faint:#5C5648; --sand:#B49B78;
-    --line:rgba(233,226,212,0.14); --line-soft:rgba(233,226,212,0.07);
+    --line:rgba(233,226,212,0.13); --line-soft:rgba(233,226,212,0.07);
     --display:'Bodoni Moda', Georgia, serif; --sans:'Jost', system-ui, sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
@@ -19,12 +19,8 @@
   ::selection{background:var(--sand);color:var(--ink)}
   :focus-visible{outline:2px solid var(--sand);outline-offset:3px}
 
-  .bg{position:fixed;inset:0;z-index:0;
-    background:
-      radial-gradient(70% 50% at 50% -5%, rgba(180,155,120,0.16), rgba(0,0,0,0) 55%),
-      radial-gradient(80% 60% at 50% 105%, rgba(233,226,212,0.05), rgba(0,0,0,0) 60%),
-      var(--ink);}
-  .bg::after{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");mix-blend-mode:overlay;opacity:.6}
+  .bg{position:fixed;inset:0;z-index:0;background:var(--ink);}
+  .bg::after{display:none}
 
   .shell{position:relative;z-index:1;width:100%;max-width:440px;padding:54px 26px 44px;display:flex;flex-direction:column;align-items:center;text-align:center}
 
