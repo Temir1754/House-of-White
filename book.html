@@ -251,7 +251,7 @@
     // confirm
     const dateStr = selDate.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
     document.getElementById('confirmText').innerHTML = '<span>'+dateStr+'</span> at <span>'+time+' (Dubai Time)</span>';
-    const msg = encodeURIComponent('Hi! I'd like to book a consultation on '+dateStr+' at '+time+' Dubai Time.');
+    const msg = encodeURIComponent('Hi! I would like to book a consultation on '+dateStr+' at '+time+' Dubai Time.');
     document.getElementById('confirmBtn').href = 'https://wa.me/77750600701?text='+msg;
     document.getElementById('confirmSection').classList.add('show');
     setTimeout(()=>document.getElementById('confirmSection').scrollIntoView({behavior:'smooth',block:'nearest'}),100);
