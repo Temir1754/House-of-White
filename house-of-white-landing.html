@@ -3,104 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>House of White — Links</title>
+<title>House of White — Samal · Interior Design Dubai</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&family=Noto+Serif+Arabic:wght@300;400&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#000000; --ink-2:#0D0D0D; --bone:#EDE6D8; --cream:#E9E2D4;
-    --muted:#9A9180; --faint:#5C5648; --sand:#B49B78;
-    --line:rgba(233,226,212,0.13); --line-soft:rgba(233,226,212,0.07);
-    --display:'Bodoni Moda', Georgia, serif; --sans:'Jost', system-ui, sans-serif;
+    --ink:#000000; --ink-2:#0D0D0D; --ink-3:#141414;
+    --cream:#E9E2D4; --muted:#9A9180; --faint:#3A3530; --sand:#B49B78;
+    --line:rgba(233,226,212,0.12); --line-soft:rgba(233,226,212,0.06);
+    --display:'Bodoni Moda',Georgia,serif;
+    --sans:'Jost',system-ui,sans-serif;
+    --arabic:'Noto Serif Arabic',serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{min-height:100vh;background:var(--ink);color:var(--cream);font-family:var(--sans);font-weight:300;-webkit-font-smoothing:antialiased;display:flex;justify-content:center}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--cream);font-family:var(--sans);font-weight:300;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   ::selection{background:var(--sand);color:var(--ink)}
-  :focus-visible{outline:2px solid var(--sand);outline-offset:3px}
 
-  .bg{position:fixed;inset:0;z-index:0;background:var(--ink);}
-  .bg::after{display:none}
+  /* HERO PHOTO */
+  .hero{position:relative;width:100%;height:100svh;max-height:780px;overflow:hidden}
+  .hero img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:brightness(.72)}
+  .hero-veil{position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.7) 80%, #000 100%)}
+  .hero-bottom{position:absolute;bottom:0;left:0;right:0;padding:0 28px 36px;text-align:center}
+  .hero-eyebrow{font-size:10px;letter-spacing:0.36em;text-transform:uppercase;color:var(--sand);display:block;margin-bottom:12px}
+  .hero-name{font-family:var(--display);font-size:clamp(38px,9vw,72px);font-weight:400;line-height:1;margin-bottom:6px}
+  .hero-name i{font-style:italic;color:rgba(233,226,212,0.85)}
+  .hero-arabic{font-family:var(--arabic);font-size:15px;color:var(--muted);letter-spacing:0.04em;margin-bottom:0;direction:rtl}
 
-  .shell{position:relative;z-index:1;width:100%;max-width:440px;padding:54px 26px 44px;display:flex;flex-direction:column;align-items:center;text-align:center}
+  /* TAGLINE */
+  .tagline{text-align:center;padding:40px 28px 32px;border-bottom:1px solid var(--line-soft)}
+  .tagline p{font-family:var(--display);font-style:italic;font-size:clamp(17px,4vw,24px);color:var(--cream);line-height:1.5;max-width:340px;margin:0 auto}
+  .tagline span{color:var(--sand)}
 
-  .mark{width:74px;height:74px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;margin-bottom:26px;background:var(--ink-2);overflow:hidden}
-  .mark span{font-family:var(--display);font-size:30px;font-style:italic;color:var(--bone)}
+  /* PORTFOLIO STRIP */
+  .portfolio{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:2px}
+  .portfolio-item{aspect-ratio:3/4;overflow:hidden;position:relative;cursor:pointer}
+  .portfolio-item img{width:100%;height:100%;object-fit:cover;filter:brightness(.8);transition:filter .6s ease,transform .6s ease}
+  .portfolio-item:hover img{filter:brightness(1);transform:scale(1.04)}
+  .portfolio-item .label{position:absolute;bottom:12px;left:12px;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(233,226,212,0.7)}
 
-  .brand{font-family:var(--display);font-size:32px;font-weight:400;letter-spacing:0.01em;line-height:1.1}
-  .brand i{font-style:italic;color:var(--sand)}
-  .tag{font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:var(--muted);margin-top:16px}
-  .bio{font-size:14.5px;color:var(--muted);max-width:30ch;margin:22px auto 0;line-height:1.7}
+  /* DIVIDER */
+  .div-line{display:flex;align-items:center;gap:16px;padding:36px 28px 0}
+  .div-line::before,.div-line::after{content:"";flex:1;height:1px;background:var(--line)}
+  .div-line span{font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:var(--sand);white-space:nowrap}
 
-  .rule{width:34px;height:1px;background:var(--sand);margin:34px auto}
+  /* LINKS */
+  .links{padding:20px 20px 16px;display:flex;flex-direction:column;gap:10px;max-width:480px;margin:0 auto;width:100%}
 
-  .links{width:100%;display:flex;flex-direction:column;gap:13px}
-  .lk{display:flex;align-items:center;gap:16px;width:100%;padding:18px 22px;border:1px solid var(--line);background:rgba(28,24,18,0.55);color:var(--cream);text-decoration:none;border-radius:2px;transition:all .35s ease;backdrop-filter:blur(4px)}
-  .lk:hover{background:var(--ink-2);border-color:var(--sand);transform:translateY(-2px)}
-  .lk .ic{width:20px;height:20px;flex:none;stroke:var(--sand);fill:none;stroke-width:1.4}
-  .lk .txt{flex:1;text-align:left;font-size:13.5px;letter-spacing:0.06em}
-  .lk .txt b{display:block;font-weight:400;color:var(--cream);font-size:14px;letter-spacing:0.04em}
-  .lk .txt small{display:block;color:var(--muted);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;margin-top:3px}
-  .lk .arr{color:var(--faint);font-size:15px;transition:color .3s,transform .3s}
-  .lk:hover .arr{color:var(--sand);transform:translateX(3px)}
+  .lk{display:flex;align-items:center;gap:16px;width:100%;padding:17px 20px;border:1px solid var(--line);background:rgba(13,13,13,0.8);color:var(--cream);text-decoration:none;border-radius:3px;transition:all .4s ease;opacity:0;transform:translateY(14px)}
+  .lk.in{opacity:1;transform:translateY(0)}
+  .lk:hover{background:var(--ink-3);border-color:var(--sand)}
+  .lk .ic{width:18px;height:18px;flex:none;stroke:var(--sand);fill:none;stroke-width:1.4}
+  .lk .txt{flex:1}
+  .lk .txt b{display:block;font-size:13.5px;font-weight:400;letter-spacing:0.02em}
+  .lk .txt small{display:block;font-size:10.5px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-top:3px}
+  .lk .arr{color:var(--faint);font-size:14px;transition:transform .3s,color .3s}
+  .lk:hover .arr{transform:translateX(3px);color:var(--sand)}
 
-  .lk.primary{background:var(--bone);border-color:var(--bone)}
-  .lk.primary .txt b,.lk.primary .arr{color:var(--ink)}
-  .lk.primary .txt small{color:rgba(33,29,22,0.6)}
-  .lk.primary .ic{stroke:var(--ink)}
-  .lk.primary:hover{transform:translateY(-2px);filter:brightness(0.96)}
+  /* PRIMARY CTA */
+  .lk.cta{background:rgba(180,155,120,0.1);border-color:var(--sand)}
+  .lk.cta .txt b{color:var(--sand)}
 
-  .foot{margin-top:40px;font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--faint)}
+  /* FOOTER */
+  .foot{text-align:center;padding:24px 20px 40px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--faint)}
+  .foot .arabic-foot{font-family:var(--arabic);font-size:12px;color:var(--faint);display:block;margin-top:6px;letter-spacing:0;direction:rtl}
 
-  .links .lk{opacity:0;transform:translateY(16px)}
-  @media(prefers-reduced-motion:reduce){.links .lk{opacity:1!important;transform:none!important}}
+  @media(min-width:480px){
+    .links{padding:24px 28px 20px}
+    .hero{max-height:860px}
+  }
 </style>
 </head>
 <body>
-<div class="bg"></div>
-<main class="shell">
-  <div class="mark"><span>W</span></div>
-  <div class="brand">House of <i>White</i></div>
-  <div class="tag">Interior Design · Dubai</div>
-  <p class="bio">Calm, considered interiors — from first concept to the day you move in.</p>
 
-  <div class="rule"></div>
+<!-- HERO — фото Самал -->
+<div class="hero">
+  <img src="founder.png" alt="Samal — House of White">
+  <div class="hero-veil"></div>
+  <div class="hero-bottom">
+    <span class="hero-eyebrow">Interior Design · Dubai</span>
+    <div class="hero-name">Samal<br><i>House of White</i></div>
+    <div class="hero-arabic">مصممة داخلية · دبي</div>
+  </div>
+</div>
 
-  <nav class="links">
-    <a class="lk" href="book.html" data-d="0" style="border-color:var(--sand);background:rgba(180,155,120,0.08)">
-      <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
-      <span class="txt"><b>Book a Consultation</b><small>Schedule a free 30-min call</small></span>
-      <span class="arr">→</span>
-    </a>
-    <a class="lk" href="index.html" data-d="1">
-      <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15.5 0 18M12 3c-2.5 2.5-2.5 15.5 0 18"/></svg>
-      <span class="txt"><b>Visit the website</b><small>Portfolio · services</small></span>
-      <span class="arr">→</span>
-    </a>
-    <a class="lk" href="https://www.instagram.com/howdesign_ae?igsh=MTJ1bGYxOG4zbGNxZg%3D%3D" target="_blank" data-d="2">
-      <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor"/></svg>
-      <span class="txt"><b>Instagram</b><small>@howdesign_ae</small></span>
-      <span class="arr">→</span>
-    </a>
-    <a class="lk" href="https://wa.me/77750600701" target="_blank" data-d="3">
-      <svg class="ic" viewBox="0 0 24 24"><path d="M3 21l1.7-5A9 9 0 1112 21a8.9 8.9 0 01-4.3-1.1L3 21z"/><path d="M8.5 9c.3 3 3.5 6.2 6.5 6.5"/></svg>
-      <span class="txt"><b>WhatsApp</b><small>+7 775 060 07 01</small></span>
-      <span class="arr">→</span>
-    </a>
-    <a class="lk" href="#" data-d="4">
-      <svg class="ic" viewBox="0 0 24 24"><path d="M21 7v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7m18 0a2 2 0 00-2-2H5a2 2 0 00-2 2m18 0l-9 6-9-6"/></svg>
-      <span class="txt"><b>Email</b><small>hello@houseofwhite.ae</small></span>
-      <span class="arr">→</span>
-    </a>
-  </nav>
+<!-- TAGLINE -->
+<div class="tagline">
+  <p>"I design interiors for those<br>who live <span>beautifully.</span>"</p>
+</div>
 
-  <div class="foot">© 2026 House of White</div>
-</main>
+<!-- PORTFOLIO STRIP -->
+<div class="portfolio">
+  <div class="portfolio-item">
+    <img loading="lazy" src="https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=600&q=80" alt="">
+    <div class="label">Palm Jumeirah</div>
+  </div>
+  <div class="portfolio-item">
+    <img loading="lazy" src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80" alt="">
+    <div class="label">Downtown</div>
+  </div>
+  <div class="portfolio-item">
+    <img loading="lazy" src="https://images.unsplash.com/photo-1615875605825-5eb9bb5d52ac?auto=format&fit=crop&w=600&q=80" alt="">
+    <div class="label">Emirates Hills</div>
+  </div>
+</div>
+
+<!-- DIVIDER -->
+<div class="div-line"><span>Get in touch</span></div>
+
+<!-- LINKS -->
+<div class="links">
+  <a class="lk cta" href="book.html" data-i="0">
+    <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+    <span class="txt"><b>Request a Private Consultation</b><small>Free · 30 min · Dubai</small></span>
+    <span class="arr">→</span>
+  </a>
+  <a class="lk" href="index.html" data-i="1">
+    <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15.5 0 18M12 3c-2.5 2.5-2.5 15.5 0 18"/></svg>
+    <span class="txt"><b>View Portfolio</b><small>Projects · Services</small></span>
+    <span class="arr">→</span>
+  </a>
+  <a class="lk" href="https://www.instagram.com/howdesign_ae?igsh=MTJ1bGYxOG4zbGNxZg%3D%3D" target="_blank" data-i="2">
+    <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" stroke="none"/></svg>
+    <span class="txt"><b>Instagram</b><small>@howdesign_ae</small></span>
+    <span class="arr">→</span>
+  </a>
+  <a class="lk" href="https://wa.me/77750600701" target="_blank" data-i="3">
+    <svg class="ic" viewBox="0 0 24 24"><path d="M3 21l1.7-5A9 9 0 1112 21a8.9 8.9 0 01-4.3-1.1L3 21z"/><path d="M8.5 9c.3 3 3.5 6.2 6.5 6.5"/></svg>
+    <span class="txt"><b>WhatsApp</b><small>+7 775 060 07 01</small></span>
+    <span class="arr">→</span>
+  </a>
+  <a class="lk" href="mailto:hello@houseofwhite.ae" data-i="4">
+    <svg class="ic" viewBox="0 0 24 24"><path d="M21 7v10a2 2 0 01-2 2H5a2 2 0 01-2-2V7m18 0a2 2 0 00-2-2H5a2 2 0 00-2 2m18 0l-9 6-9-6"/></svg>
+    <span class="txt"><b>Email</b><small>hello@houseofwhite.ae</small></span>
+    <span class="arr">→</span>
+  </a>
+</div>
+
+<div class="foot">
+  © 2026 House of White · Dubai
+  <span class="arabic-foot">بيت الأبيض · دبي</span>
+</div>
+
 <script>
   document.querySelectorAll('.lk').forEach(el=>{
-    const d=+el.dataset.d*90+150;
-    el.style.transition='opacity .7s ease, transform .7s ease, background .35s ease, border-color .35s ease';
-    setTimeout(()=>{el.style.opacity=1;el.style.transform='translateY(0)'},d);
+    const d = (+el.dataset.i * 100) + 200;
+    setTimeout(()=>el.classList.add('in'), d);
+  });
+  document.querySelectorAll('.portfolio-item img').forEach(img=>{
+    img.addEventListener('error',()=>{img.style.display='none';img.parentElement.style.background='#141414'});
   });
 </script>
 </body>
