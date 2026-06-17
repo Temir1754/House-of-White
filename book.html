@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Consultation — House of White</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#000000; --ink-2:#0D0D0D; --ink-3:#141414;
+    --cream:#E9E2D4; --muted:#9A9180; --faint:#5C5648; --sand:#B49B78;
+    --line:rgba(233,226,212,0.13); --line-soft:rgba(233,226,212,0.07);
+    --display:'Bodoni Moda',Georgia,serif; --sans:'Jost',system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--cream);font-family:var(--sans);font-weight:300;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+  /* NAV */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--line-soft);position:sticky;top:0;z-index:50;background:rgba(0,0,0,0.92);backdrop-filter:blur(14px)}
+  .brand{font-family:var(--display);font-size:18px;font-weight:500}
+  .brand i{font-style:italic;color:var(--sand)}
+  .back-btn{display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s}
+  .back-btn:hover{color:var(--cream)}
+  .back-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.5}
+
+  /* LAYOUT */
+  .page{max-width:860px;margin:0 auto;padding:40px 20px 60px;display:grid;grid-template-columns:280px 1fr;gap:0;border:1px solid var(--line);border-radius:6px;margin-top:32px;overflow:hidden}
+
+  /* LEFT PANEL */
+  .left{padding:32px 28px;border-right:1px solid var(--line-soft);display:flex;flex-direction:column;gap:20px}
+  .avatar{width:52px;height:52px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;background:var(--ink-2)}
+  .avatar span{font-family:var(--display);font-size:22px;font-style:italic;color:var(--sand)}
+  .left .studio{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)}
+  .left h2{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.2}
+  .left h2 i{font-style:italic;color:var(--sand)}
+  .meta{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+  .meta-row{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+  .meta-row svg{width:15px;height:15px;stroke:var(--sand);fill:none;stroke-width:1.4;flex:none}
+  .divider{width:32px;height:1px;background:var(--sand);opacity:.5}
+
+  /* RIGHT PANEL — CALENDAR */
+  .right{padding:32px 28px;background:var(--ink-2)}
+  .right h3{font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:var(--cream);margin-bottom:24px;font-weight:400}
+
+  /* STEP indicator */
+  .steps{display:flex;gap:8px;margin-bottom:28px}
+  .step{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:5px 12px;border-radius:30px;border:1px solid var(--line);color:var(--faint)}
+  .step.active{border-color:var(--sand);color:var(--sand)}
+  .step.done{border-color:rgba(169,191,160,0.4);color:#A9BFA0}
+
+  /* CALENDAR */
+  .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .cal-header .month{font-family:var(--display);font-size:18px;font-weight:400}
+  .cal-nav{display:flex;gap:8px}
+  .cal-nav button{background:none;border:1px solid var(--line);color:var(--muted);width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
+  .cal-nav button:hover{border-color:var(--sand);color:var(--sand)}
+  .cal-nav button svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:20px}
+  .cal-day-name{text-align:center;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--faint);padding:6px 0}
+  .cal-day{text-align:center;padding:8px 4px;font-size:13px;border-radius:50%;cursor:pointer;transition:all .3s;border:1px solid transparent;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+  .cal-day.empty{cursor:default}
+  .cal-day.past{color:var(--faint);cursor:default}
+  .cal-day.available:hover{border-color:var(--sand);color:var(--sand)}
+  .cal-day.selected{background:var(--sand);color:var(--ink);border-color:var(--sand)}
+  .cal-day.today{color:var(--sand)}
+
+  .tz{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:7px}
+  .tz svg{width:13px;height:13px;stroke:var(--muted);fill:none;stroke-width:1.4}
+
+  /* TIME SLOTS */
+  .time-section{display:none}
+  .time-section.show{display:block}
+  .time-section h4{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--sand);margin-bottom:14px;margin-top:24px}
+  .slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .slot{padding:11px 8px;border:1px solid var(--line);border-radius:4px;text-align:center;font-size:13px;cursor:pointer;transition:all .3s;background:var(--ink-3)}
+  .slot:hover{border-color:var(--sand);color:var(--sand)}
+  .slot.selected{background:var(--sand);color:var(--ink);border-color:var(--sand)}
+
+  /* CONFIRM */
+  .confirm-section{display:none;margin-top:24px}
+  .confirm-section.show{display:block}
+  .confirm-box{border:1px solid var(--line);border-radius:4px;padding:18px;margin-bottom:16px;background:var(--ink-3)}
+  .confirm-box .label{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .confirm-box .val{font-size:15px;color:var(--cream)}
+  .confirm-box .val span{color:var(--sand)}
+  .btn-confirm{display:block;width:100%;padding:16px;background:var(--sand);color:var(--ink);border:none;border-radius:4px;font-family:var(--sans);font-size:12px;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;transition:opacity .3s;text-align:center;text-decoration:none}
+  .btn-confirm:hover{opacity:.85}
+
+  /* MOBILE */
+  @media(max-width:640px){
+    .page{grid-template-columns:1fr;margin-top:16px;border-radius:4px}
+    .left{border-right:none;border-bottom:1px solid var(--line-soft);padding:24px 20px}
+    .right{padding:24px 20px}
+    .slots{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="house-of-white-landing.html" class="back-btn">
+    <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back
+  </a>
+  <div class="brand">House of <i>White</i></div>
+  <div style="width:60px"></div>
+</nav>
+
+<div class="page">
+
+  <!-- LEFT -->
+  <div class="left">
+    <div class="avatar"><span>W</span></div>
+    <div>
+      <div class="studio">House of White</div>
+      <h2>Book a <i>Consultation</i></h2>
+    </div>
+    <div class="divider"></div>
+    <div class="meta">
+      <div class="meta-row">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        30 minutes
+      </div>
+      <div class="meta-row">
+        <svg viewBox="0 0 24 24"><path d="M3 21l1.7-5A9 9 0 1112 21a8.9 8.9 0 01-4.3-1.1L3 21z"/></svg>
+        WhatsApp / Zoom
+      </div>
+      <div class="meta-row">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15.5 0 18"/></svg>
+        Dubai · UAE
+      </div>
+    </div>
+    <div class="divider"></div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7">A free 30-minute call to discuss your project, space and vision.</p>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="steps">
+      <div class="step active" id="step1">1 · Date</div>
+      <div class="step" id="step2">2 · Time</div>
+      <div class="step" id="step3">3 · Confirm</div>
+    </div>
+
+    <div id="cal-view">
+      <div class="cal-header">
+        <div class="month" id="monthLabel"></div>
+        <div class="cal-nav">
+          <button onclick="changeMonth(-1)"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button onclick="changeMonth(1)"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="tz">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15.5 0 18"/></svg>
+        Dubai Time (UTC+4)
+      </div>
+    </div>
+
+    <!-- TIME -->
+    <div class="time-section" id="timeSection">
+      <h4 id="selectedDateLabel"></h4>
+      <div class="slots" id="slotsGrid"></div>
+    </div>
+
+    <!-- CONFIRM -->
+    <div class="confirm-section" id="confirmSection">
+      <div class="confirm-box">
+        <div class="label">Your appointment</div>
+        <div class="val" id="confirmText"></div>
+      </div>
+      <a class="btn-confirm" id="confirmBtn" href="#" target="_blank">Confirm via WhatsApp →</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const TIMES = ['09:00','09:30','10:00','10:30','11:00','11:30','12:00','14:00','14:30','15:00','15:30','16:00','17:00','17:30'];
+
+  let today = new Date();
+  let cur = new Date(today.getFullYear(), today.getMonth(), 1);
+  let selDate = null, selTime = null;
+
+  function renderCal(){
+    const ml = document.getElementById('monthLabel');
+    ml.textContent = MONTHS[cur.getMonth()] + ' ' + cur.getFullYear();
+    const grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+    DAYS.forEach(d=>{const el=document.createElement('div');el.className='cal-day-name';el.textContent=d;grid.appendChild(el)});
+    const first = new Date(cur.getFullYear(), cur.getMonth(), 1);
+    let startDay = first.getDay(); // 0=Sun
+    startDay = startDay === 0 ? 6 : startDay - 1; // Mon=0
+    for(let i=0;i<startDay;i++){const el=document.createElement('div');el.className='cal-day empty';grid.appendChild(el)}
+    const days = new Date(cur.getFullYear(), cur.getMonth()+1, 0).getDate();
+    for(let d=1;d<=days;d++){
+      const el = document.createElement('div');
+      const date = new Date(cur.getFullYear(), cur.getMonth(), d);
+      const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const isToday = date.toDateString() === today.toDateString();
+      const isSun = date.getDay() === 0;
+      el.className = 'cal-day' + (isPast||isSun?' past':' available') + (isToday?' today':'');
+      el.textContent = d;
+      if(!isPast && !isSun) el.onclick = ()=>selectDate(date, el);
+      if(selDate && date.toDateString()===selDate.toDateString()) el.classList.add('selected');
+      grid.appendChild(el);
+    }
+  }
+
+  function changeMonth(dir){
+    cur = new Date(cur.getFullYear(), cur.getMonth()+dir, 1);
+    renderCal();
+  }
+
+  function selectDate(date, el){
+    selDate = date; selTime = null;
+    document.querySelectorAll('.cal-day').forEach(d=>d.classList.remove('selected'));
+    el.classList.add('selected');
+    // steps
+    document.getElementById('step1').classList.add('done'); document.getElementById('step1').classList.remove('active');
+    document.getElementById('step2').classList.add('active');
+    document.getElementById('step3').classList.remove('done','active');
+    // show times
+    const label = document.getElementById('selectedDateLabel');
+    label.textContent = date.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+    const sg = document.getElementById('slotsGrid');
+    sg.innerHTML = '';
+    TIMES.forEach(t=>{
+      const el=document.createElement('div');
+      el.className='slot'; el.textContent=t;
+      el.onclick=()=>selectTime(t,el);
+      sg.appendChild(el);
+    });
+    document.getElementById('timeSection').classList.add('show');
+    document.getElementById('confirmSection').classList.remove('show');
+  }
+
+  function selectTime(time, el){
+    selTime = time;
+    document.querySelectorAll('.slot').forEach(s=>s.classList.remove('selected'));
+    el.classList.add('selected');
+    // steps
+    document.getElementById('step2').classList.add('done'); document.getElementById('step2').classList.remove('active');
+    document.getElementById('step3').classList.add('active');
+    // confirm
+    const dateStr = selDate.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    document.getElementById('confirmText').innerHTML = '<span>'+dateStr+'</span> at <span>'+time+' (Dubai Time)</span>';
+    const msg = encodeURIComponent('Hi! I'd like to book a consultation on '+dateStr+' at '+time+' Dubai Time.');
+    document.getElementById('confirmBtn').href = 'https://wa.me/77750600701?text='+msg;
+    document.getElementById('confirmSection').classList.add('show');
+    setTimeout(()=>document.getElementById('confirmSection').scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+  }
+
+  renderCal();
+</script>
+</body>
+</html>
