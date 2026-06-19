@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Projects — House of White</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#000000;
+    --ink-2:#0D0D0D;
+    --bone:#EDE6D8;
+    --bone-2:#E4DBCA;
+    --bone-ink:#211D16;
+    --bone-muted:#6E6655;
+    --cream:#E9E2D4;
+    --muted:#9A9180;
+    --faint:#5C5648;
+    --sand:#B49B78;
+    --line:rgba(233,226,212,0.13);
+    --line-soft:rgba(233,226,212,0.06);
+    --line-bone:rgba(33,29,22,0.14);
+    --display:'Bodoni Moda', Georgia, serif;
+    --sans:'Jost', -apple-system, system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--cream);font-family:var(--sans);font-weight:300;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--sand);color:var(--ink)}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 48px}
+  .eyebrow{font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:0.34em;text-transform:uppercase;color:var(--sand)}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--sand);outline-offset:3px}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* NAV */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:18px 48px;border-bottom:1px solid var(--line-soft);position:sticky;top:0;z-index:50;background:rgba(0,0,0,0.95);backdrop-filter:blur(14px)}
+  .back-btn{display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s}
+  .back-btn:hover{color:var(--cream)}
+  .brand{font-family:var(--display);font-size:18px;font-weight:500}
+  .brand i{font-style:italic;color:var(--sand)}
+
+  /* HERO SECTION */
+  .hero{padding:60px 0 40px;border-bottom:1px solid var(--line-soft)}
+  .hero-wrap{text-align:center}
+  .hero .eyebrow{display:block;margin-bottom:20px}
+  .hero h1{font-family:var(--display);font-weight:400;font-size:clamp(36px,6vw,64px);line-height:1.1;margin-bottom:16px}
+  .hero h1 i{font-style:italic;color:var(--sand)}
+  .hero p{color:var(--muted);font-size:15px;max-width:500px;margin:0 auto;line-height:1.7}
+
+  /* PROJECTS GRID */
+  .projects-section{padding:72px 0}
+  .work-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:48px}
+  .pc{position:relative;overflow:hidden;text-decoration:none;color:inherit;display:block;background:var(--ink-2);cursor:pointer}
+  .pc img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.3s cubic-bezier(.2,.8,.2,1), filter 1.3s ease;filter:grayscale(8%)}
+  .pc:hover img{transform:scale(1.06);filter:grayscale(0%)}
+  .pc .idx{position:absolute;top:18px;left:20px;z-index:2;font-size:11px;letter-spacing:0.18em;color:var(--bone);mix-blend-mode:difference}
+  .pc .pinfo{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:24px;background:linear-gradient(0deg,rgba(20,17,12,0.78),rgba(20,17,12,0));color:var(--bone)}
+  .pc .pname{font-family:var(--display);font-size:24px}
+  .pc .pmeta{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;opacity:.78;margin-top:5px}
+  .pc.a{grid-column:span 7;aspect-ratio:7/5}
+  .pc.b{grid-column:span 5;aspect-ratio:5/5}
+  .pc.c{grid-column:span 5;aspect-ratio:5/5}
+  .pc.d{grid-column:span 7;aspect-ratio:7/5}
+
+  /* FOOTER */
+  footer{padding:54px 0;border-top:1px solid var(--line-soft)}
+  .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:22px}
+  .foot .brand{font-size:19px}
+  .foot-links{display:flex;gap:26px}
+  .foot-links a{color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;transition:color .3s}
+  .foot-links a:hover{color:var(--cream)}
+  .foot .cp{font-size:11px;color:var(--faint);letter-spacing:0.08em}
+
+  /* RESPONSIVE */
+  @media(max-width:900px){
+    .wrap{padding:0 24px}
+    nav,nav.scrolled{padding:18px 24px}
+    .work-grid{grid-template-columns:1fr;gap:14px}
+    .pc.a,.pc.b,.pc.c,.pc.d{grid-column:auto;aspect-ratio:4/3}
+    .projects-section{padding:48px 0}
+    .hero{padding:40px 0 32px}
+    .hero h1{font-size:clamp(28px,6vw,48px)}
+  }
+  @media(max-width:520px){
+    .wrap{padding:0 16px}
+    nav{padding:16px}
+    .hero{padding:32px 0 24px}
+    .hero h1{font-size:clamp(24px,8vw,40px)}
+    .hero p{font-size:14px}
+    .projects-section{padding:40px 0}
+    footer{padding:36px 0}
+    .foot{flex-direction:column;align-items:flex-start;gap:16px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1!important;transform:none!important}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="back-btn">← Back</a>
+  <a href="index.html" style="display:flex;align-items:center;gap:10px;position:absolute;left:50%;transform:translateX(-50%)">
+    <span class="brand">House of <i>White</i></span>
+  </a>
+  <div style="width:80px"></div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap hero-wrap reveal">
+    <span class="eyebrow">All Projects</span>
+    <h1>Complete <i>portfolio.</i></h1>
+    <p>A selection of residential interiors shaped with restraint, light, and considered detail.</p>
+  </div>
+</header>
+
+<!-- PROJECTS -->
+<section class="projects-section">
+  <div class="wrap">
+    <div class="work-grid">
+      <a href="project-detail.html?id=1" class="pc a reveal"><span class="idx">Palm Jumeirah Villa</span><img loading="lazy" src="https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=1100&q=80" alt=""><div class="pinfo"><div class="pname">Palm Jumeirah Villa</div><div class="pmeta">Full interior · Dubai</div></div></a>
+      
+      <a href="project-detail.html?id=2" class="pc b reveal"><span class="idx">Azizi Mina</span><img loading="lazy" src="https://images.unsplash.com/photo-1615875605825-5eb9bb5d52ac?auto=format&fit=crop&w=900&q=80" alt=""><div class="pinfo"><div class="pname">Azizi Mina</div><div class="pmeta">Palm Jumeirah</div></div></a>
+      
+      <a href="project-detail.html?id=3" class="pc c reveal"><span class="idx">California Village</span><img loading="lazy" src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=80" alt=""><div class="pinfo"><div class="pname">California Village</div><div class="pmeta">Concept & build</div></div></a>
+      
+      <a href="project-detail.html?id=4" class="pc d reveal"><span class="idx">Cedre Villas</span><img loading="lazy" src="https://images.unsplash.com/photo-1617104678098-de229db51175?auto=format&fit=crop&w=1100&q=80" alt=""><div class="pinfo"><div class="pname">Cedre Villas</div><div class="pmeta">Styling & furnishing</div></div></a>
+
+      <a href="project-detail.html?id=5" class="pc a reveal"><span class="idx">City Walk 11</span><img loading="lazy" src="https://images.unsplash.com/photo-1600121848371-40ebec813d71?auto=format&fit=crop&w=1100&q=80" alt=""><div class="pinfo"><div class="pname">City Walk 11</div><div class="pmeta">Living spaces · Dubai</div></div></a>
+      
+      <a href="project-detail.html?id=6" class="pc b reveal"><span class="idx">Damac Hills 2</span><img loading="lazy" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80" alt=""><div class="pinfo"><div class="pname">Damac Hills 2</div><div class="pmeta">Mulberry</div></div></a>
+      
+      <a href="project-detail.html?id=7" class="pc c reveal"><span class="idx">Damac Hills</span><img loading="lazy" src="https://images.unsplash.com/photo-1598928506179-801c28fc3e5f?auto=format&fit=crop&w=900&q=80" alt=""><div class="pinfo"><div class="pname">Damac Hills</div><div class="pmeta">Horizon Park</div></div></a>
+      
+      <a href="project-detail.html?id=8" class="pc d reveal"><span class="idx">Dubai South</span><img loading="lazy" src="https://images.unsplash.com/photo-1600566753086-00d4648855d8?auto=format&fit=crop&w=1100&q=80" alt=""><div class="pinfo"><div class="pname">Dubai South</div><div class="pmeta">Villa · Full interior</div></div></a>
+
+      <a href="project-detail.html?id=9" class="pc a reveal"><span class="idx">Fairooz Tower</span><img loading="lazy" src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1100&q=80" alt=""><div class="pinfo"><div class="pname">Fairooz Tower</div><div class="pmeta">Penthouse · Downtown</div></div></a>
+      
+      <a href="project-detail.html?id=10" class="pc b reveal"><span class="idx">Nursery Project</span><img loading="lazy" src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=900&q=80" alt=""><div class="pinfo"><div class="pname">Nursery Project</div><div class="pmeta">Concept design</div></div></a>
+      
+      <a href="project-detail.html?id=11" class="pc c reveal"><span class="idx">Downtown Penthouse</span><img loading="lazy" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80" alt=""><div class="pinfo"><div class="pname">Downtown Penthouse</div><div class="pmeta">Living spaces</div></div></a>
+      
+      <a href="project-detail.html?id=12" class="pc d reveal"><span class="idx">Palm Jumeirah Grandeur</span><img loading="lazy" src="https://images.unsplash.com/photo-1605276374104-dee2a0db896d?auto=format&fit=crop&w=1100&q=80" alt=""><div class="pinfo"><div class="pname">Palm Jumeirah Grandeur</div><div class="pmeta">Complete design</div></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px">
+      <span class="brand">House of <i>White</i></span>
+    </a>
+    <div class="foot-links">
+      <a href="index.html#work">Work</a><a href="index.html#studio">Studio</a><a href="testimonials.html">Testimonials</a><a href="index.html#services">Services</a><a href="index.html#contact">Contact</a>
+    </div>
+    <div class="cp">© 2026 House of White · Dubai</div>
+  </div>
+</footer>
+
+<script>
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:0.15});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*80)+'ms';io.observe(el)});
+
+  document.querySelectorAll('.pc img').forEach(img=>{
+    img.addEventListener('error',()=>{img.style.opacity=0;img.parentElement.style.background='linear-gradient(150deg,#221d16,#15120d)'});
+  });
+</script>
+</body>
+</html>

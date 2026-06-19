@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>House of White — Панель студии</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#000000; --ink-2:#0D0D0D; --ink-3:#161513; --ink-4:#1C1A17;
+    --cream:#E9E2D4; --muted:#9A9180; --faint:#5C5648; --sand:#B49B78;
+    --line:rgba(233,226,212,0.13); --line-soft:rgba(233,226,212,0.07);
+    --ok:#A9BFA0; --danger:#D88;
+    --display:'Bodoni Moda', Georgia, serif;
+    --sans:'Jost', system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--ink);color:var(--cream);font-family:var(--sans);font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+  ::selection{background:var(--sand);color:var(--ink)}
+  *{scrollbar-width:thin;scrollbar-color:var(--faint) var(--ink-2)}
+  *::-webkit-scrollbar{width:8px;height:8px}
+  *::-webkit-scrollbar-track{background:var(--ink-2)}
+  *::-webkit-scrollbar-thumb{background:var(--faint);border-radius:30px}
+  *::-webkit-scrollbar-thumb:hover{background:var(--sand)}
+  a{color:inherit}
+  button{font-family:var(--sans)}
+
+  .app{display:flex;min-height:100vh}
+
+  /* SIDEBAR */
+  .sidebar{width:260px;flex:none;background:var(--ink-2);border-right:1px solid var(--line-soft);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+  .side-brand{padding:22px 20px;border-bottom:1px solid var(--line-soft);font-family:var(--display);font-size:18px;display:flex;align-items:center;gap:8px}
+  .side-brand i{font-style:italic;color:var(--sand)}
+
+  .side-label{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--faint);padding:18px 20px 8px}
+
+  .proj-item{padding:11px 20px;cursor:pointer;font-size:13px;color:var(--muted);border-left:2px solid transparent;transition:all .2s}
+  .proj-item:hover{color:var(--cream)}
+  .proj-item.active{color:var(--cream);background:var(--ink-3);border-left-color:var(--sand)}
+
+  .sub-nav{display:flex;flex-direction:column;padding:4px 0 14px;background:var(--ink-3)}
+  .sub-item{display:flex;align-items:center;gap:10px;padding:10px 20px 10px 32px;font-size:12.5px;color:var(--muted);cursor:pointer;border-left:2px solid transparent;transition:all .2s}
+  .sub-item svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.5;flex:none}
+  .sub-item:hover{color:var(--cream)}
+  .sub-item.active{color:var(--sand);border-left-color:var(--sand)}
+
+  .add-proj{margin:auto 0 0;padding:16px 20px;border-top:1px solid var(--line-soft);font-size:12px;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:8px}
+  .add-proj:hover{color:var(--sand)}
+
+  /* MAIN */
+  .main{flex:1;min-width:0}
+  .topbar{display:flex;justify-content:space-between;align-items:center;padding:20px 32px;border-bottom:1px solid var(--line-soft);position:sticky;top:0;background:rgba(0,0,0,0.92);backdrop-filter:blur(14px);z-index:10}
+  .topbar h1{font-family:var(--display);font-weight:400;font-size:24px}
+  .chip{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);padding:6px 12px;border-radius:30px;display:flex;align-items:center;gap:7px}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--sand);flex:none}
+  .btn-line{display:inline-block;border:1px solid var(--line);color:var(--cream);text-decoration:none;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;padding:10px 16px;border-radius:4px;transition:border-color .3s,color .3s;background:none;cursor:pointer}
+  .btn-line:hover{border-color:var(--sand);color:var(--sand)}
+
+  .content{padding:28px 32px 80px;max-width:1000px}
+  .page{display:none}
+  .page.active{display:block}
+
+  /* ROOM BLOCK (Визуализации) */
+  .room-block{margin-bottom:36px}
+  .room-block-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .room-block-head h2{font-family:var(--display);font-weight:400;font-size:19px}
+  .room-block-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .variant-pill{font-size:11px;letter-spacing:0.06em;padding:8px 14px;border:1px solid var(--line);border-radius:30px;background:var(--ink-3);color:var(--cream);cursor:pointer;display:flex;align-items:center;gap:6px}
+  .variant-pill:hover{border-color:var(--sand)}
+  .link-pill{font-size:11px;letter-spacing:0.06em;padding:8px 14px;border:1px solid var(--line);border-radius:30px;background:none;color:var(--sand);cursor:pointer;display:flex;align-items:center;gap:6px}
+  .link-pill:hover{border-color:var(--sand)}
+  .link-pill svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6}
+
+  .render-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+  .render-tile{position:relative;aspect-ratio:4/3;border-radius:4px;overflow:hidden;background:var(--ink-3)}
+  .render-tile img{width:100%;height:100%;object-fit:cover;display:block}
+  .render-tile .rdel{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.6);border:none;color:var(--cream);width:22px;height:22px;border-radius:50%;cursor:pointer;font-size:13px;z-index:2}
+  .render-tile .rdel:hover{color:var(--danger)}
+  .render-tile.add{display:flex;align-items:center;justify-content:center;border:1px dashed var(--line);cursor:pointer;color:var(--muted);font-size:24px;font-weight:300}
+  .render-tile.add:hover{border-color:var(--sand);color:var(--sand)}
+  .img-wrap{position:relative;cursor:pointer;height:calc(100% - 33px)}
+  .badge{position:absolute;bottom:6px;left:6px;font-size:9.5px;letter-spacing:.04em;padding:3px 8px;border-radius:30px;background:rgba(0,0,0,.65);color:var(--cream)}
+  .badge.ok{color:var(--ok)}
+  .badge.cm{color:var(--sand)}
+
+  .room-title-row{display:flex;align-items:center;gap:10px}
+  .reorder-col{display:flex;flex-direction:column;gap:2px}
+  .reorder-btn{display:flex;align-items:center;justify-content:center;background:none;border:1px solid var(--line);color:var(--muted);border-radius:3px;width:20px;height:16px;cursor:pointer;padding:0}
+  .reorder-btn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+  .reorder-btn:hover:not(:disabled){border-color:var(--sand);color:var(--sand)}
+  .reorder-btn:disabled{opacity:.25;cursor:not-allowed}
+  .photo-caption{width:100%;margin-top:6px;background:var(--ink-3);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:7px 9px;font-family:var(--sans);font-size:11.5px}
+  .photo-caption:focus{outline:none;border-color:var(--sand)}
+
+  .variant-tabs{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .variant-tab-wrap{display:inline-flex;align-items:center;gap:2px;border:1px solid var(--line);border-radius:30px;padding:2px 4px 2px 14px;background:var(--ink-3)}
+  .variant-tab-wrap.active{border-color:var(--sand)}
+  .variant-tab{background:none;border:none;color:var(--muted);font-size:11px;letter-spacing:.06em;cursor:pointer;padding:6px 4px}
+  .variant-tab-wrap.active .variant-tab{color:var(--sand)}
+  .variant-tab-action{background:none;border:none;color:var(--faint);cursor:pointer;font-size:11px;width:18px;height:18px;border-radius:50%;line-height:1}
+  .variant-tab-action:hover{color:var(--cream)}
+  .variant-tab-action.del:hover{color:var(--danger)}
+
+  /* PHOTO LIGHTBOX */
+  .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:200;align-items:center;justify-content:center;padding:30px}
+  .lightbox.open{display:flex}
+  .lb-box{display:flex;gap:0;max-width:1100px;width:100%;max-height:90vh;background:var(--ink-2);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .lb-box img{flex:1.4;min-width:0;width:100%;height:100%;object-fit:contain;background:var(--ink);max-height:90vh}
+  .lb-side{flex:1;min-width:280px;max-width:340px;display:flex;flex-direction:column;padding:22px;border-left:1px solid var(--line-soft);overflow-y:auto}
+  .lb-close{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.6);border:none;color:var(--cream);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;z-index:3}
+  .lb-close:hover{color:var(--danger)}
+  .lb-status{font-size:12px;color:var(--muted);margin-bottom:14px;letter-spacing:.03em}
+  .lb-actions{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+  .lb-actions .btn-line{font-size:10px;padding:9px 12px}
+  .lb-actions .btn-line.approve{border-color:rgba(46,125,50,0.4);color:#2E7D32}
+  .lb-actions .btn-line.approve:hover{border-color:#2E7D32}
+  .lb-actions .btn-line.reject{border-color:rgba(198,40,40,0.4);color:#C62828}
+  .lb-actions .btn-line.reject:hover{border-color:#C62828}
+  .lb-comments{flex:1;display:flex;flex-direction:column;gap:8px;margin-bottom:14px;overflow-y:auto}
+  .lb-comment{background:var(--ink-3);border:1px solid var(--line-soft);border-radius:6px;padding:9px 11px;font-size:12.5px;line-height:1.45}
+  .lb-comment .who{display:block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+  .lb-comment.studio{background:rgba(180,155,120,0.12);border-color:rgba(180,155,120,0.3)}
+  .lb-comment.studio .who{color:var(--sand)}
+  .lb-empty{font-size:12px;color:var(--faint)}
+  .lb-reply{display:flex;gap:6px}
+  .lb-reply input{flex:1;background:var(--ink-3);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:9px 11px;font-family:var(--sans);font-size:12.5px}
+  .lb-reply input:focus{outline:none;border-color:var(--sand)}
+  .lb-reply button{background:var(--sand);color:var(--ink);border:none;border-radius:4px;padding:0 14px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+  @media(max-width:760px){
+    .lb-box{flex-direction:column;max-height:95vh}
+    .lb-box img{max-height:45vh}
+    .lb-side{max-width:none}
+  }
+
+  .room-add-row{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}
+  .room-add-row input{flex:1;min-width:180px;background:var(--ink-3);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:11px 14px;font-size:13px}
+  .room-add-row button{background:var(--sand);color:var(--ink);border:none;border-radius:4px;padding:0 18px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer}
+
+  /* PANEL (used in other pages) */
+  .panel{border:1px solid var(--line);border-radius:4px;background:var(--ink-2);margin-bottom:18px;overflow:hidden}
+  .panel-head{padding:18px 20px;border-bottom:1px solid var(--line-soft)}
+  .panel-head b{font-size:13.5px;font-weight:400;letter-spacing:0.06em;text-transform:uppercase}
+  .panel-head small{display:block;color:var(--muted);font-size:11px;margin-top:3px;letter-spacing:0.04em}
+  .panel-body{padding:20px}
+
+  .client-grid{display:grid;grid-template-columns:160px 1fr;gap:12px 16px;align-items:center}
+  .client-grid .cl-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--sand);align-self:start;padding-top:9px}
+  .client-grid input,.client-grid select{width:100%;background:var(--ink-3);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:8px 10px;font-family:var(--sans);font-size:13px}
+  .client-grid input:focus,.client-grid select:focus{outline:none;border-color:var(--sand)}
+  .client-grid a{font-size:12px;color:var(--sand);text-decoration:none}
+  .client-grid a:hover{opacity:.8}
+  .cl-hint{font-size:10.5px;color:var(--faint);margin-top:5px}
+  .cl-suffix{display:flex;align-items:center;gap:8px}
+  .cl-suffix input{width:90px;flex:none}
+  .cl-suffix span{font-size:12px;color:var(--muted)}
+  .phone-input{display:flex}
+  .phone-input .phone-prefix{flex:none;display:flex;align-items:center;padding:8px 10px;background:var(--ink-4);border:1px solid var(--line);border-right:none;border-radius:4px 0 0 4px;color:var(--muted);font-size:13px}
+  .phone-input input{border-radius:0 4px 4px 0}
+
+  .email-input{display:flex}
+  .email-input input{border-radius:0}
+  .email-input input:first-child{border-radius:4px 0 0 4px;border-right:none;text-align:right}
+  .email-input input:last-child{border-radius:0 4px 4px 0;border-left:none}
+  .email-input .email-at{flex:none;display:flex;align-items:center;padding:8px 8px;background:var(--ink-4);border:1px solid var(--line);color:var(--muted);font-size:13px}
+
+  .month-year{display:flex;gap:8px}
+
+  /* custom dropdown — always opens downward, themed like the rest of the form */
+  .csel{position:relative;flex:1}
+  .csel[data-role="day"]{flex:0 0 80px}
+  .csel-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:6px;background:var(--ink-3);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:8px 10px;font-family:var(--sans);font-size:13px;cursor:pointer}
+  .csel-btn:hover{border-color:var(--sand)}
+  .csel-btn svg{width:12px;height:12px;flex:none;stroke:var(--muted);fill:none;stroke-width:2;transition:transform .2s}
+  .csel.open .csel-btn svg{transform:rotate(180deg)}
+  .csel-menu{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--ink-3);border:1px solid var(--line);border-radius:4px;max-height:230px;overflow-y:auto;z-index:60;box-shadow:0 12px 30px rgba(0,0,0,0.5)}
+  .csel.open .csel-menu{display:block}
+  .csel-opt{padding:9px 12px;font-size:13px;color:var(--cream);cursor:pointer}
+  .csel-opt:hover{background:var(--ink-4)}
+  .csel-opt.selected{color:var(--sand)}
+
+  .steps{display:flex;flex-wrap:wrap;gap:8px}
+  .step-btn{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:9px 14px;border:1px solid var(--line);border-radius:30px;background:none;color:var(--muted);cursor:pointer;transition:all .25s}
+  .step-btn.selected{box-shadow:0 0 0 2px rgba(180,155,120,0.3);border-color:var(--sand)}
+  .step-btn.locked{opacity:.35;cursor:not-allowed}
+
+  .spec-cat{margin-bottom:16px}
+  .spec-cat:last-child{margin-bottom:0}
+  .spec-cat-title{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--sand);margin-bottom:8px}
+  .item{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line-soft)}
+  .item:last-child{border-bottom:none}
+  .item-info .name{font-size:13px}
+  .item-info .desc{font-size:11px;color:var(--muted);margin-top:2px}
+  .pill{font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:30px;border:1px solid var(--line);white-space:nowrap;cursor:pointer;background:none;color:var(--muted)}
+
+  /* APPROVAL STATUS COLORS (этап проекта) */
+  .status-draft{color:#757575;border-color:rgba(117,117,117,0.4)}
+  .status-progress{color:#EF6C00;border-color:rgba(239,108,0,0.4)}
+  .status-revise{color:#C62828;border-color:rgba(198,40,40,0.4)}
+  .status-approved{color:#2E7D32;border-color:rgba(46,125,50,0.4)}
+  .pill.ok{color:var(--ok);border-color:rgba(169,191,160,0.35)}
+  .pill.go{color:var(--sand);border-color:rgba(180,155,120,0.4)}
+  .pill.done{color:#7EB5FF;border-color:rgba(126,181,255,0.35)}
+  .del-btn{background:none;border:none;color:var(--faint);cursor:pointer;font-size:15px;line-height:1;padding:4px 6px}
+  .del-btn:hover{color:var(--danger)}
+
+  .add-row{display:grid;grid-template-columns:1.4fr 1fr 0.7fr auto;gap:8px;margin-top:14px}
+  .add-row input,.add-row select{background:var(--ink-3);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:9px 10px;font-family:var(--sans);font-size:12px}
+  .add-row button{background:var(--sand);color:var(--ink);border:none;border-radius:4px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer}
+
+  .spec-add-row{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+  .spec-add-row .si-text{flex:1 1 180px;min-width:150px}
+  .spec-add-row .csel-wrap{flex:1 1 160px;min-width:140px}
+  .spec-add-row .csel-wrap .csel{width:100%;height:100%}
+  .spec-add-row .csel-btn{width:100%;height:100%}
+  .spec-add-row .csel-btn span{white-space:normal;line-height:1.25;text-align:left}
+  .spec-add-row .price-field{flex:1 1 140px;min-width:120px}
+  .spec-add-row .qty-field{flex:0 0 110px}
+  .spec-add-row button.add-btn{flex:0 0 auto;padding:0 20px}
+
+  .price-field,.qty-field{display:flex;align-items:stretch;background:var(--ink-3);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+  .price-field input,.qty-field input{background:none;border:none;color:var(--cream);font-family:var(--sans);font-size:12px;width:100%;padding:9px 10px}
+  .price-field input:focus,.qty-field input:focus{outline:none}
+  .price-field .field-unit{flex:none;padding:0 10px;font-size:10.5px;letter-spacing:.06em;color:var(--sand);border-left:1px solid var(--line);display:flex;align-items:center}
+  .qty-field input{text-align:center;padding:9px 0;flex:1;min-width:0}
+  .qty-btn{flex:none;display:flex;align-items:center;justify-content:center;background:none;border:none;color:var(--muted);width:26px;cursor:pointer;font-size:14px;line-height:1}
+  .qty-btn:hover{color:var(--sand)}
+
+  /* .add-row button styles a generic gold submit button — override it back to the normal
+     themed look for the dropdown triggers and stepper buttons that live inside it */
+  .spec-add-row .csel-btn{background:var(--ink-3);color:var(--cream);text-transform:none;letter-spacing:normal;font-size:12px;font-weight:300;border-radius:4px}
+  .spec-add-row .csel-btn:hover{background:var(--ink-3)}
+  .spec-add-row .qty-btn{background:none;color:var(--muted);text-transform:none;letter-spacing:normal;padding:0}
+  .spec-add-row .qty-btn:hover{background:none;color:var(--sand)}
+
+  .budget-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px}
+  .bcard{border:1px solid var(--line);border-radius:4px;background:var(--ink-3);padding:18px}
+  .bcard .lb{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--sand);margin-bottom:8px}
+  .bcard .val{font-family:var(--display);font-size:24px}
+  .bar{height:6px;background:var(--ink-4);border-radius:30px;overflow:hidden;margin-top:18px}
+  .bar-fill{height:100%;background:var(--sand);border-radius:30px}
+  .bar-fill.over{background:#C62828}
+  .budget-warning{color:#C62828}
+
+  .cat-spend-row{margin-bottom:14px}
+  .cat-spend-row:last-child{margin-bottom:0}
+  .cat-spend-label{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px}
+  .cat-spend-label .amt{color:var(--sand)}
+  .cat-spend-row .bar{margin-top:0}
+
+  .visit{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line-soft)}
+  .visit:last-child{border-bottom:none}
+  .visit img{width:70px;height:70px;object-fit:cover;border-radius:4px;flex:none;background:var(--ink-3)}
+  .visit .vdate{font-size:11px;color:var(--sand);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+  .visit .vnote{font-size:13px}
+
+  .msg-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;max-height:280px;overflow-y:auto}
+  .msg{max-width:78%;padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.45}
+  .msg.client{background:var(--ink-3);border:1px solid var(--line);align-self:flex-start}
+  .msg.studio{background:var(--sand);color:var(--ink);align-self:flex-end}
+  .msg time{display:block;font-size:9.5px;opacity:.6;margin-top:4px;letter-spacing:.05em}
+  .msg-input{display:flex;gap:8px}
+  .msg-input input{flex:1;background:var(--ink-3);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:11px 14px;font-family:var(--sans);font-size:13px}
+  .msg-input button{background:var(--sand);color:var(--ink);border:none;border-radius:4px;padding:0 18px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer}
+
+  .note{font-size:11px;color:var(--faint);margin-top:10px;letter-spacing:.02em}
+
+  @media(max-width:860px){
+    .sidebar{position:fixed;left:-260px;z-index:100;transition:left .3s;box-shadow:0 0 40px rgba(0,0,0,.6)}
+    .sidebar.open{left:0}
+    .menu-btn{display:inline-flex!important}
+  }
+  .menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:8px 12px;cursor:pointer;margin-right:10px}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <a href="links.html" class="side-brand">House of <i>White</i></a>
+
+    <div class="side-label">Проекты</div>
+    <div class="proj-item active" data-project="palm" onclick="switchProject(this)">Palm Jumeirah Villa</div>
+    <div class="sub-nav" id="subNav">
+      <div class="sub-item active" data-page="overview" onclick="switchPage(this)">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>О проекте
+      </div>
+      <div class="sub-item" data-page="renders" onclick="switchPage(this)">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Визуализации
+      </div>
+      <div class="sub-item" data-page="spec" onclick="switchPage(this)">
+        <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/></svg>Комплектация
+      </div>
+      <div class="sub-item" data-page="budget" onclick="switchPage(this)">
+        <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg>Бюджет
+      </div>
+      <div class="sub-item" data-page="visits" onclick="switchPage(this)">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7-5.3-7-11a7 7 0 0114 0c0 5.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Авторский надзор
+      </div>
+      <div class="sub-item" onclick="addProject()">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Добавить проект
+      </div>
+    </div>
+
+    <div class="proj-item" data-project="azizi" onclick="switchProject(this)">Azizi Mina</div>
+    <div class="proj-item" data-project="cedre" onclick="switchProject(this)">Cedre Villas</div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center">
+        <button class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        <h1 id="topTitle">О проекте</h1>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <div class="chip"><span class="dot"></span><span id="topProj">Лейла А. — Palm Jumeirah Villa</span></div>
+        <a href="portal.html" target="_blank" class="btn-line">Открыть как клиент →</a>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- OVERVIEW -->
+      <div class="page active" data-page="overview">
+        <div class="panel">
+          <div class="panel-head"><b>Этап проекта</b><small>Согласуйте текущий этап, чтобы открыть следующий. Прошлые этапы можно открыть для проверки</small></div>
+          <div class="panel-body">
+            <div class="steps" id="stepsRow"></div>
+            <div style="display:flex;align-items:center;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line-soft)">
+              <span style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--sand)" id="stageStatusLabel"></span>
+              <button class="pill" id="stageStatusPill" onclick="cycleStageStatus()"></button>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head" style="display:flex;align-items:center;justify-content:space-between">
+            <div><b>Клиент</b><small>Нажмите на поле, чтобы изменить</small></div>
+            <button class="pill" id="clientStatusPill" onclick="cycleClientStatus()"></button>
+          </div>
+          <div class="panel-body">
+            <div class="client-grid" id="clientGrid"></div>
+            <button class="btn-line" id="saveClientBtn" onclick="saveClientInfo()" style="margin-top:18px">Сохранить</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RENDERS (Визуализации) -->
+      <div class="page" data-page="renders">
+
+        <div id="renderRooms"></div>
+
+        <div class="room-add-row">
+          <input id="newRoomBlockName" type="text" placeholder="Название комнаты — например, Прихожая">
+          <button onclick="addRoomBlock()">Добавить комнату</button>
+        </div>
+        <div class="note">Демо-данные. Загрузка файлов и реальные публичные ссылки появятся после подключения базы.</div>
+      </div>
+
+      <!-- SPEC (Комплектация) -->
+      <div class="page" data-page="spec">
+        <div class="panel">
+          <div class="panel-head"><b>Мебель и материалы</b><small id="specCount"></small></div>
+          <div class="panel-body">
+            <div id="specList"></div>
+            <div class="add-row spec-add-row">
+              <input id="newItemName" class="si-text" type="text" placeholder="Название позиции — например, Кресло B&amp;B Italia">
+              <div id="newItemCatWrap" class="csel-wrap"></div>
+              <div id="newItemRoomWrap" class="csel-wrap"></div>
+              <input id="newItemNote" class="si-text" type="text" placeholder="Деталь — цвет, материал...">
+              <div class="price-field"><input id="newItemPrice" type="text" inputmode="decimal" placeholder="0"><span class="field-unit">AED</span></div>
+              <div class="qty-field">
+                <button type="button" class="qty-btn" onclick="stepQty(-1)">−</button>
+                <input id="newItemQty" type="text" inputmode="numeric" value="1">
+                <button type="button" class="qty-btn" onclick="stepQty(1)">+</button>
+              </div>
+              <div id="newItemStatusWrap" class="csel-wrap"></div>
+              <button class="add-btn" onclick="addItem()">Добавить</button>
+            </div>
+            <div class="note">Нажимайте на статус, чтобы менять его: Ожидание → В поиске → Заказано → Согласовано. Бюджет на странице «Бюджет» считается автоматически из позиций со статусом «Заказано» и «Согласовано».</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BUDGET -->
+      <div class="page" data-page="budget">
+        <div class="budget-cards">
+          <div class="bcard"><div class="lb">Бюджет всего</div><div class="val" id="budgetTotal" onclick="editBudgetTotal()" style="cursor:pointer" title="Нажмите, чтобы изменить"></div></div>
+          <div class="bcard"><div class="lb">Потрачено</div><div class="val" id="budgetSpent"></div></div>
+          <div class="bcard"><div class="lb">Остаток</div><div class="val" id="budgetLeft"></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><b>Расход бюджета</b><small id="budgetPercentLabel"></small></div>
+          <div class="panel-body">
+            <div class="bar"><div class="bar-fill" id="budgetBar" style="width:0%"></div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><b>Расход по категориям</b><small>Только позиции со статусом «Заказано» и «Согласовано»</small></div>
+          <div class="panel-body">
+            <div id="budgetCatList"></div>
+          </div>
+        </div>
+        <div class="note">«Потрачено» считается автоматически из позиций комплектации со статусом «Заказано» и «Согласовано». «Бюджет всего» — нажмите на сумму, чтобы изменить вручную.</div>
+      </div>
+
+      <!-- AUTHOR SUPERVISION (Авторский надзор) -->
+      <div class="page" data-page="visits">
+        <div class="panel">
+          <div class="panel-head"><b>Выезды на объект</b><small>Фотоотчёты с датами</small></div>
+          <div class="panel-body">
+            <div id="visitsList"></div>
+            <div class="add-row" style="grid-template-columns:1fr 2fr auto">
+              <input id="newVisitDate" type="text" placeholder="Дата — например, 18 июня 2026">
+              <input id="newVisitNote" type="text" placeholder="Заметка">
+              <button onclick="addVisit()">Добавить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="photoLightbox">
+  <div class="lb-box">
+    <button class="lb-close" onclick="closePhotoLightbox()">✕</button>
+    <img id="lbImg" src="">
+    <div class="lb-side">
+      <div class="lb-status" id="lbApproved"></div>
+      <div class="lb-actions">
+        <button class="btn-line approve" onclick="setPhotoApproval(true)">✓ Согласовать</button>
+        <button class="btn-line reject" onclick="setPhotoApproval(false)">↺ На правки</button>
+      </div>
+      <div class="lb-comments" id="lbComments"></div>
+      <div class="lb-reply">
+        <input id="lbReplyInput" type="text" placeholder="Ответить клиенту..." onkeydown="if(event.key==='Enter')addStudioReply()">
+        <button onclick="addStudioReply()">Отправить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---- DEMO PROJECT DATA ----
+  const STEP_LABELS=['Консультация','Концепция','Дизайн','Визуализации','Закупка','Сдача'];
+
+  const PROJECTS={
+    palm:{
+      label:'Лейла А. — Palm Jumeirah Villa',
+      stage:3,
+      status:'ok',
+      client:{
+        name:'Лейла А.',
+        phone:'+971 58 677 1200',
+        email:'layla.a@example.com',
+        address:'Palm Jumeirah, Frond M, Дубай',
+        propertyType:'Вилла',
+        area:'420 м²',
+        since:'2026-01-14',
+        measurements:'2026-01-14',
+        handover:'2026-09-01'
+      },
+      rooms:[
+        {name:'Кухня-гостиная',status:'progress',activeVariant:0,variants:[
+          {label:'Вариант 1',photos:[
+            {src:'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80',caption:'',comments:[],approved:true},
+            {src:'https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=600&q=80',caption:'',comments:[{text:'Можно немного теплее оттенок дерева на острове?'}],approved:false}
+          ]}
+        ]},
+        {name:'Мастер-спальня',status:'draft',activeVariant:0,variants:[
+          {label:'Вариант 1',photos:[
+            {src:'https://images.unsplash.com/photo-1615875605825-5eb9bb5d52ac?auto=format&fit=crop&w=600&q=80',caption:'',comments:[],approved:false}
+          ]}
+        ]}
+      ],
+      spec:[
+        {cat:'Мебель',items:[
+          {name:'Диван — Minotti Spencer',room:'Кухня-гостиная',note:'ткань: бежевый лён',price:48000,qty:1,status:'ok'},
+          {name:'Кровать — Poliform Letto',room:'Мастер-спальня',note:'180×200 см',price:32000,qty:1,status:'go'}
+        ]},
+        {cat:'Освещение',items:[
+          {name:'Подвес — Flos Arrangements',room:'Кухня-гостиная',note:'латунь',price:9500,qty:3,status:'done'}
+        ]}
+      ],
+      budget:{total:320000},
+      visits:[
+        {date:'12 июня 2026',note:'Проверена черновая электрика — соответствует плану. Стена на кухне готова под плитку.',img:'https://images.unsplash.com/photo-1600566753086-00d4648855d8?auto=format&fit=crop&w=200&q=80'},
+        {date:'28 мая 2026',note:'Проверена поставка напольного покрытия — партия по цвету соответствует образцу.',img:'https://images.unsplash.com/photo-1598928506179-801c28fc3e5f?auto=format&fit=crop&w=200&q=80'}
+      ]
+    },
+    azizi:{
+      label:'Демо-клиент — Azizi Mina',
+      stage:1,
+      status:'wait',
+      client:{
+        name:'Демо-клиент',
+        phone:'+971 58 677 1200',
+        email:'',
+        address:'Azizi Mina, Palm Jumeirah, Дубай',
+        propertyType:'Апартаменты',
+        area:'140 м²',
+        since:'2026-03-05',
+        measurements:'',
+        handover:''
+      },
+      rooms:[
+        {name:'Гостиная',status:'draft',activeVariant:0,variants:[
+          {label:'Вариант 1',photos:[
+            {src:'https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&w=600&q=80',caption:'',comments:[],approved:false}
+          ]}
+        ]}
+      ],
+      spec:[
+        {cat:'Мебель',items:[
+          {name:'Диван — модульный',room:'Гостиная',note:'ткань: серый велюр',price:22000,qty:1,status:'wait'}
+        ]}
+      ],
+      budget:{total:180000},
+      visits:[]
+    },
+    cedre:{
+      label:'Демо-клиент — Cedre Villas',
+      stage:4,
+      status:'done',
+      client:{
+        name:'Демо-клиент',
+        phone:'+971 58 677 1200',
+        email:'',
+        address:'Cedre Villas, Дубай',
+        propertyType:'Вилла',
+        area:'510 м²',
+        since:'2025-11-03',
+        measurements:'2025-12-03',
+        handover:'2026-07-01'
+      },
+      rooms:[
+        {name:'Кухня',status:'approved',activeVariant:0,variants:[
+          {label:'Вариант 1',photos:[
+            {src:'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=600&q=80',caption:'',comments:[],approved:true}
+          ]}
+        ]},
+        {name:'Столовая',status:'progress',activeVariant:0,variants:[
+          {label:'Вариант 1',photos:[
+            {src:'https://images.unsplash.com/photo-1600121848571-19c0ba7ffaf2?auto=format&fit=crop&w=600&q=80',caption:'',comments:[],approved:false}
+          ]}
+        ]}
+      ],
+      spec:[
+        {cat:'Мебель',items:[
+          {name:'Обеденный стол',room:'Столовая',note:'мрамор',price:38000,qty:1,status:'done'},
+          {name:'Стулья — 6 шт',room:'Столовая',note:'кожа',price:4000,qty:6,status:'ok'}
+        ]},
+        {cat:'Декор',items:[
+          {name:'Зеркало напольное',room:'Прихожая',note:'',price:6500,qty:1,status:'go'}
+        ]}
+      ],
+      budget:{total:410000},
+      visits:[
+        {date:'2 июня 2026',note:'Финальная проверка перед сдачей — отделка кухни завершена.',img:'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=200&q=80'}
+      ]
+    }
+  };
+
+  let currentProject='palm';
+
+  function renderProject(id){
+    const data=PROJECTS[id];
+    if(!data) return;
+    currentProject=id;
+    document.getElementById('topProj').textContent=data.label;
+
+    // steps
+    if(!data.stageStatuses) data.stageStatuses=STEP_LABELS.map((_,i)=>i<data.stage?'approved':i===data.stage?'progress':'draft');
+    if(data.viewStage===undefined) data.viewStage=data.stage;
+    const stepsRow=document.getElementById('stepsRow');
+    stepsRow.innerHTML='';
+    STEP_LABELS.forEach((label,i)=>{
+      const locked=i>data.stage;
+      const btn=document.createElement('button');
+      btn.className='step-btn status-'+data.stageStatuses[i]+(i===data.viewStage?' selected':'')+(locked?' locked':'');
+      btn.textContent=label;
+      btn.disabled=locked;
+      if(!locked) btn.onclick=()=>{
+        data.viewStage=i;
+        renderProject(id);
+        switchPage(document.querySelector('.sub-item[data-page="overview"]'));
+      };
+      stepsRow.appendChild(btn);
+    });
+
+    // status of the stage currently being viewed (current or an earlier one being revisited)
+    const stageStatusMap={draft:'Черновик / Ожидание',progress:'В работе',revise:'Правки / Отклонено',approved:'Согласовано'};
+    const vs=data.viewStage;
+    document.getElementById('stageStatusLabel').textContent='Статус «'+STEP_LABELS[vs]+'»:';
+    const stageBtn=document.getElementById('stageStatusPill');
+    stageBtn.className='pill status-'+data.stageStatuses[vs];
+    stageBtn.textContent=stageStatusMap[data.stageStatuses[vs]];
+
+    // client status pill
+    const statusMap2={ok:'Активный',wait:'На паузе',done:'Завершён'};
+    const statusBtn=document.getElementById('clientStatusPill');
+    statusBtn.className='pill '+data.status;
+    statusBtn.textContent=statusMap2[data.status]||'Активный';
+
+    // client info grid
+    const c=data.client;
+    const esc=v=>(v||'').toString().replace(/"/g,'&quot;');
+    const PROPERTY_TYPES=['Вилла','Апартаменты','Пентхаус','Таунхаус','Офис','Другое'];
+    const areaNum=(c.area||'').match(/\d+/);
+
+    const rows=[];
+    rows.push(`<div class="cl-label">Имя клиента</div><input type="text" value="${esc(c.name)}" onchange="updateClientField('name',this.value)">`);
+    const phoneRest=(c.phone||'').replace(/^\+?971[\s-]?/,'');
+    rows.push(`<div class="cl-label">Телефон / WhatsApp</div><div><div class="phone-input"><span class="phone-prefix">+971</span><input type="tel" inputmode="numeric" placeholder="5X XXX XXXX" maxlength="12" value="${esc(phoneRest)}" onchange="updateClientField('phone','+971 '+this.value.trim())"></div><div class="cl-hint">Код страны зафиксирован — введите 9 цифр после него</div></div>`);
+    const [emailUser,emailDomain]=(c.email||'').split('@');
+    rows.push(`<div class="cl-label">Email</div><div class="email-input"><input type="text" placeholder="example" value="${esc(emailUser)}" onchange="updateEmailPart('user',this.value)"><span class="email-at">@</span><input type="text" placeholder="mail.com" value="${esc(emailDomain)}" onchange="updateEmailPart('domain',this.value)"></div>`);
+    rows.push(`<div class="cl-label">Объект (адрес)</div><input type="text" value="${esc(c.address)}" onchange="updateClientField('address',this.value)">`);
+    rows.push(`<div class="cl-label">Тип объекта</div><select onchange="updateClientField('propertyType',this.value)">${PROPERTY_TYPES.map(o=>`<option ${o===c.propertyType?'selected':''}>${o}</option>`).join('')}${c.propertyType&&!PROPERTY_TYPES.includes(c.propertyType)?`<option selected>${esc(c.propertyType)}</option>`:''}</select>`);
+    rows.push(`<div class="cl-label">Площадь</div><div class="cl-suffix"><input type="number" min="0" value="${areaNum?areaNum[0]:''}" onchange="updateAreaField(this.value)"><span>м²</span></div>`);
+    rows.push(`<div class="cl-label">Клиент с</div>${buildMonthYearPicker('since',c.since)}`);
+    rows.push(`<div class="cl-label">Замеры</div>${buildMonthYearPicker('measurements',c.measurements)}`);
+    rows.push(`<div class="cl-label">Плановая сдача</div>${buildMonthYearPicker('handover',c.handover)}`);
+    if(c.phone) rows.push(`<div class="cl-label">Написать</div><a href="https://wa.me/${(c.phone||'').replace(/[^\d]/g,'')}" target="_blank">WhatsApp →</a>`);
+    if(c.email) rows.push(`<div class="cl-label">Написать на почту</div><a href="mailto:${esc(c.email)}">${esc(c.email)} →</a>`);
+
+    document.getElementById('clientGrid').innerHTML=rows.join('');
+
+    // rooms / renders
+    renderRoomsList(data);
+
+    // spec
+    const specList=document.getElementById('specList');
+    specList.innerHTML='';
+    const statusMap={wait:'Ожидание',go:'В поиске',done:'Заказано',ok:'Согласовано'};
+    data.spec.forEach((cat,ci)=>{
+      const catEl=document.createElement('div');
+      catEl.className='spec-cat';
+      catEl.dataset.cat=cat.cat;
+      const itemsHtml=cat.items.map((it,ii)=>{
+        const descParts=[it.room,it.note,it.qty>1?it.qty+' шт':'',it.price?fmtMoney(it.price*(it.qty||1)):''].filter(Boolean);
+        return `<div class="item">
+          <div class="item-info"><div class="name">${esc(it.name)}</div><div class="desc">${esc(descParts.join(' · '))}</div></div>
+          <button class="pill ${it.status}" onclick="cycleSpecStatus(${ci},${ii})">${statusMap[it.status]}</button>
+          <button class="del-btn" onclick="deleteSpecItem(${ci},${ii})">✕</button>
+        </div>`;
+      }).join('');
+      catEl.innerHTML=`<div class="spec-cat-title">${cat.cat}</div>${itemsHtml}`;
+      specList.appendChild(catEl);
+    });
+    updateSpecCount();
+
+    // room dropdown for the "add item" form — keep current pick if it still exists among this project's rooms
+    const prevRoomVal=document.getElementById('newItemRoom')?.value;
+    const roomOptions=data.rooms.map(r=>[r.name,r.name]).concat([['Другое','Другое']]);
+    const roomVal=roomOptions.some(o=>o[0]===prevRoomVal)?prevRoomVal:roomOptions[0][0];
+    document.getElementById('newItemRoomWrap').innerHTML=buildSimpleDropdown('newItemRoom',roomOptions,roomVal,'Комната');
+
+    // budget — "Потрачено" считается автоматически из позиций комплектации со статусом "Заказано"/"Согласовано"
+    const committed=it=>(it.status==='done'||it.status==='ok')?(it.price||0)*(it.qty||1):0;
+    const specSpent=data.spec.reduce((sum,cat)=>sum+cat.items.reduce((s,it)=>s+committed(it),0),0);
+    document.getElementById('budgetTotal').textContent=fmtMoney(data.budget.total);
+    document.getElementById('budgetSpent').textContent=fmtMoney(specSpent);
+    document.getElementById('budgetLeft').textContent=fmtMoney(data.budget.total-specSpent);
+    const pct=data.budget.total?Math.round(specSpent/data.budget.total*100):0;
+    const over=data.budget.total>0&&specSpent>data.budget.total;
+    const budgetBar=document.getElementById('budgetBar');
+    budgetBar.style.width=Math.min(pct,100)+'%';
+    budgetBar.classList.toggle('over',over);
+    const budgetPercentLabel=document.getElementById('budgetPercentLabel');
+    if(over){
+      budgetPercentLabel.textContent=`Превышение бюджета на ${fmtMoney(specSpent-data.budget.total)}`;
+      budgetPercentLabel.classList.add('budget-warning');
+    }else{
+      budgetPercentLabel.textContent=`Использовано ${pct}%`;
+      budgetPercentLabel.classList.remove('budget-warning');
+    }
+
+    // budget breakdown by category
+    const catSpent=data.spec.map(cat=>[cat.cat,cat.items.reduce((s,it)=>s+committed(it),0)]).filter(([,sum])=>sum>0).sort((a,b)=>b[1]-a[1]);
+    const budgetCatList=document.getElementById('budgetCatList');
+    budgetCatList.innerHTML=catSpent.length?catSpent.map(([cat,sum])=>{
+      const catPct=data.budget.total?Math.min(Math.round(sum/data.budget.total*100),100):0;
+      return `<div class="cat-spend-row">
+          <div class="cat-spend-label"><span>${esc(cat)}</span><span class="amt">${fmtMoney(sum)}</span></div>
+          <div class="bar"><div class="bar-fill" style="width:${catPct}%"></div></div>
+        </div>`;
+    }).join(''):`<div class="note" style="margin-top:0">Нет позиций со статусом «Заказано» или «Согласовано».</div>`;
+
+    // visits
+    const visitsList=document.getElementById('visitsList');
+    visitsList.innerHTML='';
+    data.visits.forEach(v=>{
+      const el=document.createElement('div');
+      el.className='visit';
+      el.innerHTML=`<img src="${v.img}"><div><div class="vdate">${v.date}</div><div class="vnote">${v.note}</div></div>`;
+      visitsList.appendChild(el);
+    });
+  }
+
+  function updateClientField(key,value){
+    PROJECTS[currentProject].client[key]=value;
+    if(key==='phone'||key==='email'||key==='since') renderClientPanelOnly();
+  }
+
+  function updateAreaField(value){
+    PROJECTS[currentProject].client.area=value?value+' м²':'';
+  }
+
+  function updateEmailPart(part,value){
+    const c=PROJECTS[currentProject].client;
+    let [user,domain]=(c.email||'').split('@');
+    if(part==='user') user=value; else domain=value;
+    c.email=(user||domain)?(user||'')+'@'+(domain||''):'';
+    renderClientPanelOnly();
+  }
+
+  const MONTH_NAMES=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+
+  function buildCustomDropdown(role,selectedLabel,options){
+    const opts=options.map(([val,label])=>
+      `<div class="csel-opt${label===selectedLabel?' selected':''}" data-value="${val}" onclick="selectDropdownOption(this)">${label}</div>`
+    ).join('');
+    return `<div class="csel" data-role="${role}">
+      <button type="button" class="csel-btn" onclick="toggleDropdown(this)">
+        <span>${selectedLabel||(role==='day'?'День':role==='month'?'Месяц':'Год')}</span>
+        <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="csel-menu">${opts}</div>
+    </div>`;
+  }
+
+  function buildMonthYearPicker(key,value){
+    const [y,m,d]=(value||'').split('-');
+    const nowYear=new Date().getFullYear();
+    const years=[];
+    for(let yr=nowYear-3;yr<=nowYear+5;yr++) years.push(yr);
+    const days=[];
+    for(let day=1;day<=31;day++) days.push(String(day).padStart(2,'0'));
+    const dayOptions=days.map(dd=>[dd,dd]);
+    const monthOptions=MONTH_NAMES.map((name,i)=>[String(i+1).padStart(2,'0'),name]);
+    const yearOptions=years.map(yr=>[String(yr),String(yr)]);
+    const selectedMonthLabel=m?MONTH_NAMES[parseInt(m,10)-1]:'';
+    return `<div class="month-year" data-key="${key}">
+      ${buildCustomDropdown('day',d||'',dayOptions)}
+      ${buildCustomDropdown('month',selectedMonthLabel,monthOptions)}
+      ${buildCustomDropdown('year',y||'',yearOptions)}
+    </div>`;
+  }
+
+  function toggleDropdown(btn){
+    const csel=btn.closest('.csel');
+    const isOpen=csel.classList.contains('open');
+    document.querySelectorAll('.csel.open').forEach(c=>c.classList.remove('open'));
+    if(!isOpen) csel.classList.add('open');
+  }
+
+  document.addEventListener('click',(e)=>{
+    if(!e.target.closest('.csel')) document.querySelectorAll('.csel.open').forEach(c=>c.classList.remove('open'));
+  });
+
+  function selectDropdownOption(opt){
+    const csel=opt.closest('.csel');
+    csel.querySelectorAll('.csel-opt').forEach(o=>o.classList.remove('selected'));
+    opt.classList.add('selected');
+    csel.querySelector('.csel-btn span').textContent=opt.textContent;
+    csel.classList.remove('open');
+
+    const monthYearWrap=csel.closest('.month-year');
+    const key=monthYearWrap.dataset.key;
+    const dayVal=monthYearWrap.querySelector('.csel[data-role="day"] .csel-opt.selected')?.dataset.value;
+    const monthVal=monthYearWrap.querySelector('.csel[data-role="month"] .csel-opt.selected')?.dataset.value;
+    const yearVal=monthYearWrap.querySelector('.csel[data-role="year"] .csel-opt.selected')?.dataset.value;
+    if(!dayVal||!monthVal||!yearVal) return;
+    const value=yearVal+'-'+monthVal+'-'+dayVal;
+
+    if(key==='handover'){
+      const since=PROJECTS[currentProject].client.since;
+      if(since && value<since){
+        alert('Плановая сдача не может быть раньше даты «Клиент с» ('+since+').');
+        renderProject(currentProject);
+        return;
+      }
+    }
+    updateClientField(key,value);
+  }
+
+  function renderClientPanelOnly(){
+    // re-render just enough to refresh WhatsApp/email links and the handover min date
+    const id=currentProject;
+    renderProject(id);
+  }
+
+  function saveClientInfo(){
+    const btn=document.getElementById('saveClientBtn');
+    const original=btn.textContent;
+    btn.textContent='Сохранено ✓';
+    setTimeout(()=>{btn.textContent=original;},1500);
+  }
+
+  function cycleStageStatus(){
+    const order=['draft','progress','revise','approved'];
+    const data=PROJECTS[currentProject];
+    const vs=data.viewStage;
+    const idx=(order.indexOf(data.stageStatuses[vs])+1)%order.length;
+    const newStatus=order[idx];
+    data.stageStatuses[vs]=newStatus;
+
+    if(vs===data.stage){
+      // current stage just got approved — open the next one
+      if(newStatus==='approved' && data.stage<STEP_LABELS.length-1){
+        data.stage+=1;
+        data.viewStage=data.stage;
+        if(!data.stageStatuses[data.stage] || data.stageStatuses[data.stage]==='draft'){
+          data.stageStatuses[data.stage]='progress';
+        }
+      }
+    }else if(vs<data.stage && newStatus!=='approved'){
+      // reopened a past stage and it needs rework — move the project back to it
+      data.stage=vs;
+    }
+    renderProject(currentProject);
+  }
+
+  function cycleClientStatus(){
+    const order=['ok','wait','done'];
+    const data=PROJECTS[currentProject];
+    const idx=(order.indexOf(data.status)+1)%order.length;
+    data.status=order[idx];
+    renderProject(currentProject);
+  }
+
+  function switchPage(el){
+    document.querySelectorAll('.sub-item').forEach(s=>s.classList.remove('active'));
+    el.classList.add('active');
+    const page=el.dataset.page;
+    document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.dataset.page===page));
+    document.getElementById('topTitle').textContent=el.textContent.trim();
+    document.getElementById('sidebar').classList.remove('open');
+  }
+
+  function switchProject(el){
+    document.querySelectorAll('.proj-item').forEach(p=>p.classList.remove('active'));
+    el.classList.add('active');
+
+    // move the clicked project to the top of the list, with its sub-nav right under it
+    document.querySelector('.side-label').after(el);
+    el.after(document.getElementById('subNav'));
+
+    renderProject(el.dataset.project);
+
+    // reset to the first sub-page (О проекте) on every project switch
+    const firstSub=document.querySelector('.sub-item[data-page]');
+    if(firstSub) switchPage(firstSub);
+  }
+
+  function cycleSpecStatus(ci,ii){
+    const order=['wait','go','done','ok'];
+    const data=PROJECTS[currentProject];
+    const it=data.spec[ci].items[ii];
+    it.status=order[(order.indexOf(it.status)+1)%order.length];
+    renderProject(currentProject);
+  }
+
+  function deleteSpecItem(ci,ii){
+    const data=PROJECTS[currentProject];
+    data.spec[ci].items.splice(ii,1);
+    if(!data.spec[ci].items.length) data.spec.splice(ci,1);
+    renderProject(currentProject);
+  }
+
+  // generic themed dropdown (matches the date-picker style) backed by a hidden input,
+  // so callers just read document.getElementById(hiddenId).value like a normal field
+  function buildSimpleDropdown(hiddenId,options,selectedValue,placeholder){
+    const selectedLabel=(options.find(o=>o[0]===selectedValue)||[])[1]||placeholder;
+    const opts=options.map(([val,label])=>
+      `<div class="csel-opt${val===selectedValue?' selected':''}" data-value="${esc(val)}" onclick="selectFieldOption(this)">${esc(label)}</div>`
+    ).join('');
+    return `<div class="csel" data-hidden="${hiddenId}">
+        <button type="button" class="csel-btn" onclick="toggleDropdown(this)"><span>${esc(selectedLabel)}</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="csel-menu">${opts}</div>
+      </div><input type="hidden" id="${hiddenId}" value="${esc(selectedValue)}">`;
+  }
+
+  function selectFieldOption(opt){
+    const csel=opt.closest('.csel');
+    const hidden=document.getElementById(csel.dataset.hidden);
+    if(opt.dataset.value==='__custom__'){
+      csel.classList.remove('open');
+      const name=prompt('Название категории:');
+      if(!name||!name.trim()) return;
+      const val=name.trim();
+      const newOpt=document.createElement('div');
+      newOpt.className='csel-opt selected';
+      newOpt.dataset.value=val;
+      newOpt.textContent=val;
+      newOpt.onclick=()=>selectFieldOption(newOpt);
+      csel.querySelectorAll('.csel-opt').forEach(o=>o.classList.remove('selected'));
+      csel.querySelector('.csel-menu').insertBefore(newOpt,opt);
+      csel.querySelector('.csel-btn span').textContent=val;
+      if(hidden) hidden.value=val;
+      return;
+    }
+    csel.querySelectorAll('.csel-opt').forEach(o=>o.classList.remove('selected'));
+    opt.classList.add('selected');
+    csel.querySelector('.csel-btn span').textContent=opt.textContent;
+    csel.classList.remove('open');
+    if(hidden) hidden.value=opt.dataset.value;
+  }
+
+  function stepQty(delta){
+    const inp=document.getElementById('newItemQty');
+    let v=parseInt(inp.value,10);
+    if(isNaN(v)) v=1;
+    inp.value=Math.max(1,v+delta);
+  }
+
+  function addItem(){
+    const name=document.getElementById('newItemName').value.trim();
+    if(!name) return;
+    const cat=document.getElementById('newItemCat').value.trim()||'Другое';
+    const room=document.getElementById('newItemRoom').value;
+    const note=document.getElementById('newItemNote').value.trim();
+    const price=parseFloat(document.getElementById('newItemPrice').value)||0;
+    const qty=parseInt(document.getElementById('newItemQty').value,10)||1;
+    const status=document.getElementById('newItemStatus').value;
+    const data=PROJECTS[currentProject];
+    let catData=data.spec.find(c=>c.cat===cat);
+    if(!catData){catData={cat,items:[]};data.spec.push(catData);}
+    catData.items.push({name,room,note,price,qty,status});
+    document.getElementById('newItemName').value='';
+    document.getElementById('newItemNote').value='';
+    document.getElementById('newItemPrice').value='';
+    document.getElementById('newItemQty').value='1';
+    renderProject(currentProject);
+  }
+
+  function editBudgetTotal(){
+    const data=PROJECTS[currentProject];
+    const val=prompt('Бюджет проекта, AED:',data.budget.total||0);
+    if(val===null) return;
+    const num=parseFloat(val.replace(/[^\d.]/g,''));
+    if(isNaN(num)) return;
+    data.budget.total=num;
+    renderProject(currentProject);
+  }
+  function updateSpecCount(){
+    const cats=document.querySelectorAll('.spec-cat').length;
+    const items=document.querySelectorAll('#specList .item').length;
+    document.getElementById('specCount').textContent=`${cats} категории · ${items} позиций`;
+  }
+
+  const ROOM_STATUS_MAP={draft:'Не отправлено',progress:'Ожидает решения',revise:'Правки',approved:'Согласовано'};
+  const fmtMoney=n=>Number(n||0).toLocaleString('ru-RU')+' AED';
+  const esc=v=>(v||'').toString().replace(/"/g,'&quot;');
+
+  function renderRoomsList(data){
+    const roomsWrap=document.getElementById('renderRooms');
+    roomsWrap.innerHTML='';
+    data.rooms.forEach((room,ri)=>{
+      const variant=room.variants[room.activeVariant];
+      const tiles=variant.photos.map((p,pi)=>{
+        let badge='';
+        if(p.approved) badge=`<span class="badge ok">✓ Согласовано</span>`;
+        else if(p.comments&&p.comments.length) badge=`<span class="badge cm">💬 ${p.comments.length}</span>`;
+        return `<div class="render-tile">
+            <div class="img-wrap" onclick="openPhotoLightbox(${ri},${pi})">
+              <img src="${p.src}">
+              ${badge}
+              <button class="rdel" onclick="event.stopPropagation();deletePhoto(${ri},${pi})">✕</button>
+            </div>
+            <input class="photo-caption" placeholder="Подпись к фото..." value="${(p.caption||'').replace(/"/g,'&quot;')}" onchange="updateCaption(${ri},${pi},this.value)">
+          </div>`;
+      }).join('');
+
+      const tabs=room.variants.map((v,vi)=>
+        `<span class="variant-tab-wrap${vi===room.activeVariant?' active':''}">
+          <button class="variant-tab" onclick="switchVariant(${ri},${vi})">${v.label}</button>
+          <button class="variant-tab-action" onclick="renameVariant(${ri},${vi})" title="Переименовать">✎</button>
+          ${room.variants.length>1?`<button class="variant-tab-action del" onclick="deleteVariant(${ri},${vi})" title="Удалить вариант">✕</button>`:''}
+        </span>`
+      ).join('');
+
+      const block=document.createElement('div');
+      block.className='room-block';
+      block.innerHTML=`<div class="room-block-head">
+          <div class="room-title-row">
+            <div class="reorder-col">
+              <button class="reorder-btn" onclick="moveRoom(${ri},-1)" ${ri===0?'disabled':''} title="Выше"><svg viewBox="0 0 24 24"><path d="M5 15l7-7 7 7"/></svg></button>
+              <button class="reorder-btn" onclick="moveRoom(${ri},1)" ${ri===data.rooms.length-1?'disabled':''} title="Ниже"><svg viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></svg></button>
+            </div>
+            <h2>${room.name}</h2>
+            <button class="pill status-${room.status}" onclick="cycleRoomStatus(${ri})">${ROOM_STATUS_MAP[room.status]}</button>
+            <button class="del-btn" onclick="deleteRoom(${ri})" title="Удалить комнату">✕</button>
+          </div>
+          <div class="room-block-actions">
+            <div class="variant-tabs">${tabs}<button class="variant-pill" onclick="addRoomVariant(${ri})">+ Вариант</button></div>
+            <button class="link-pill" onclick="copyLink()"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.66 0l3-3a4 4 0 10-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 00-5.66 0l-3 3a4 4 0 105.66 5.66l1-1"/></svg>Публичная ссылка</button>
+          </div>
+        </div>
+        <div class="render-grid" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleRoomDrop(event,${ri})">
+          ${tiles}
+          <div class="render-tile add" onclick="document.getElementById('fileInput-${ri}').click()">+
+            <input type="file" id="fileInput-${ri}" accept="image/*" multiple style="display:none" onchange="handleFileInput(event,${ri})">
+          </div>
+        </div>`;
+      roomsWrap.appendChild(block);
+    });
+  }
+
+  function filesToPhotos(fileList,callback){
+    const files=[...fileList];
+    const photos=[];
+    let remaining=files.length;
+    if(!remaining) return;
+    files.forEach(file=>{
+      const reader=new FileReader();
+      reader.onload=()=>{
+        photos.push({src:reader.result,caption:'',comments:[],approved:false});
+        remaining--;
+        if(remaining===0) callback(photos);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function handleFileInput(e,ri){
+    filesToPhotos(e.target.files,photos=>{
+      const room=PROJECTS[currentProject].rooms[ri];
+      room.variants[room.activeVariant].photos.push(...photos);
+      renderProject(currentProject);
+    });
+    e.target.value='';
+  }
+
+  function handleRoomDrop(e,ri){
+    e.preventDefault();
+    e.currentTarget.classList.remove('drag');
+    if(!e.dataTransfer.files.length) return;
+    filesToPhotos(e.dataTransfer.files,photos=>{
+      const room=PROJECTS[currentProject].rooms[ri];
+      room.variants[room.activeVariant].photos.push(...photos);
+      renderProject(currentProject);
+    });
+  }
+
+  function deletePhoto(ri,pi){
+    const room=PROJECTS[currentProject].rooms[ri];
+    room.variants[room.activeVariant].photos.splice(pi,1);
+    renderProject(currentProject);
+  }
+
+  function updateCaption(ri,pi,value){
+    PROJECTS[currentProject].rooms[ri].variants[PROJECTS[currentProject].rooms[ri].activeVariant].photos[pi].caption=value;
+  }
+
+  function switchVariant(ri,vi){
+    PROJECTS[currentProject].rooms[ri].activeVariant=vi;
+    renderProject(currentProject);
+  }
+
+  function addRoomVariant(ri){
+    const room=PROJECTS[currentProject].rooms[ri];
+    room.variants.push({label:'Вариант '+(room.variants.length+1),photos:[]});
+    room.activeVariant=room.variants.length-1;
+    renderProject(currentProject);
+  }
+
+  function renameVariant(ri,vi){
+    const room=PROJECTS[currentProject].rooms[ri];
+    const name=prompt('Название варианта:',room.variants[vi].label);
+    if(!name||!name.trim()) return;
+    room.variants[vi].label=name.trim();
+    renderProject(currentProject);
+  }
+
+  function deleteVariant(ri,vi){
+    const room=PROJECTS[currentProject].rooms[ri];
+    if(room.variants.length<=1) return;
+    if(!confirm(`Удалить вариант «${room.variants[vi].label}» вместе со всеми его фото?`)) return;
+    room.variants.splice(vi,1);
+    if(room.activeVariant>=room.variants.length) room.activeVariant=room.variants.length-1;
+    else if(room.activeVariant>vi) room.activeVariant--;
+    renderProject(currentProject);
+  }
+
+  function cycleRoomStatus(ri){
+    const order=['draft','progress','revise','approved'];
+    const room=PROJECTS[currentProject].rooms[ri];
+    room.status=order[(order.indexOf(room.status)+1)%order.length];
+    renderProject(currentProject);
+  }
+
+  function moveRoom(ri,dir){
+    const rooms=PROJECTS[currentProject].rooms;
+    const j=ri+dir;
+    if(j<0||j>=rooms.length) return;
+    [rooms[ri],rooms[j]]=[rooms[j],rooms[ri]];
+    renderProject(currentProject);
+  }
+
+  function deleteRoom(ri){
+    if(!confirm('Удалить эту комнату со всеми фото?')) return;
+    PROJECTS[currentProject].rooms.splice(ri,1);
+    renderProject(currentProject);
+  }
+
+  function copyLink(){
+    alert('Публичная ссылка будет доступна после подключения базы данных.');
+  }
+
+  let lbRi=null,lbPi=null;
+
+  function openPhotoLightbox(ri,pi){
+    lbRi=ri;lbPi=pi;
+    const room=PROJECTS[currentProject].rooms[ri];
+    const photo=room.variants[room.activeVariant].photos[pi];
+    document.getElementById('lbImg').src=photo.src;
+    const commentsHtml=(photo.comments&&photo.comments.length)
+      ? photo.comments.map(c=>`<div class="lb-comment${c.from==='studio'?' studio':''}"><span class="who">${c.from==='studio'?'Студия':'Клиент'}</span>${c.text}</div>`).join('')
+      : `<div class="lb-empty">Комментариев от клиента пока нет.</div>`;
+    document.getElementById('lbComments').innerHTML=commentsHtml;
+    document.getElementById('lbApproved').textContent=photo.approved?'✓ Клиент согласовал это фото':'Ожидает решения клиента';
+    document.getElementById('photoLightbox').classList.add('open');
+  }
+
+  function setPhotoApproval(approved){
+    if(lbRi===null) return;
+    const room=PROJECTS[currentProject].rooms[lbRi];
+    const photo=room.variants[room.activeVariant].photos[lbPi];
+    photo.approved=approved;
+    document.getElementById('lbApproved').textContent=approved?'✓ Клиент согласовал это фото':'Ожидает решения клиента';
+    renderRoomsList(PROJECTS[currentProject]);
+  }
+
+  function addStudioReply(){
+    if(lbRi===null) return;
+    const input=document.getElementById('lbReplyInput');
+    const text=input.value.trim();
+    if(!text) return;
+    const room=PROJECTS[currentProject].rooms[lbRi];
+    const photo=room.variants[room.activeVariant].photos[lbPi];
+    if(!photo.comments) photo.comments=[];
+    photo.comments.push({text,from:'studio'});
+    input.value='';
+    openPhotoLightbox(lbRi,lbPi);
+    renderRoomsList(PROJECTS[currentProject]);
+  }
+
+  function closePhotoLightbox(){
+    lbRi=null;lbPi=null;
+    document.getElementById('photoLightbox').classList.remove('open');
+  }
+
+  function addRoomBlock(){
+    const name=document.getElementById('newRoomBlockName').value.trim();
+    if(!name) return;
+    PROJECTS[currentProject].rooms.push({name,status:'draft',activeVariant:0,variants:[{label:'Вариант 1',photos:[]}]});
+    document.getElementById('newRoomBlockName').value='';
+    renderProject(currentProject);
+  }
+
+  function addVisit(){
+    const date=document.getElementById('newVisitDate').value.trim();
+    const note=document.getElementById('newVisitNote').value.trim();
+    if(!date||!note) return;
+    PROJECTS[currentProject].visits.unshift({date,note,img:'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=200&q=80'});
+    document.getElementById('newVisitDate').value='';
+    document.getElementById('newVisitNote').value='';
+    renderProject(currentProject);
+  }
+
+  function addProject(){
+    const name=prompt('Название проекта — например, Имя клиента · Название проекта:');
+    if(!name) return;
+    const id='custom'+Object.keys(PROJECTS).length;
+    PROJECTS[id]={
+      label:name,stage:0,status:'wait',
+      client:{
+        name:name,phone:'',email:'',address:'',propertyType:'',area:'',
+        since:new Date().toISOString().slice(0,10),
+        measurements:'',handover:''
+      },
+      rooms:[],spec:[],budget:{total:0},visits:[]
+    };
+    const el=document.createElement('div');
+    el.className='proj-item';
+    el.textContent=name;
+    el.dataset.project=id;
+    el.onclick=()=>switchProject(el);
+    document.getElementById('subNav').after(el);
+  }
+
+  const SPEC_CAT_OPTIONS=[
+    ['Мебель','Мебель'],['Освещение','Освещение'],['Декор','Декор'],['Текстиль','Текстиль'],
+    ['Шторы','Шторы'],['Сантехника','Сантехника'],['Кухонная техника','Кухонная техника'],
+    ['Двери и фурнитура','Двери и фурнитура'],['Напольные покрытия','Напольные покрытия'],
+    ['Отделка стен и потолков','Отделка стен и потолков'],['Зеркала и арт-объекты','Зеркала и арт-объекты'],
+    ['Прочее','Прочее'],['__custom__','+ Своя категория…']
+  ];
+  const SPEC_STATUS_OPTIONS=[['wait','Ожидание'],['go','В поиске'],['done','Заказано'],['ok','Согласовано']];
+  document.getElementById('newItemCatWrap').innerHTML=buildSimpleDropdown('newItemCat',SPEC_CAT_OPTIONS,'Мебель','Категория');
+  document.getElementById('newItemStatusWrap').innerHTML=buildSimpleDropdown('newItemStatus',SPEC_STATUS_OPTIONS,'wait','Статус');
+
+  renderProject('palm');
+</script>
+</body>
+</html>

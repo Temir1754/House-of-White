@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project — House of White</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#000000;
+    --ink-2:#0D0D0D;
+    --bone:#EDE6D8;
+    --bone-2:#E4DBCA;
+    --bone-ink:#211D16;
+    --cream:#E9E2D4;
+    --muted:#9A9180;
+    --faint:#5C5648;
+    --sand:#B49B78;
+    --line:rgba(233,226,212,0.13);
+    --line-soft:rgba(233,226,212,0.06);
+    --display:'Bodoni Moda', Georgia, serif;
+    --sans:'Jost', -apple-system, system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--cream);font-family:var(--sans);font-weight:300;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--sand);color:var(--ink)}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 48px}
+  .eyebrow{font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:0.34em;text-transform:uppercase;color:var(--sand)}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--sand);outline-offset:3px}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* NAV */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:18px 48px;border-bottom:1px solid var(--line-soft);position:sticky;top:0;z-index:50;background:rgba(0,0,0,0.95);backdrop-filter:blur(14px)}
+  .back-btn{display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s}
+  .back-btn:hover{color:var(--cream)}
+  .brand{font-family:var(--display);font-size:18px;font-weight:500}
+  .brand i{font-style:italic;color:var(--sand)}
+
+  /* PROJECT HERO */
+  .project-hero{padding:48px 0 32px}
+  .project-header{margin-bottom:48px}
+  .project-header .eyebrow{display:block;margin-bottom:16px}
+  .project-header h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,6vw,72px);line-height:1.1;margin-bottom:12px}
+  .project-header h1 i{font-style:italic;color:var(--sand)}
+  .project-header .details{display:flex;gap:48px;margin-top:24px;flex-wrap:wrap}
+  .detail-item .label{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--sand);margin-bottom:6px}
+  .detail-item .value{font-size:15px;color:var(--cream)}
+
+  /* GALLERY */
+  .gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin:48px 0}
+  .gallery-item{overflow:hidden;background:var(--ink-2);cursor:pointer;position:relative}
+  .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1s ease;filter:grayscale(3%)}
+  .gallery-item:hover img{transform:scale(1.04);filter:grayscale(0%)}
+  .gallery-item.lg{grid-column:span 8;aspect-ratio:8/5}
+  .gallery-item.sm{grid-column:span 4;aspect-ratio:4/5}
+  .gallery-item.full{grid-column:span 12;aspect-ratio:12/6}
+
+  /* LIGHTBOX */
+  .lightbox{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.96);backdrop-filter:blur(8px);align-items:center;justify-content:center}
+  .lightbox.open{display:flex}
+  .lightbox-content{position:relative;max-width:90vw;max-height:90vh;display:flex;flex-direction:column;align-items:center}
+  .lightbox-image{max-width:100%;max-height:80vh;object-fit:contain;display:block}
+  .lightbox-controls{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:24px;width:100%}
+  .lightbox-close{position:absolute;top:0;right:0;font-size:28px;color:var(--cream);cursor:pointer;padding:8px 16px;transition:color .3s}
+  .lightbox-close:hover{color:var(--sand)}
+  .lightbox-nav{display:flex;gap:16px}
+  .lightbox-btn{color:var(--cream);border:1px solid var(--cream);padding:8px 16px;font-size:12px;cursor:pointer;transition:all .3s;background:transparent;font-family:var(--sans)}
+  .lightbox-btn:hover{border-color:var(--sand);color:var(--sand)}
+  .lightbox-counter{color:var(--muted);font-size:12px;letter-spacing:0.08em}
+
+  /* FOOTER */
+  footer{padding:54px 0;border-top:1px solid var(--line-soft);margin-top:72px}
+  .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:22px}
+  .foot .brand{font-size:19px}
+  .foot-links{display:flex;gap:26px}
+  .foot-links a{color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;transition:color .3s}
+  .foot-links a:hover{color:var(--cream)}
+  .foot .cp{font-size:11px;color:var(--faint);letter-spacing:0.08em}
+
+  @media(max-width:900px){
+    .wrap{padding:0 24px}
+    nav{padding:18px 24px}
+    .project-hero{padding:40px 0 24px}
+    .project-header h1{font-size:clamp(32px,6vw,56px)}
+    .project-header .details{gap:32px}
+    .gallery{gap:14px}
+    .gallery-item.lg{grid-column:span 12;aspect-ratio:4/3}
+    .gallery-item.sm{grid-column:span 12;aspect-ratio:4/3}
+    .gallery-item.full{aspect-ratio:4/3}
+  }
+  @media(max-width:520px){
+    .wrap{padding:0 16px}
+    nav{padding:16px}
+    .project-hero{padding:32px 0 20px}
+    .project-header h1{font-size:clamp(24px,8vw,40px)}
+    .project-header .details{gap:20px;flex-direction:column}
+    footer{padding:36px 0;margin-top:48px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1!important;transform:none!important}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="projects.html" class="back-btn">← All Projects</a>
+  <a href="index.html" style="display:flex;align-items:center;gap:10px;position:absolute;left:50%;transform:translateX(-50%)">
+    <span class="brand">House of <i>White</i></span>
+  </a>
+  <div style="width:80px"></div>
+</nav>
+
+<!-- PROJECT HEADER -->
+<section class="project-hero">
+  <div class="wrap">
+    <div class="project-header reveal">
+      <span class="eyebrow" id="peyebrow">Interior Design</span>
+      <h1 id="ptitle">Project <i>Name</i></h1>
+      <div class="details">
+        <div class="detail-item">
+          <div class="label">Location</div>
+          <div class="value" id="plocation">Dubai</div>
+        </div>
+        <div class="detail-item">
+          <div class="label">Service</div>
+          <div class="value" id="pservice">Full Interior</div>
+        </div>
+        <div class="detail-item">
+          <div class="label">Status</div>
+          <div class="value" id="pstatus">Completed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section>
+  <div class="wrap">
+    <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-content">
+    <span class="lightbox-close" id="lightboxClose">✕</span>
+    <img class="lightbox-image" id="lightboxImage" src="" alt="Full size image">
+    <div class="lightbox-controls">
+      <div class="lightbox-nav">
+        <button class="lightbox-btn" id="prevBtn">← Previous</button>
+        <button class="lightbox-btn" id="nextBtn">Next →</button>
+      </div>
+      <div class="lightbox-counter">
+        <span id="imageCounter">1</span> / <span id="totalImages">8</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px">
+      <span class="brand">House of <i>White</i></span>
+    </a>
+    <div class="foot-links">
+      <a href="index.html#work">Work</a><a href="index.html#studio">Studio</a><a href="testimonials.html">Testimonials</a><a href="index.html#services">Services</a><a href="index.html#contact">Contact</a>
+    </div>
+    <div class="cp">© 2026 House of White · Dubai</div>
+  </div>
+</footer>
+
+<script>
+  const projects={
+    1:{title:'Palm Jumeirah Villa',location:'Palm Jumeirah, Dubai',service:'Full Interior Design',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/1/1.jpg','assets/projects/1/2.jpg','assets/projects/1/3.jpg','assets/projects/1/4.jpg','assets/projects/1/5.jpg','assets/projects/1/6.jpg','assets/projects/1/7.jpg','assets/projects/1/8.jpg']},
+    2:{title:'Azizi Mina',location:'Palm Jumeirah',service:'Interior & Furnishing',status:'Completed',eyebrow:'Residential',renders:['assets/projects/2/1.jpg','assets/projects/2/2.jpg','assets/projects/2/3.jpg','assets/projects/2/4.jpg','assets/projects/2/5.jpg','assets/projects/2/6.jpg','assets/projects/2/7.jpg']},
+    3:{title:'California Village',location:'Dubai',service:'Concept & Build',status:'Completed',eyebrow:'Concept Design',renders:['assets/projects/3/1.jpg','assets/projects/3/2.jpg','assets/projects/3/3.jpg','assets/projects/3/4.jpg','assets/projects/3/5.jpg','assets/projects/3/6.jpg','assets/projects/3/7.jpg','assets/projects/3/8.jpg','assets/projects/3/9.jpg']},
+    4:{title:'Cedre Villas',location:'Emirates',service:'Full Interior',status:'Completed',eyebrow:'Villa Project',renders:['assets/projects/4/1.jpg','assets/projects/4/2.jpg','assets/projects/4/3.jpg','assets/projects/4/4.jpg','assets/projects/4/5.jpg','assets/projects/4/6.jpg','assets/projects/4/7.jpg','assets/projects/4/8.jpg','assets/projects/4/9.jpg']},
+    5:{title:'City Walk 11',location:'Downtown Dubai',service:'Living Spaces',status:'Completed',eyebrow:'Apartment Design',renders:['assets/projects/5/1.jpg','assets/projects/5/2.jpg','assets/projects/5/3.jpg','assets/projects/5/4.jpg','assets/projects/5/5.jpg','assets/projects/5/6.jpg','assets/projects/5/7.jpg','assets/projects/5/8.jpg']},
+    6:{title:'Damac Hills 2 — Mulberry',location:'Damac Hills',service:'Styling & Furnishing',status:'Completed',eyebrow:'Interior Styling',renders:['assets/projects/6/1.jpg','assets/projects/6/2.jpg','assets/projects/6/3.jpg','assets/projects/6/4.jpg','assets/projects/6/5.jpg','assets/projects/6/6.jpg','assets/projects/6/7.jpg','assets/projects/6/8.jpg']},
+    7:{title:'Damac Hills — Horizon Park',location:'Damac Hills',service:'Full Design',status:'Completed',eyebrow:'Residential',renders:['assets/projects/7/1.jpg','assets/projects/7/2.jpg','assets/projects/7/3.jpg','assets/projects/7/4.jpg','assets/projects/7/5.jpg','assets/projects/7/6.jpg','assets/projects/7/7.jpg','assets/projects/7/8.jpg']},
+    8:{title:'Dubai South Villa',location:'Dubai South',service:'Full Interior',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/8/1.jpg','assets/projects/8/2.jpg','assets/projects/8/3.jpg','assets/projects/8/4.jpg','assets/projects/8/5.jpg','assets/projects/8/6.jpg','assets/projects/8/7.jpg','assets/projects/8/8.jpg']},
+    9:{title:'Fairooz Tower',location:'Dubai Marina',service:'Penthouse Design',status:'Completed',eyebrow:'Luxury Design',renders:['assets/projects/9/1.jpg','assets/projects/9/2.jpg','assets/projects/9/3.jpg','assets/projects/9/4.jpg','assets/projects/9/5.jpg','assets/projects/9/6.jpg','assets/projects/9/7.jpg','assets/projects/9/8.jpg']},
+    10:{title:'Nursery Project',location:'Jumeirah',service:'Interior Design',status:'Completed',eyebrow:'Residential',renders:['assets/projects/10/1.jpg','assets/projects/10/2.jpg','assets/projects/10/3.jpg','assets/projects/10/4.jpg','assets/projects/10/5.jpg','assets/projects/10/6.jpg','assets/projects/10/7.jpg','assets/projects/10/8.jpg']},
+    11:{title:'Downtown Penthouse',location:'Downtown Dubai',service:'Full Interior',status:'Completed',eyebrow:'Penthouse',renders:['assets/projects/11/1.jpg','assets/projects/11/2.jpg','assets/projects/11/3.jpg','assets/projects/11/4.jpg','assets/projects/11/5.jpg','assets/projects/11/6.jpg','assets/projects/11/7.jpg','assets/projects/11/8.jpg']},
+    12:{title:'Palm Jumeirah Grandeur',location:'Palm Jumeirah',service:'Full Interior Design',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/12/1.jpg','assets/projects/12/2.jpg','assets/projects/12/3.jpg','assets/projects/12/4.jpg','assets/projects/12/5.jpg','assets/projects/12/6.jpg','assets/projects/12/7.jpg','assets/projects/12/8.jpg']}
+  };
+
+  let currentImageIndex=0;
+  let currentProjectId=1;
+
+  const params=new URLSearchParams(window.location.search);
+  const projectId=parseInt(params.get('id'))||1;
+  currentProjectId=projectId;
+  
+  if(projects[projectId]){
+    const project=projects[projectId];
+    document.getElementById('peyebrow').textContent=project.eyebrow;
+    document.getElementById('ptitle').textContent=project.title;
+    document.getElementById('plocation').textContent=project.location;
+    document.getElementById('pservice').textContent=project.service;
+    document.getElementById('pstatus').textContent=project.status;
+    document.title=project.title+' — House of White';
+    
+    // Создаем галерею с локальными путями
+    const gallery=document.getElementById('gallery');
+    const layouts=['lg','sm','full','sm','lg','full','lg','sm'];
+    project.renders.forEach((render,i)=>{
+      const item=document.createElement('div');
+      item.className=`gallery-item ${layouts[i%layouts.length]} reveal`;
+      const img=document.createElement('img');
+      img.loading='lazy';
+      img.src=render;
+      img.alt='Project image';
+      img.dataset.index=i;
+      img.addEventListener('click',()=>openLightbox(i));
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+    
+    document.getElementById('totalImages').textContent=project.renders.length;
+    
+    // Reveal animations
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:0.15});
+    document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*80)+'ms';io.observe(el)});
+  }
+
+  // LIGHTBOX FUNCTIONS
+  function openLightbox(index){
+    currentImageIndex=index;
+    const project=projects[currentProjectId];
+    const lightbox=document.getElementById('lightbox');
+    const img=document.getElementById('lightboxImage');
+    img.src=project.renders[index];
+    document.getElementById('imageCounter').textContent=index+1;
+    lightbox.classList.add('open');
+  }
+
+  function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('open');
+  }
+
+  function showPrevious(){
+    const project=projects[currentProjectId];
+    currentImageIndex=(currentImageIndex-1+project.renders.length)%project.renders.length;
+    const img=document.getElementById('lightboxImage');
+    img.src=project.renders[currentImageIndex];
+    document.getElementById('imageCounter').textContent=currentImageIndex+1;
+  }
+
+  function showNext(){
+    const project=projects[currentProjectId];
+    currentImageIndex=(currentImageIndex+1)%project.renders.length;
+    const img=document.getElementById('lightboxImage');
+    img.src=project.renders[currentImageIndex];
+    document.getElementById('imageCounter').textContent=currentImageIndex+1;
+  }
+
+  document.getElementById('lightboxClose').addEventListener('click',closeLightbox);
+  document.getElementById('prevBtn').addEventListener('click',showPrevious);
+  document.getElementById('nextBtn').addEventListener('click',showNext);
+  
+  document.getElementById('lightbox').addEventListener('click',(e)=>{
+    if(e.target.id==='lightbox')closeLightbox();
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown',(e)=>{
+    const lightbox=document.getElementById('lightbox');
+    if(!lightbox.classList.contains('open'))return;
+    if(e.key==='ArrowLeft')showPrevious();
+    if(e.key==='ArrowRight')showNext();
+    if(e.key==='Escape')closeLightbox();
+  });
+
+  document.querySelectorAll('img').forEach(img=>{
+    img.addEventListener('error',()=>{img.style.opacity=0.3;img.parentElement.style.background='linear-gradient(150deg,#221d16,#15120d)'});
+  });
+</script>
+</body>
+</html>

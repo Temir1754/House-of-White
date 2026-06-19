@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Testimonials — House of White</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#000000;
+    --ink-2:#0D0D0D;
+    --bone:#EDE6D8;
+    --bone-2:#E4DBCA;
+    --bone-ink:#211D16;
+    --cream:#E9E2D4;
+    --muted:#9A9180;
+    --faint:#5C5648;
+    --sand:#B49B78;
+    --line:rgba(233,226,212,0.13);
+    --line-soft:rgba(233,226,212,0.06);
+    --display:'Bodoni Moda', Georgia, serif;
+    --sans:'Jost', -apple-system, system-ui, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--cream);font-family:var(--sans);font-weight:300;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--sand);color:var(--ink)}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 48px}
+  .eyebrow{font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:0.34em;text-transform:uppercase;color:var(--sand)}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--sand);outline-offset:3px}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:28px 48px;transition:all .5s ease;border-bottom:1px solid transparent}
+  nav.scrolled{background:rgba(21,18,13,0.85);backdrop-filter:blur(16px);padding:18px 48px;border-bottom:1px solid var(--line-soft)}
+  .brand{font-family:var(--display);font-size:23px;font-weight:500;letter-spacing:0.02em}
+  .brand i{font-style:italic;font-weight:400;color:var(--sand)}
+  .nav-links{display:flex;gap:40px;align-items:center}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;transition:color .3s}
+  .nav-links a:hover{color:var(--cream)}
+  .nav-cta{border:1px solid var(--line);padding:11px 22px;color:var(--cream)!important;transition:all .35s ease}
+  .nav-cta:hover{border-color:var(--sand);background:rgba(180,155,120,0.08)}
+
+  /* HERO */
+  .hero{padding:120px 0 60px;text-align:center}
+  .hero .eyebrow{display:block;margin-bottom:24px}
+  .hero h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,6vw,72px);line-height:1.1;margin-bottom:20px}
+  .hero h1 i{font-style:italic;color:var(--sand)}
+  .hero p{color:var(--muted);font-size:16px;max-width:500px;margin:0 auto;line-height:1.7}
+
+  /* TESTIMONIALS GRID */
+  .testimonials-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:48px;margin-top:72px}
+  .testimonial{border:1px solid var(--line);padding:44px;background:var(--ink-2);transition:all .4s ease;position:relative}
+  .testimonial:hover{border-color:var(--sand);background:rgba(180,155,120,0.03)}
+  
+  .testimonial .quote{font-size:22px;color:var(--sand);line-height:1.4;margin-bottom:28px;font-style:italic}
+  .testimonial .quote::before{content:'"';font-size:48px;opacity:0.4;position:absolute;top:-12px;left:20px}
+  
+  .testimonial .author{display:flex;align-items:center;gap:16px;padding-top:20px;border-top:1px solid var(--line-soft)}
+  .testimonial .avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--sand),var(--muted));flex:none;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:500;color:var(--ink)}
+  .testimonial .author-info .name{font-family:var(--display);font-size:14px;color:var(--cream);font-weight:500}
+  .testimonial .author-info .role{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+  
+  .testimonial .stars{margin-bottom:20px;display:flex;gap:4px}
+  .star{font-size:14px;color:var(--sand)}
+
+  /* STATS */
+  .stats{border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);background:var(--ink-2);margin-top:72px}
+  .stats .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;padding-top:36px;padding-bottom:36px}
+  .stat .v{font-family:var(--display);font-size:48px;font-weight:400;line-height:1;color:var(--sand)}
+  .stat .l{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+
+  /* CTA SECTION */
+  .cta-section{padding:72px 0;text-align:center}
+  .cta-section h2{font-family:var(--display);font-weight:400;font-size:clamp(36px,6vw,64px);line-height:1.1;margin-bottom:24px}
+  .cta-section h2 i{font-style:italic;color:var(--sand)}
+  .cta-section p{color:var(--muted);font-size:16px;max-width:500px;margin:0 auto 32px;line-height:1.7}
+  .btn{font-family:var(--sans);font-size:12px;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;cursor:pointer;padding:17px 34px;transition:all .4s ease;display:inline-block;border-radius:1px}
+  .btn-solid{background:var(--bone);color:var(--bone-ink);border:1px solid var(--bone)}
+  .btn-solid:hover{background:transparent;color:var(--cream);border-color:var(--bone)}
+  .btn-line{border:1px solid var(--line);color:var(--cream)}
+  .btn-line:hover{border-color:var(--sand)}
+
+  /* FOOTER */
+  footer{padding:54px 0;border-top:1px solid var(--line-soft)}
+  .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:22px}
+  .foot .brand{font-size:19px}
+  .foot-links{display:flex;gap:26px}
+  .foot-links a{color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;transition:color .3s}
+  .foot-links a:hover{color:var(--cream)}
+  .foot .cp{font-size:11px;color:var(--faint);letter-spacing:0.08em}
+
+  /* RESPONSIVE */
+  @media(max-width:900px){
+    .wrap{padding:0 24px}
+    nav,nav.scrolled{padding:18px 24px}
+    .nav-links{display:none}
+    .testimonials-grid{grid-template-columns:1fr;gap:32px}
+    .hero{padding:80px 0 40px}
+    .cta-section{padding:48px 0}
+    .stats .wrap{grid-template-columns:1fr}
+  }
+  @media(max-width:520px){
+    .wrap{padding:0 16px}
+    nav,nav.scrolled{padding:16px}
+    .hero{padding:60px 0 32px}
+    .hero h1{font-size:clamp(32px,8vw,48px)}
+    .testimonial{padding:28px 20px}
+    .testimonial .quote{font-size:18px}
+    .cta-section h2{font-size:clamp(28px,8vw,48px)}
+    footer{padding:36px 0}
+    .foot{flex-direction:column;align-items:flex-start;gap:16px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1!important;transform:none!important}
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" style="display:flex;align-items:center;gap:10px">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="843 828 1315 1345" style="height:36px;width:auto;fill:#fff">
+      <path d="M1316.1,827.8v10.8h5.4c5.8,0,10.8,2,15.1,5.9,4.3,4,8.1,8.8,11.3,14.6,3.2,5.8,5.6,11.9,7,18.4,1.4,6.5,2.2,12.3,2.2,17.3,0,0,.5,385.8-102.8,693.5-110.8,330.1-225.6,573-257.4,573s-40-53.6-40-59.4V894.8c0-5,.9-11,2.7-17.8,1.8-6.8,4.1-13,7-18.4,2.9-5.4,6.5-10.1,10.8-14,4.3-4,9-5.9,14-5.9h5.4v-10.8h-153.4v10.8h5.4c5.8,0,10.8,2,15.1,5.9,4.3,4,8.1,8.8,11.3,14.6,3.2,5.8,5.6,11.9,7,18.4,1.4,6.5,2.2,12.3,2.2,17.3v1207.1c0,5.8-.7,12.1-2.2,18.9-1.5,6.9-3.8,13.3-7,19.4-3.2,6.1-7,11.2-11.3,15.1-4.3,4-9.4,5.9-15.1,5.9h-5.4v10.8s152.5,0,164.9,0c49,0,222.9-307.4,316.6-583.8,104.2-307.8,104.6-693.5,104.6-693.5,0-5,.9-11,2.7-17.8,1.8-6.8,4.1-13,7-18.4,2.9-5.4,6.5-10.1,10.8-14,4.3-4,9-5.9,14-5.9h5.4v-10.8h-153.4Z"/>
+      <path d="M1683.9,827.8v10.8h-5.4c-5.8,0-10.8,2-15.1,5.9-4.3,4-8.1,8.8-11.3,14.6-3.2,5.8-5.6,11.9-7,18.4-1.4,6.5-2.2,12.3-2.2,17.3,0,0-.5,385.8,102.8,693.5,110.8,330.1,225.6,573,257.4,573,38.3,0,40-53.6,40-59.4V894.8c0-5-.9-11-2.7-17.8-1.8-6.8-4.1-13-7-18.4-2.9-5.4-6.5-10.1-10.8-14-4.3-4-9-5.9-14-5.9h-5.4v-10.8h153.4v10.8h-5.4c-5.8,0-10.8,2-15.1,5.9-4.3,4-8.1,8.8-11.3,14.6-3.2,5.8-5.6,11.9-7,18.4-1.4,6.5-2.2,12.3-2.2,17.3v1207.1c0,5.8.7,12.1,2.2,18.9,1.5,6.9,3.8,13.3,7,19.4,3.2,6.1,7,11.2,11.3,15.1,4.3,4,9.4,5.9,15.1,5.9h5.4v10.8s-152.5,0-164.9,0c-49,0-222.9-307.4-316.6-583.8-104.2-307.8-104.6-693.5-104.6-693.5,0-5-.9-11-2.7-17.8-1.8-6.8-4.1-13-7-18.4-2.9-5.4-6.5-10.1-10.8-14-4.3-4-9-5.9-14-5.9h-5.4v-10.8h153.4Z"/>
+      <path d="M1440.3,2172.2v-10.8h-5.4c-5.8,0-10.8-2-15.1-5.9-4.3-4-8.1-8.8-11.3-14.6-3.2-5.8-5.6-11.9-7-18.4-1.4-6.5-2.2-12.3-2.2-17.3v-292.6c0-244.5,201.6-242.1,201.6,0v292.6c0,5-.7,10.8-2.2,17.3-1.4,6.5-3.8,12.6-7,18.4-3.2,5.8-7,10.6-11.3,14.6-4.3,3.9-9.3,5.9-15.1,5.9h-5.4v10.8h153.4v-10.8h-5.4c-5,0-9.7-2-14-5.9-4.3-4-8.1-8.8-11.3-14.6-3.2-5.8-5.6-11.9-7-18.4-1.4-6.5-2.2-12.3-2.2-17.3v-292.6c0-45.4-5.8-83-17.3-112.9-11.5-29.9-27.4-53.5-47.5-70.8-67.4-57.8-158.2-50.2-216.7,0-20.2,17.3-36,40.9-47.5,70.8-11.5,29.9-17.3,67.5-17.3,112.9v292.6c0,5-.7,10.8-2.2,17.3-1.5,6.5-3.8,12.6-7,18.4-3.2,5.8-7,10.6-11.3,14.6-4.3,3.9-9,5.9-14,5.9h-5.4v10.8h153.4Z"/>
+    </svg>
+    <span class="brand">House of <i>White</i></span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html#work">Work</a>
+    <a href="index.html#studio">Studio</a>
+    <a href="testimonials.html">Testimonials</a>
+    <a href="index.html#services">Services</a>
+    <a href="portal.html">Client Portal</a>
+    <a href="book.html" class="nav-cta">Book consultation</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap reveal">
+    <span class="eyebrow">Client Stories</span>
+    <h1>Words from those who <i>trust</i> us.</h1>
+    <p>Real feedback from homeowners whose spaces have been transformed with our approach to design.</p>
+  </div>
+</header>
+
+<!-- TESTIMONIALS -->
+<section>
+  <div class="wrap">
+    <div class="testimonials-grid">
+      
+      <div class="testimonial reveal">
+        <div class="stars">
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+        </div>
+        <div class="quote">Working with Samal was transformative. She understood our vision instantly and created a home that feels like us — calm, beautiful, and utterly livable.</div>
+        <div class="author">
+          <div class="avatar">A</div>
+          <div class="author-info">
+            <div class="name">Amira Al Mansouri</div>
+            <div class="role">Palm Jumeirah Villa Client</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial reveal">
+        <div class="stars">
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+        </div>
+        <div class="quote">Attention to detail that goes beyond decoration. Every material choice was considered. The process was seamless and the result is exactly what we envisioned.</div>
+        <div class="author">
+          <div class="avatar">M</div>
+          <div class="author-info">
+            <div class="name">Mohammed Ahmed</div>
+            <div class="role">Emirates Hills Penthouse</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial reveal">
+        <div class="stars">
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+        </div>
+        <div class="quote">Samal's restraint and eye for proportion created rooms that feel timeless. We didn't want trendy — we wanted a home that ages beautifully. Mission accomplished.</div>
+        <div class="author">
+          <div class="avatar">F</div>
+          <div class="author-info">
+            <div class="name">Fatima Al Qassimi</div>
+            <div class="role">Downtown Dubai Residence</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial reveal">
+        <div class="stars">
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+        </div>
+        <div class="quote">The project management was flawless. Clear timelines, quality at every stage, no surprises. The house was ready on time and exactly as promised.</div>
+        <div class="author">
+          <div class="avatar">R</div>
+          <div class="author-info">
+            <div class="name">Rashed Al Maktoum</div>
+            <div class="role">Marina Apartment Owner</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial reveal">
+        <div class="stars">
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+        </div>
+        <div class="quote">We were moving into an empty shell. Samal didn't just design — she understood how we wanted to live and shaped the space around that. It's our sanctuary.</div>
+        <div class="author">
+          <div class="avatar">L</div>
+          <div class="author-info">
+            <div class="name">Layla Hassan</div>
+            <div class="role">Damac Hills Resident</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial reveal">
+        <div class="stars">
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+        </div>
+        <div class="quote">The client portal kept us informed every step of the way. Transparent, organized, and easy to follow. Best project experience we've had in Dubai.</div>
+        <div class="author">
+          <div class="avatar">S</div>
+          <div class="author-info">
+            <div class="name">Saeed Al Mansoori</div>
+            <div class="role">Palm Jumeirah Client</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="wrap reveal">
+    <div class="stat"><div class="v">98%</div><div class="l">Client Satisfaction</div></div>
+    <div class="stat"><div class="v">150+</div><div class="l">Projects Delivered</div></div>
+    <div class="stat"><div class="v">12yrs</div><div class="l">Industry Experience</div></div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="wrap reveal">
+    <h2>Ready to transform <i>your space?</i></h2>
+    <p>Join our clients in creating a home that's calm, beautiful, and uniquely yours.</p>
+    <a href="book.html" class="btn btn-solid">Book a consultation</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px">
+      <img src="logo-mark.svg" alt="W" style="height:32px;width:auto">
+      <span class="brand foot-brand">House of <i>White</i></span>
+    </a>
+    <div class="foot-links">
+      <a href="index.html#work">Work</a><a href="index.html#studio">Studio</a><a href="testimonials.html">Testimonials</a><a href="index.html#services">Services</a><a href="index.html#contact">Contact</a>
+    </div>
+    <div class="cp">© 2026 House of White · Dubai</div>
+  </div>
+</footer>
+
+<script>
+  const nav=document.getElementById('nav');
+  addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
+
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:0.15});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*80)+'ms';io.observe(el)});
+</script>
+</body>
+</html>

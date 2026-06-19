@@ -102,7 +102,7 @@
 <body>
 
 <nav>
-  <a href="house-of-white-landing.html" class="back-btn">
+  <a href="links.html" class="back-btn">
     <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
     Back
   </a>
@@ -255,7 +255,7 @@
     const dateStr = selDate.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
     document.getElementById('confirmText').innerHTML = '<span>'+dateStr+'</span> at <span>'+time+' (Dubai Time)</span>';
     const msg = encodeURIComponent('Hi! I would like to book a consultation on '+dateStr+' at '+time+' Dubai Time.');
-    document.getElementById('confirmBtn').href = 'https://wa.me/77750600701?text='+msg;
+    document.getElementById('confirmBtn').href = 'https://wa.me/971586771200?text='+msg;
     document.getElementById('confirmSection').classList.add('show');
     setTimeout(()=>document.getElementById('confirmSection').scrollIntoView({behavior:'smooth',block:'nearest'}),100);
   }
