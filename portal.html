@@ -91,6 +91,34 @@
   .render-tile .badge.cm{color:var(--sand)}
   .render-tile .badge.ok{color:var(--ok)}
 
+  /* DIGITAL ALBUM SHOWCASE */
+  .album-card{position:relative;margin-bottom:26px;padding:54px 24px;border-radius:10px;text-align:center;overflow:hidden;
+    border:1px solid var(--line);
+    background:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 3px),
+      linear-gradient(160deg,#2a2a2a 0%,#181818 55%,#0e0e0e 100%);
+    box-shadow:0 30px 70px rgba(0,0,0,0.65), inset 0 0 0 1px rgba(233,226,212,0.08);
+  }
+  .album-card::before{content:"";position:absolute;inset:14px;border:1px solid rgba(233,226,212,0.14);border-radius:6px;pointer-events:none}
+  .album-cover{position:relative;display:inline-block;padding:38px 46px;border-radius:4px;
+    background:linear-gradient(160deg,#333,#121212);
+    box-shadow:0 18px 36px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(233,226,212,0.1);
+  }
+  .album-cover .mono{font-family:var(--display);font-size:13px;letter-spacing:0.04em;color:var(--cream);
+    text-shadow:0 1px 0 rgba(255,255,255,0.12), 0 -1px 1px rgba(0,0,0,0.8);margin-bottom:6px}
+  .album-cover .mono i{font-style:italic;color:var(--sand)}
+  .album-cover .sub{font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:var(--muted);
+    text-shadow:0 1px 1px rgba(0,0,0,0.6)}
+  .album-ribbon{position:absolute;right:18px;bottom:-6px;width:26px;height:60px;
+    background:linear-gradient(180deg,#f4f0e6,#d8d0bd);
+    clip-path:polygon(0 0,100% 0,100% 78%,50% 100%,0 78%);
+    box-shadow:0 4px 10px rgba(0,0,0,0.4);
+  }
+  .album-eyebrow{font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--sand);margin-bottom:18px;display:block}
+  .album-title{font-family:var(--display);font-weight:400;font-size:clamp(18px,3vw,22px);margin:22px 0 8px}
+  .album-title i{font-style:italic;color:var(--sand)}
+  .album-desc{font-size:12.5px;color:var(--muted);max-width:380px;margin:0 auto;line-height:1.7}
+
   /* FILES */
   .files{display:flex;flex-direction:column;gap:10px}
   .file-lk{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--line);border-radius:4px;text-decoration:none;color:var(--cream);background:var(--ink-3);transition:border-color .3s}
@@ -228,6 +256,11 @@
 
       <!-- 3D VISUALIZATIONS -->
       <div class="page" data-page="renders">
+        <a class="file-lk" href="#" style="margin-bottom:22px" onclick="switchPage(document.querySelector('.sub-item[data-page=files]'));return false">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 9h16M9 9v11"/></svg>
+          <span class="txt"><b>Drawings album</b><small>Все чертежи и планы — в одном альбоме</small></span>
+          <span class="arr">→</span>
+        </a>
         <div id="vizBody">
           <!-- populated by script from PHOTOS -->
           <div class="note" style="font-size:11px;color:var(--faint);margin-top:10px;letter-spacing:.02em">Нажмите на любое фото, чтобы оставить комментарий или согласовать его.</div>
@@ -367,20 +400,32 @@
 
       <!-- DOWNLOAD PROJECT -->
       <div class="page" data-page="files">
+
+        <div class="album-card">
+          <span class="album-eyebrow">Ваш альбом проекта</span>
+          <div class="album-cover">
+            <div class="mono">House of <i>White</i></div>
+            <div class="sub">Palm Jumeirah Villa</div>
+            <div class="album-ribbon"></div>
+          </div>
+          <div class="album-title">Полный альбом — в <i>онлайн-формате</i></div>
+          <div class="album-desc">Все материалы по проекту собраны в одном месте: визуализации, чертежи и смета — доступны для просмотра и скачивания в любое время.</div>
+        </div>
+
         <div class="files">
           <a class="file-lk" href="#">
             <svg class="ic" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-            <span class="txt"><b>3D-визуализации</b><small>Все рендеры в полном разрешении</small></span>
+            <span class="txt"><b>3D Visualisation</b><small>Все рендеры в полном разрешении</small></span>
             <span class="arr">→</span>
           </a>
           <a class="file-lk" href="#">
             <svg class="ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 9h16M9 9v11"/></svg>
-            <span class="txt"><b>Чертежи и планы</b><small>Планировки · электрика · мебель на заказ</small></span>
+            <span class="txt"><b>Tech. Drawings</b><small>Планировки · электрика · мебель на заказ</small></span>
             <span class="arr">→</span>
           </a>
           <a class="file-lk" href="#">
             <svg class="ic" viewBox="0 0 24 24"><path d="M7 3h10v18H7zM10 8h4M10 12h4M10 16h4"/></svg>
-            <span class="txt"><b>Смета</b><small>Полная разбивка бюджета</small></span>
+            <span class="txt"><b>BOQ</b><small>Полная разбивка бюджета</small></span>
             <span class="arr">→</span>
           </a>
         </div>
