@@ -42,9 +42,6 @@
   nav{display:flex;align-items:center;justify-content:space-between;padding:18px 48px;border-bottom:1px solid var(--line-soft);position:sticky;top:0;z-index:50;background:rgba(0,0,0,0.95);backdrop-filter:blur(14px)}
   .back-btn{display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s}
   .back-btn:hover{color:var(--cream)}
-  .nav-cta-pill{display:flex;align-items:center;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--cream);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:11px 22px;transition:all .3s ease;white-space:nowrap;flex:none}
-  .nav-cta-pill:hover{border-color:var(--sand);color:var(--sand)}
-  .pill-short{display:none}
   .brand{font-family:var(--display);font-size:18px;font-weight:500}
   .brand i{font-style:italic;color:var(--sand)}
 
@@ -84,7 +81,6 @@
   @media(max-width:900px){
     .wrap{padding:0 24px}
     nav,nav.scrolled{padding:18px 24px}
-    .nav-cta-pill{padding:9px 16px}
     .work-grid{grid-template-columns:1fr;gap:14px}
     .pc.a,.pc.b,.pc.c,.pc.d{grid-column:auto;aspect-ratio:4/3}
     .projects-section{padding:48px 0}
@@ -93,11 +89,7 @@
   }
   @media(max-width:520px){
     .wrap{padding:0 16px}
-    nav{padding:14px 16px}
-    .pill-full{display:none}
-    .pill-short{display:inline}
-    .nav-cta-pill{padding:8px 14px}
-    .brand{font-size:15px}
+    nav{padding:16px}
     .hero{padding:32px 0 24px}
     .hero h1{font-size:clamp(24px,8vw,40px)}
     .hero p{font-size:14px}
@@ -116,10 +108,10 @@
 <!-- NAV -->
 <nav>
   <a href="index.html" class="back-btn">← Back</a>
-  <a href="index.html" style="display:flex;align-items:center;gap:10px;position:absolute;left:50%;transform:translateX(-50%);text-decoration:none">
+  <a href="index.html" style="display:flex;align-items:center;gap:10px;position:absolute;left:50%;transform:translateX(-50%)">
     <span class="brand">House of <i>White</i></span>
   </a>
-  <a href="book.html" class="nav-cta-pill"><span class="pill-full">Book a consultation</span><span class="pill-short">Book</span></a>
+  <div style="width:80px"></div>
 </nav>
 
 <!-- HERO -->
@@ -136,28 +128,26 @@
   <div class="wrap">
     <div class="work-grid">
       <a href="project-detail.html?id=1" class="pc a reveal"><span class="idx">Palm Jumeirah Villa</span><img loading="lazy" src="https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=1100&q=80" alt=""><div class="pinfo"><div class="pname">Palm Jumeirah Villa</div><div class="pmeta">Full interior · Dubai</div></div></a>
-      
-      <a href="project-detail.html?id=2" class="pc b reveal"><span class="idx">Azizi Mina</span><img loading="lazy" src="https://images.unsplash.com/photo-1615875605825-5eb9bb5d52ac?auto=format&fit=crop&w=900&q=80" alt=""><div class="pinfo"><div class="pname">Azizi Mina</div><div class="pmeta">Palm Jumeirah</div></div></a>
-      
-      <a href="project-detail.html?id=3" class="pc c reveal"><span class="idx">California Village</span><img loading="lazy" src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=80" alt=""><div class="pinfo"><div class="pname">California Village</div><div class="pmeta">Concept & build</div></div></a>
-      
-      <a href="project-detail.html?id=4" class="pc d reveal"><span class="idx">Cedre Villas</span><img loading="lazy" src="https://images.unsplash.com/photo-1617104678098-de229db51175?auto=format&fit=crop&w=1100&q=80" alt=""><div class="pinfo"><div class="pname">Cedre Villas</div><div class="pmeta">Styling & furnishing</div></div></a>
 
-      <a href="project-detail.html?id=5" class="pc a reveal"><span class="idx">City Walk 11</span><img loading="lazy" src="https://images.unsplash.com/photo-1600121848371-40ebec813d71?auto=format&fit=crop&w=1100&q=80" alt=""><div class="pinfo"><div class="pname">City Walk 11</div><div class="pmeta">Living spaces · Dubai</div></div></a>
-      
-      <a href="project-detail.html?id=6" class="pc b reveal"><span class="idx">Damac Hills 2</span><img loading="lazy" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80" alt=""><div class="pinfo"><div class="pname">Damac Hills 2</div><div class="pmeta">Mulberry</div></div></a>
-      
-      <a href="project-detail.html?id=7" class="pc c reveal"><span class="idx">Damac Hills</span><img loading="lazy" src="https://images.unsplash.com/photo-1598928506179-801c28fc3e5f?auto=format&fit=crop&w=900&q=80" alt=""><div class="pinfo"><div class="pname">Damac Hills</div><div class="pmeta">Horizon Park</div></div></a>
-      
-      <a href="project-detail.html?id=8" class="pc d reveal"><span class="idx">Dubai South</span><img loading="lazy" src="https://images.unsplash.com/photo-1600566753086-00d4648855d8?auto=format&fit=crop&w=1100&q=80" alt=""><div class="pinfo"><div class="pname">Dubai South</div><div class="pmeta">Villa · Full interior</div></div></a>
+      <a href="project-detail.html?id=2" class="pc b reveal"><span class="idx">Azizi Mina</span><img loading="lazy" src="assets/projects/Azizi Mina/1.jpg" alt=""><div class="pinfo"><div class="pname">Azizi Mina</div><div class="pmeta">Palm Jumeirah</div></div></a>
 
-      <a href="project-detail.html?id=9" class="pc a reveal"><span class="idx">Fairooz Tower</span><img loading="lazy" src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1100&q=80" alt=""><div class="pinfo"><div class="pname">Fairooz Tower</div><div class="pmeta">Penthouse · Downtown</div></div></a>
-      
-      <a href="project-detail.html?id=10" class="pc b reveal"><span class="idx">Nursery Project</span><img loading="lazy" src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=900&q=80" alt=""><div class="pinfo"><div class="pname">Nursery Project</div><div class="pmeta">Concept design</div></div></a>
-      
-      <a href="project-detail.html?id=11" class="pc c reveal"><span class="idx">Downtown Penthouse</span><img loading="lazy" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80" alt=""><div class="pinfo"><div class="pname">Downtown Penthouse</div><div class="pmeta">Living spaces</div></div></a>
-      
-      <a href="project-detail.html?id=12" class="pc d reveal"><span class="idx">Palm Jumeirah Grandeur</span><img loading="lazy" src="https://images.unsplash.com/photo-1605276374104-dee2a0db896d?auto=format&fit=crop&w=1100&q=80" alt=""><div class="pinfo"><div class="pname">Palm Jumeirah Grandeur</div><div class="pmeta">Complete design</div></div></a>
+      <a href="project-detail.html?id=3" class="pc c reveal"><span class="idx">California Village</span><img loading="lazy" src="assets/projects/California Village/1.jpg" alt=""><div class="pinfo"><div class="pname">California Village</div><div class="pmeta">Concept & build</div></div></a>
+
+      <a href="project-detail.html?id=4" class="pc d reveal"><span class="idx">Cedre Villas</span><img loading="lazy" src="assets/projects/Cedre Villas/1.jpg" alt=""><div class="pinfo"><div class="pname">Cedre Villas</div><div class="pmeta">Styling & furnishing</div></div></a>
+
+      <a href="project-detail.html?id=5" class="pc a reveal"><span class="idx">City Walk 11</span><img loading="lazy" src="assets/projects/City Walk 11/1.jpg" alt=""><div class="pinfo"><div class="pname">City Walk 11</div><div class="pmeta">Living spaces · Dubai</div></div></a>
+
+      <a href="project-detail.html?id=6" class="pc b reveal"><span class="idx">Damac Hills 2</span><img loading="lazy" src="assets/projects/Damac Hills 2/1.jpg" alt=""><div class="pinfo"><div class="pname">Damac Hills 2</div><div class="pmeta">Mulberry</div></div></a>
+
+      <a href="project-detail.html?id=7" class="pc c reveal"><span class="idx">Damac Hills</span><img loading="lazy" src="assets/projects/Damac Hills/1.jpg" alt=""><div class="pinfo"><div class="pname">Damac Hills</div><div class="pmeta">Horizon Park</div></div></a>
+
+      <a href="project-detail.html?id=8" class="pc d reveal"><span class="idx">Dubai South</span><img loading="lazy" src="assets/projects/Dubai South Villa/1.jpg" alt=""><div class="pinfo"><div class="pname">Dubai South</div><div class="pmeta">Villa · Full interior</div></div></a>
+
+      <a href="project-detail.html?id=9" class="pc a reveal"><span class="idx">Fairooz Tower</span><img loading="lazy" src="assets/projects/Fairooz Tower/1.jpg" alt=""><div class="pinfo"><div class="pname">Fairooz Tower</div><div class="pmeta">Penthouse · Downtown</div></div></a>
+
+      <a href="project-detail.html?id=11" class="pc c reveal"><span class="idx">Downtown Penthouse</span><img loading="lazy" src="assets/projects/Downtown Penthouse/1.jpg" alt=""><div class="pinfo"><div class="pname">Downtown Penthouse</div><div class="pmeta">Living spaces</div></div></a>
+
+      <a href="project-detail.html?id=12" class="pc d reveal"><span class="idx">Palm Jumeirah Grandeur</span><img loading="lazy" src="assets/projects/Palm Jumeirah Grandeur/1.jpg" alt=""><div class="pinfo"><div class="pname">Palm Jumeirah Grandeur</div><div class="pmeta">Complete design</div></div></a>
     </div>
   </div>
 </section>
@@ -165,12 +155,11 @@
 <!-- FOOTER -->
 <footer>
   <div class="wrap foot">
-    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
-      <img src="logo-mark.svg" alt="W" style="height:32px;width:auto">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px">
       <span class="brand">House of <i>White</i></span>
     </a>
     <div class="foot-links">
-      <a href="index.html#work">Projects</a><a href="index.html#studio">Studio</a><a href="testimonials.html">Testimonials</a><a href="index.html#services">Services</a><a href="index.html#contact">Contact</a>
+      <a href="index.html#work">Work</a><a href="index.html#studio">Studio</a><a href="testimonials.html">Testimonials</a><a href="index.html#services">Services</a><a href="index.html#contact">Contact</a>
     </div>
     <div class="cp">© 2026 House of White · Dubai</div>
   </div>

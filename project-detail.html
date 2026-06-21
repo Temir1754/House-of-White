@@ -57,13 +57,10 @@
   .detail-item .value{font-size:15px;color:var(--cream)}
 
   /* GALLERY */
-  .gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin:48px 0}
+  .gallery{display:flex;flex-direction:column;gap:16px;margin:48px 0}
   .gallery-item{overflow:hidden;background:var(--ink-2);cursor:pointer;position:relative}
-  .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1s ease;filter:grayscale(3%)}
-  .gallery-item:hover img{transform:scale(1.04);filter:grayscale(0%)}
-  .gallery-item.lg{grid-column:span 8;aspect-ratio:8/5}
-  .gallery-item.sm{grid-column:span 4;aspect-ratio:4/5}
-  .gallery-item.full{grid-column:span 12;aspect-ratio:12/6}
+  .gallery-item img{width:100%;height:auto;display:block;transition:transform 1s ease;filter:grayscale(3%)}
+  .gallery-item:hover img{transform:scale(1.02);filter:grayscale(0%)}
 
   /* LIGHTBOX */
   .lightbox{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.96);backdrop-filter:blur(8px);align-items:center;justify-content:center}
@@ -95,9 +92,6 @@
     .project-header h1{font-size:clamp(32px,6vw,56px)}
     .project-header .details{gap:32px}
     .gallery{gap:14px}
-    .gallery-item.lg{grid-column:span 12;aspect-ratio:4/3}
-    .gallery-item.sm{grid-column:span 12;aspect-ratio:4/3}
-    .gallery-item.full{aspect-ratio:4/3}
   }
   @media(max-width:520px){
     .wrap{padding:0 16px}
@@ -181,7 +175,7 @@
 <footer>
   <div class="wrap foot">
     <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
-      <img src="logo-mark.svg" alt="W" style="height:32px;width:auto">
+      <img src="assets/logo-icon-new-transparent.png" alt="W" style="height:32px;width:auto">
       <span class="brand">House of <i>White</i></span>
     </a>
     <div class="foot-links">
@@ -193,18 +187,17 @@
 
 <script>
   const projects={
-    1:{title:'Palm Jumeirah Villa',location:'Palm Jumeirah, Dubai',service:'Full Interior Design',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/1/1.jpg','assets/projects/1/2.jpg','assets/projects/1/3.jpg','assets/projects/1/4.jpg','assets/projects/1/5.jpg','assets/projects/1/6.jpg','assets/projects/1/7.jpg','assets/projects/1/8.jpg']},
-    2:{title:'Azizi Mina',location:'Palm Jumeirah',service:'Interior & Furnishing',status:'Completed',eyebrow:'Residential',renders:['assets/projects/2/1.jpg','assets/projects/2/2.jpg','assets/projects/2/3.jpg','assets/projects/2/4.jpg','assets/projects/2/5.jpg','assets/projects/2/6.jpg','assets/projects/2/7.jpg']},
-    3:{title:'California Village',location:'Dubai',service:'Concept & Build',status:'Completed',eyebrow:'Concept Design',renders:['assets/projects/3/1.jpg','assets/projects/3/2.jpg','assets/projects/3/3.jpg','assets/projects/3/4.jpg','assets/projects/3/5.jpg','assets/projects/3/6.jpg','assets/projects/3/7.jpg','assets/projects/3/8.jpg','assets/projects/3/9.jpg']},
-    4:{title:'Cedre Villas',location:'Emirates',service:'Full Interior',status:'Completed',eyebrow:'Villa Project',renders:['assets/projects/4/1.jpg','assets/projects/4/2.jpg','assets/projects/4/3.jpg','assets/projects/4/4.jpg','assets/projects/4/5.jpg','assets/projects/4/6.jpg','assets/projects/4/7.jpg','assets/projects/4/8.jpg','assets/projects/4/9.jpg']},
-    5:{title:'City Walk 11',location:'Downtown Dubai',service:'Living Spaces',status:'Completed',eyebrow:'Apartment Design',renders:['assets/projects/5/1.jpg','assets/projects/5/2.jpg','assets/projects/5/3.jpg','assets/projects/5/4.jpg','assets/projects/5/5.jpg','assets/projects/5/6.jpg','assets/projects/5/7.jpg','assets/projects/5/8.jpg']},
-    6:{title:'Damac Hills 2 — Mulberry',location:'Damac Hills',service:'Styling & Furnishing',status:'Completed',eyebrow:'Interior Styling',renders:['assets/projects/6/1.jpg','assets/projects/6/2.jpg','assets/projects/6/3.jpg','assets/projects/6/4.jpg','assets/projects/6/5.jpg','assets/projects/6/6.jpg','assets/projects/6/7.jpg','assets/projects/6/8.jpg']},
-    7:{title:'Damac Hills — Horizon Park',location:'Damac Hills',service:'Full Design',status:'Completed',eyebrow:'Residential',renders:['assets/projects/7/1.jpg','assets/projects/7/2.jpg','assets/projects/7/3.jpg','assets/projects/7/4.jpg','assets/projects/7/5.jpg','assets/projects/7/6.jpg','assets/projects/7/7.jpg','assets/projects/7/8.jpg']},
-    8:{title:'Dubai South Villa',location:'Dubai South',service:'Full Interior',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/8/1.jpg','assets/projects/8/2.jpg','assets/projects/8/3.jpg','assets/projects/8/4.jpg','assets/projects/8/5.jpg','assets/projects/8/6.jpg','assets/projects/8/7.jpg','assets/projects/8/8.jpg']},
-    9:{title:'Fairooz Tower',location:'Dubai Marina',service:'Penthouse Design',status:'Completed',eyebrow:'Luxury Design',renders:['assets/projects/9/1.jpg','assets/projects/9/2.jpg','assets/projects/9/3.jpg','assets/projects/9/4.jpg','assets/projects/9/5.jpg','assets/projects/9/6.jpg','assets/projects/9/7.jpg','assets/projects/9/8.jpg']},
-    10:{title:'Nursery Project',location:'Jumeirah',service:'Interior Design',status:'Completed',eyebrow:'Residential',renders:['assets/projects/10/1.jpg','assets/projects/10/2.jpg','assets/projects/10/3.jpg','assets/projects/10/4.jpg','assets/projects/10/5.jpg','assets/projects/10/6.jpg','assets/projects/10/7.jpg','assets/projects/10/8.jpg']},
-    11:{title:'Downtown Penthouse',location:'Downtown Dubai',service:'Full Interior',status:'Completed',eyebrow:'Penthouse',renders:['assets/projects/11/1.jpg','assets/projects/11/2.jpg','assets/projects/11/3.jpg','assets/projects/11/4.jpg','assets/projects/11/5.jpg','assets/projects/11/6.jpg','assets/projects/11/7.jpg','assets/projects/11/8.jpg']},
-    12:{title:'Palm Jumeirah Grandeur',location:'Palm Jumeirah',service:'Full Interior Design',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/12/1.jpg','assets/projects/12/2.jpg','assets/projects/12/3.jpg','assets/projects/12/4.jpg','assets/projects/12/5.jpg','assets/projects/12/6.jpg','assets/projects/12/7.jpg','assets/projects/12/8.jpg']}
+    1:{title:'Palm Jumeirah Villa',location:'Palm Jumeirah, Dubai',service:'Full Interior Design',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/Palm Jumeirah Villa/1.jpg','assets/projects/Palm Jumeirah Villa/2.jpg','assets/projects/Palm Jumeirah Villa/3.jpg','assets/projects/Palm Jumeirah Villa/4.jpg','assets/projects/Palm Jumeirah Villa/5.jpg','assets/projects/Palm Jumeirah Villa/6.jpg','assets/projects/Palm Jumeirah Villa/7.jpg','assets/projects/Palm Jumeirah Villa/8.jpg']},
+    2:{title:'Azizi Mina',location:'Palm Jumeirah',service:'Interior & Furnishing',status:'Completed',eyebrow:'Residential',renders:['assets/projects/Azizi Mina/1.jpg','assets/projects/Azizi Mina/2.jpg','assets/projects/Azizi Mina/3.jpg','assets/projects/Azizi Mina/4.jpg','assets/projects/Azizi Mina/5.jpg','assets/projects/Azizi Mina/6.jpg','assets/projects/Azizi Mina/7.jpg']},
+    3:{title:'California Village',location:'Dubai',service:'Concept & Build',status:'Completed',eyebrow:'Concept Design',renders:['assets/projects/California Village/1.jpg','assets/projects/California Village/2.jpg','assets/projects/California Village/3.jpg','assets/projects/California Village/4.jpg','assets/projects/California Village/5.jpg','assets/projects/California Village/6.jpg','assets/projects/California Village/7.jpg','assets/projects/California Village/8.jpg','assets/projects/California Village/9.jpg']},
+    4:{title:'Cedre Villas',location:'Emirates',service:'Full Interior',status:'Completed',eyebrow:'Villa Project',renders:['assets/projects/Cedre Villas/1.jpg','assets/projects/Cedre Villas/2.jpg','assets/projects/Cedre Villas/3.jpg','assets/projects/Cedre Villas/4.jpg','assets/projects/Cedre Villas/5.jpg','assets/projects/Cedre Villas/6.jpg','assets/projects/Cedre Villas/7.jpg','assets/projects/Cedre Villas/8.jpg','assets/projects/Cedre Villas/9.jpg']},
+    5:{title:'City Walk 11',location:'Downtown Dubai',service:'Living Spaces',status:'Completed',eyebrow:'Apartment Design',renders:['assets/projects/City Walk 11/1.jpg','assets/projects/City Walk 11/2.jpg','assets/projects/City Walk 11/3.jpg','assets/projects/City Walk 11/4.jpg','assets/projects/City Walk 11/5.jpg','assets/projects/City Walk 11/6.jpg','assets/projects/City Walk 11/7.jpg','assets/projects/City Walk 11/8.jpg']},
+    6:{title:'Damac Hills 2 — Mulberry',location:'Damac Hills',service:'Styling & Furnishing',status:'Completed',eyebrow:'Interior Styling',renders:['assets/projects/Damac Hills 2/1.jpg','assets/projects/Damac Hills 2/2.jpg','assets/projects/Damac Hills 2/3.jpg','assets/projects/Damac Hills 2/4.jpg','assets/projects/Damac Hills 2/5.jpg','assets/projects/Damac Hills 2/6.jpg','assets/projects/Damac Hills 2/7.jpg','assets/projects/Damac Hills 2/8.jpg']},
+    7:{title:'Damac Hills — Horizon Park',location:'Damac Hills',service:'Full Design',status:'Completed',eyebrow:'Residential',renders:['assets/projects/Damac Hills/1.jpg','assets/projects/Damac Hills/2.jpg','assets/projects/Damac Hills/3.jpg','assets/projects/Damac Hills/4.jpg','assets/projects/Damac Hills/5.jpg','assets/projects/Damac Hills/6.jpg','assets/projects/Damac Hills/7.jpg','assets/projects/Damac Hills/8.jpg']},
+    8:{title:'Dubai South Villa',location:'Dubai South',service:'Full Interior',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/Dubai South Villa/1.jpg','assets/projects/Dubai South Villa/2.jpg','assets/projects/Dubai South Villa/3.jpg','assets/projects/Dubai South Villa/4.jpg','assets/projects/Dubai South Villa/5.jpg','assets/projects/Dubai South Villa/6.jpg','assets/projects/Dubai South Villa/7.jpg','assets/projects/Dubai South Villa/8.jpg']},
+    9:{title:'Fairooz Tower',location:'Dubai Marina',service:'Penthouse Design',status:'Completed',eyebrow:'Luxury Design',renders:['assets/projects/Fairooz Tower/1.jpg','assets/projects/Fairooz Tower/2.jpg','assets/projects/Fairooz Tower/3.jpg','assets/projects/Fairooz Tower/4.jpg','assets/projects/Fairooz Tower/5.jpg','assets/projects/Fairooz Tower/6.jpg','assets/projects/Fairooz Tower/7.jpg','assets/projects/Fairooz Tower/8.jpg']},
+    11:{title:'Downtown Penthouse',location:'Downtown Dubai',service:'Full Interior',status:'Completed',eyebrow:'Penthouse',renders:['assets/projects/Downtown Penthouse/1.jpg','assets/projects/Downtown Penthouse/2.jpg','assets/projects/Downtown Penthouse/3.jpg','assets/projects/Downtown Penthouse/4.jpg','assets/projects/Downtown Penthouse/5.jpg','assets/projects/Downtown Penthouse/6.jpg','assets/projects/Downtown Penthouse/7.jpg','assets/projects/Downtown Penthouse/8.jpg']},
+    12:{title:'Palm Jumeirah Grandeur',location:'Palm Jumeirah',service:'Full Interior Design',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/Palm Jumeirah Grandeur/1.jpg','assets/projects/Palm Jumeirah Grandeur/2.jpg','assets/projects/Palm Jumeirah Grandeur/3.jpg','assets/projects/Palm Jumeirah Grandeur/4.jpg','assets/projects/Palm Jumeirah Grandeur/5.jpg','assets/projects/Palm Jumeirah Grandeur/6.jpg','assets/projects/Palm Jumeirah Grandeur/7.jpg','assets/projects/Palm Jumeirah Grandeur/8.jpg']}
   };
 
   let currentImageIndex=0;
@@ -225,10 +218,9 @@
     
     // Создаем галерею с локальными путями
     const gallery=document.getElementById('gallery');
-    const layouts=['lg','sm','full','sm','lg','full','lg','sm'];
     project.renders.forEach((render,i)=>{
       const item=document.createElement('div');
-      item.className=`gallery-item ${layouts[i%layouts.length]} reveal`;
+      item.className='gallery-item reveal';
       const img=document.createElement('img');
       img.loading='lazy';
       img.src=render;

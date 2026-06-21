@@ -80,17 +80,6 @@
   .tc-dot.active{background:var(--sand)}
   @media(max-width:600px){.tc-card{padding:34px 24px}.testi-carousel{min-height:80vh}}
 
-  /* STATS */
-  .stats{border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);background:var(--ink-2);margin-top:72px}
-  .stats .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;padding-top:36px;padding-bottom:36px}
-  .stat .v{font-family:var(--display);font-size:48px;font-weight:400;line-height:1;color:var(--sand)}
-  .stat .l{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-top:10px}
-
-  /* CTA SECTION */
-  .cta-section{padding:72px 0;text-align:center}
-  .cta-section h2{font-family:var(--display);font-weight:400;font-size:clamp(36px,6vw,64px);line-height:1.1;margin-bottom:24px}
-  .cta-section h2 i{font-style:italic;color:var(--sand)}
-  .cta-section p{color:var(--muted);font-size:16px;max-width:500px;margin:0 auto 32px;line-height:1.7}
   .btn{font-family:var(--sans);font-size:12px;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;cursor:pointer;padding:17px 34px;transition:all .4s ease;display:inline-block;border-radius:1px}
   .btn-solid{background:var(--bone);color:var(--bone-ink);border:1px solid var(--bone)}
   .btn-solid:hover{background:transparent;color:var(--cream);border-color:var(--bone)}
@@ -111,19 +100,13 @@
     .wrap{padding:0 24px}
     nav,nav.scrolled{padding:18px 24px}
     .nav-links{display:none}
-    .testimonials-grid{grid-template-columns:1fr;gap:32px}
     .hero{padding:80px 0 40px}
-    .cta-section{padding:48px 0}
-    .stats .wrap{grid-template-columns:1fr}
   }
   @media(max-width:520px){
     .wrap{padding:0 16px}
     nav,nav.scrolled{padding:16px}
     .hero{padding:60px 0 32px}
     .hero h1{font-size:clamp(32px,8vw,48px)}
-    .testimonial{padding:28px 20px}
-    .testimonial .quote{font-size:18px}
-    .cta-section h2{font-size:clamp(28px,8vw,48px)}
     footer{padding:36px 0}
     .foot{flex-direction:column;align-items:flex-start;gap:16px}
   }
@@ -137,7 +120,7 @@
 
 <nav id="nav">
   <a href="index.html" class="logo-mark" aria-label="House of White">
-    <img src="logo-mark.svg" alt="House of White" style="height:38px;width:auto">
+    <img src="assets/logo-icon-new-transparent.png" alt="House of White" style="height:38px;width:auto">
   </a>
   <div class="nav-links">
     <a href="index.html#studio">About Us</a>
@@ -194,6 +177,14 @@
           <div class="tc-quote">Thank you so much I'm sooo grateful to you. You're amazing honestly — you captured what I like. Your technical skills are amazing. I never realized how essential detailed drawings are for a renovation. Thank you for bringing everything together and helping us not only with great ideas but also with accurate calculations and planning.</div>
         </div>
       </div>
+      <div class="tc-slide">
+        <div class="tc-card">
+          <div class="tc-avatar">E</div>
+          <div class="tc-name">Eric</div>
+          <div class="tc-role">Client</div>
+          <div class="tc-quote">Working with Samal is a breeze. Quick turnaround and very resourceful. She designed my villa, apartment, and terrace with a jacuzzi, and the results were very good. Highly recommended.</div>
+        </div>
+      </div>
     </div>
     <div class="tc-nav">
       <div class="tc-arrow" onclick="tcMove(-1)">←</div>
@@ -207,7 +198,7 @@
 <footer>
   <div class="wrap foot">
     <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
-      <img src="logo-mark.svg" alt="W" style="height:32px;width:auto">
+      <img src="assets/logo-icon-new-transparent.png" alt="W" style="height:32px;width:auto">
       <span class="brand foot-brand">House of <i>White</i></span>
     </a>
     <div class="foot-links">
