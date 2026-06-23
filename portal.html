@@ -6,14 +6,14 @@
 <title>House of White — Личный кабинет клиента</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#000000; --ink-2:#0D0D0D; --ink-3:#141414;
     --cream:#E9E2D4; --muted:#9A9180; --faint:#5C5648; --sand:#B49B78;
     --line:rgba(233,226,212,0.13); --line-soft:rgba(233,226,212,0.07);
     --ok:#A9BFA0;
-    --display:'Bodoni Moda', Georgia, serif;
+    --display:'Jost', system-ui, sans-serif;
     --sans:'Jost', system-ui, sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
@@ -100,19 +100,8 @@
     box-shadow:0 30px 70px rgba(0,0,0,0.65), inset 0 0 0 1px rgba(233,226,212,0.08);
   }
   .album-card::before{content:"";position:absolute;inset:14px;border:1px solid rgba(233,226,212,0.14);border-radius:6px;pointer-events:none}
-  .album-cover{position:relative;display:inline-block;padding:38px 46px;border-radius:4px;
-    background:linear-gradient(160deg,#333,#121212);
+  .album-mock{display:block;width:100%;max-width:280px;margin:0 auto;border-radius:8px;
     box-shadow:0 18px 36px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(233,226,212,0.1);
-  }
-  .album-cover .mono{font-family:var(--display);font-size:13px;letter-spacing:0.04em;color:var(--cream);
-    text-shadow:0 1px 0 rgba(255,255,255,0.12), 0 -1px 1px rgba(0,0,0,0.8);margin-bottom:6px}
-  .album-cover .mono i{font-style:italic;color:var(--sand)}
-  .album-cover .sub{font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:var(--muted);
-    text-shadow:0 1px 1px rgba(0,0,0,0.6)}
-  .album-ribbon{position:absolute;right:18px;bottom:-6px;width:26px;height:60px;
-    background:linear-gradient(180deg,#f4f0e6,#d8d0bd);
-    clip-path:polygon(0 0,100% 0,100% 78%,50% 100%,0 78%);
-    box-shadow:0 4px 10px rgba(0,0,0,0.4);
   }
   .album-eyebrow{font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--sand);margin-bottom:18px;display:block}
   .album-title{font-family:var(--display);font-weight:400;font-size:clamp(18px,3vw,22px);margin:22px 0 8px}
@@ -130,16 +119,21 @@
   .file-lk .arr{color:var(--faint);font-size:14px}
 
   /* SPEC */
-  .spec-cat{margin-bottom:18px}
+  .spec-cat{margin-bottom:22px}
   .spec-cat:last-child{margin-bottom:0}
   .spec-cat-title{font-size:10px;letter-spacing:0.24em;text-transform:uppercase;color:var(--sand);padding:10px 0 8px;border-bottom:1px solid var(--line-soft);margin-bottom:8px}
-  .item{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding:13px 0;border-bottom:1px solid var(--line-soft)}
-  .item:last-child{border-bottom:none}
-  .item-info .name{font-size:13.5px;color:var(--cream);line-height:1.4}
-  .item-info .desc{font-size:11.5px;color:var(--muted);margin-top:3px}
-  .item-info .lk{display:inline-block;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--sand);text-decoration:none;margin-top:6px;border-bottom:1px solid rgba(180,155,120,0.4);padding-bottom:1px}
-  .item-info .lk:hover{opacity:.7}
-  .item-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none}
+  .spec-table-wrap{overflow-x:auto}
+  .spec-table{width:100%;border-collapse:collapse;font-size:12.5px}
+  .spec-table th{text-align:left;font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:400;padding:8px 10px;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+  .spec-table th.num,.spec-table td.num{text-align:right}
+  .spec-table td{padding:11px 10px;border-bottom:1px solid var(--line-soft);vertical-align:top;color:var(--cream)}
+  .spec-table tr:last-child td{border-bottom:none}
+  .spec-table .name{font-size:13px;color:var(--cream);line-height:1.4}
+  .spec-table .desc{font-size:11px;color:var(--muted);margin-top:3px}
+  .spec-table .lk{display:inline-block;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--sand);text-decoration:none;margin-top:5px;border-bottom:1px solid rgba(180,155,120,0.4);padding-bottom:1px}
+  .spec-table .lk:hover{opacity:.7}
+  .spec-table tfoot td{padding:10px 10px;border-bottom:none;border-top:1px solid var(--line-soft);font-size:11.5px;color:var(--muted)}
+  .spec-table tfoot b{color:var(--cream);font-family:var(--display);font-size:14px;font-weight:500}
   .pill{display:inline-block;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 10px;border-radius:30px;border:1px solid var(--line);white-space:nowrap}
   .pill.ok{color:var(--ok);border-color:rgba(169,191,160,0.35)}
   .pill.go{color:var(--sand);border-color:rgba(180,155,120,0.4)}
@@ -147,6 +141,7 @@
   .pill.done{color:#7EB5FF;border-color:rgba(126,181,255,0.35)}
   .spec-foot{display:flex;justify-content:space-between;padding:14px 0 0;font-size:12px;color:var(--muted);margin-top:6px;border-top:1px solid var(--line-soft)}
   .spec-foot b{color:var(--cream);font-family:var(--display);font-size:18px}
+  @media(max-width:700px){.spec-table{font-size:11.5px}.spec-table th,.spec-table td{padding:8px 6px}}
 
   /* CONTACT */
   .contact-body{display:flex;flex-direction:column;gap:10px}
@@ -273,128 +268,63 @@
         <!-- FURNITURE -->
         <div class="spec-cat">
           <div class="spec-cat-title">Мебель</div>
-          <div class="item">
-            <div class="item-info">
-              <div class="name">Диван — Minotti Spencer</div>
-              <div class="desc">Гостиная · ткань: бежевый лён · 3-местный</div>
-              <a class="lk" href="#" target="_blank">Открыть →</a>
-            </div>
-            <div class="item-right"><span class="pill ok">Согласовано</span></div>
-          </div>
-          <div class="item">
-            <div class="item-info">
-              <div class="name">Обеденный стол — Flexform Atlante</div>
-              <div class="desc">Столовая · 220×100 см · дуб</div>
-              <a class="lk" href="#" target="_blank">Открыть →</a>
-            </div>
-            <div class="item-right"><span class="pill ok">Согласовано</span></div>
-          </div>
-          <div class="item">
-            <div class="item-info">
-              <div class="name">Кровать — Poliform Letto</div>
-              <div class="desc">Спальня · 180×200 см · тканевое изголовье</div>
-              <a class="lk" href="#" target="_blank">Открыть →</a>
-            </div>
-            <div class="item-right"><span class="pill go">В поиске</span></div>
-          </div>
-          <div class="item">
-            <div class="item-info">
-              <div class="name">Кресло — B&amp;B Italia Mart</div>
-              <div class="desc">Гостиная · цвет: песочный</div>
-              <a class="lk" href="#" target="_blank">Открыть →</a>
-            </div>
-            <div class="item-right"><span class="pill go">В поиске</span></div>
-          </div>
+          <div class="spec-table-wrap"><table class="spec-table">
+            <thead><tr><th>Позиция</th><th class="num">Кол-во</th><th class="num">Цена, AED</th><th class="num">Сумма, AED</th><th>Статус</th></tr></thead>
+            <tbody>
+              <tr><td><div class="name">Диван — Minotti Spencer</div><div class="desc">Гостиная · ткань: бежевый лён · 3-местный</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">1</td><td class="num">18 500</td><td class="num">18 500</td><td><span class="pill ok">Согласовано</span></td></tr>
+              <tr><td><div class="name">Обеденный стол — Flexform Atlante</div><div class="desc">Столовая · 220×100 см · дуб</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">1</td><td class="num">9 800</td><td class="num">9 800</td><td><span class="pill ok">Согласовано</span></td></tr>
+              <tr><td><div class="name">Кровать — Poliform Letto</div><div class="desc">Спальня · 180×200 см · тканевое изголовье</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">1</td><td class="num">12 400</td><td class="num">12 400</td><td><span class="pill go">В поиске</span></td></tr>
+              <tr><td><div class="name">Кресло — B&amp;B Italia Mart</div><div class="desc">Гостиная · цвет: песочный</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">2</td><td class="num">7 200</td><td class="num">14 400</td><td><span class="pill go">В поиске</span></td></tr>
+            </tbody>
+            <tfoot><tr><td colspan="3">Итого по категории</td><td class="num"><b>55 100</b></td><td></td></tr></tfoot>
+          </table></div>
         </div>
 
         <!-- LIGHTING -->
         <div class="spec-cat">
           <div class="spec-cat-title">Освещение</div>
-          <div class="item">
-            <div class="item-info">
-              <div class="name">Подвес — Flos Arrangements</div>
-              <div class="desc">Столовая · латунь · 3 светильника</div>
-              <a class="lk" href="#" target="_blank">Открыть →</a>
-            </div>
-            <div class="item-right"><span class="pill done">Заказано</span></div>
-          </div>
-          <div class="item">
-            <div class="item-info">
-              <div class="name">Торшер — Artemide Tolomeo</div>
-              <div class="desc">Гостиная · алюминий</div>
-              <a class="lk" href="#" target="_blank">Открыть →</a>
-            </div>
-            <div class="item-right"><span class="pill go">В поиске</span></div>
-          </div>
-          <div class="item">
-            <div class="item-info">
-              <div class="name">Прикроватные светильники — Astro Niche</div>
-              <div class="desc">Спальня · 2 шт · матовый белый</div>
-              <a class="lk" href="#" target="_blank">Открыть →</a>
-            </div>
-            <div class="item-right"><span class="pill wait">Ожидание</span></div>
-          </div>
+          <div class="spec-table-wrap"><table class="spec-table">
+            <thead><tr><th>Позиция</th><th class="num">Кол-во</th><th class="num">Цена, AED</th><th class="num">Сумма, AED</th><th>Статус</th></tr></thead>
+            <tbody>
+              <tr><td><div class="name">Подвес — Flos Arrangements</div><div class="desc">Столовая · латунь · 3 светильника</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">1</td><td class="num">6 500</td><td class="num">6 500</td><td><span class="pill done">Заказано</span></td></tr>
+              <tr><td><div class="name">Торшер — Artemide Tolomeo</div><div class="desc">Гостиная · алюминий</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">1</td><td class="num">2 100</td><td class="num">2 100</td><td><span class="pill go">В поиске</span></td></tr>
+              <tr><td><div class="name">Прикроватные светильники — Astro Niche</div><div class="desc">Спальня · 2 шт · матовый белый</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">2</td><td class="num">850</td><td class="num">1 700</td><td><span class="pill wait">Ожидание</span></td></tr>
+            </tbody>
+            <tfoot><tr><td colspan="3">Итого по категории</td><td class="num"><b>10 300</b></td><td></td></tr></tfoot>
+          </table></div>
         </div>
 
         <!-- TEXTILES -->
         <div class="spec-cat">
           <div class="spec-cat-title">Текстиль</div>
-          <div class="item">
-            <div class="item-info">
-              <div class="name">Шторы — Dedar Milano</div>
-              <div class="desc">Гостиная и спальня · лён · цвет слоновой кости</div>
-              <a class="lk" href="#" target="_blank">Открыть →</a>
-            </div>
-            <div class="item-right"><span class="pill done">Заказано</span></div>
-          </div>
-          <div class="item">
-            <div class="item-info">
-              <div class="name">Ковёр — Deirdre Dyson</div>
-              <div class="desc">Гостиная · 300×250 см · шерсть</div>
-              <a class="lk" href="#" target="_blank">Открыть →</a>
-            </div>
-            <div class="item-right"><span class="pill go">В поиске</span></div>
-          </div>
-          <div class="item">
-            <div class="item-info">
-              <div class="name">Набор подушек — Society Limonta</div>
-              <div class="desc">Диван · 6 шт · разные текстуры</div>
-              <a class="lk" href="#" target="_blank">Открыть →</a>
-            </div>
-            <div class="item-right"><span class="pill wait">Ожидание</span></div>
-          </div>
+          <div class="spec-table-wrap"><table class="spec-table">
+            <thead><tr><th>Позиция</th><th class="num">Кол-во</th><th class="num">Цена, AED</th><th class="num">Сумма, AED</th><th>Статус</th></tr></thead>
+            <tbody>
+              <tr><td><div class="name">Шторы — Dedar Milano</div><div class="desc">Гостиная и спальня · лён · цвет слоновой кости</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">1</td><td class="num">5 200</td><td class="num">5 200</td><td><span class="pill done">Заказано</span></td></tr>
+              <tr><td><div class="name">Ковёр — Deirdre Dyson</div><div class="desc">Гостиная · 300×250 см · шерсть</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">1</td><td class="num">8 900</td><td class="num">8 900</td><td><span class="pill go">В поиске</span></td></tr>
+              <tr><td><div class="name">Набор подушек — Society Limonta</div><div class="desc">Диван · 6 шт · разные текстуры</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">6</td><td class="num">320</td><td class="num">1 920</td><td><span class="pill wait">Ожидание</span></td></tr>
+            </tbody>
+            <tfoot><tr><td colspan="3">Итого по категории</td><td class="num"><b>16 020</b></td><td></td></tr></tfoot>
+          </table></div>
         </div>
 
         <!-- DECOR -->
         <div class="spec-cat">
           <div class="spec-cat-title">Декор и искусство</div>
-          <div class="item">
-            <div class="item-info">
-              <div class="name">Большое полотно — уточняется с клиентом</div>
-              <div class="desc">Гостиная · над диваном · 150×100 см</div>
-            </div>
-            <div class="item-right"><span class="pill wait">Ожидание</span></div>
-          </div>
-          <div class="item">
-            <div class="item-info">
-              <div class="name">Набор ваз — Audo Copenhagen</div>
-              <div class="desc">Столовая и буфет · 3 шт · керамика</div>
-              <a class="lk" href="#" target="_blank">Открыть →</a>
-            </div>
-            <div class="item-right"><span class="pill go">В поиске</span></div>
-          </div>
-          <div class="item">
-            <div class="item-info">
-              <div class="name">Книги для кофейного столика</div>
-              <div class="desc">Гостиная · архитектура и искусство · 5 изданий</div>
-            </div>
-            <div class="item-right"><span class="pill wait">Ожидание</span></div>
-          </div>
+          <div class="spec-table-wrap"><table class="spec-table">
+            <thead><tr><th>Позиция</th><th class="num">Кол-во</th><th class="num">Цена, AED</th><th class="num">Сумма, AED</th><th>Статус</th></tr></thead>
+            <tbody>
+              <tr><td><div class="name">Большое полотно — уточняется с клиентом</div><div class="desc">Гостиная · над диваном · 150×100 см</div></td><td class="num">1</td><td class="num">—</td><td class="num">—</td><td><span class="pill wait">Ожидание</span></td></tr>
+              <tr><td><div class="name">Набор ваз — Audo Copenhagen</div><div class="desc">Столовая и буфет · 3 шт · керамика</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">3</td><td class="num">480</td><td class="num">1 440</td><td><span class="pill go">В поиске</span></td></tr>
+              <tr><td><div class="name">Книги для кофейного столика</div><div class="desc">Гостиная · архитектура и искусство · 5 изданий</div></td><td class="num">5</td><td class="num">150</td><td class="num">750</td><td><span class="pill wait">Ожидание</span></td></tr>
+            </tbody>
+            <tfoot><tr><td colspan="3">Итого по категории</td><td class="num"><b>2 190</b></td><td></td></tr></tfoot>
+          </table></div>
         </div>
 
         <div class="spec-foot">
-          <span>4 категории · 18 позиций</span>
-          <span>Экономия до <b>30%</b></span>
+          <span>4 категории · 13 позиций</span>
+          <span>Итого по проекту <b>AED 83 610</b></span>
         </div>
       </div>
 
@@ -403,11 +333,7 @@
 
         <div class="album-card">
           <span class="album-eyebrow">Ваш альбом проекта</span>
-          <div class="album-cover">
-            <div class="mono">House of <i>White</i></div>
-            <div class="sub">Palm Jumeirah Villa</div>
-            <div class="album-ribbon"></div>
-          </div>
+          <img class="album-mock" src="assets/portal mockups/house of white 3.png" alt="House of White — Palm Jumeirah Villa, альбом проекта">
           <div class="album-title">Полный альбом — в <i>онлайн-формате</i></div>
           <div class="album-desc">Все материалы по проекту собраны в одном месте: визуализации, чертежи и смета — доступны для просмотра и скачивания в любое время.</div>
         </div>

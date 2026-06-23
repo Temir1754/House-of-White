@@ -6,7 +6,7 @@
 <title>Project — House of White</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#000000;
@@ -20,7 +20,7 @@
     --sand:#B49B78;
     --line:rgba(233,226,212,0.13);
     --line-soft:rgba(233,226,212,0.06);
-    --display:'Bodoni Moda', Georgia, serif;
+    --display:'Jost', -apple-system, system-ui, sans-serif;
     --sans:'Jost', -apple-system, system-ui, sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
@@ -37,29 +37,31 @@
   .reveal.in{opacity:1;transform:none}
 
   /* NAV */
-  nav{display:flex;align-items:center;justify-content:space-between;padding:18px 48px;border-bottom:1px solid var(--line-soft);position:sticky;top:0;z-index:50;background:rgba(0,0,0,0.95);backdrop-filter:blur(14px)}
-  .back-btn{display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s}
-  .back-btn:hover{color:var(--cream)}
-  .nav-cta-pill{display:flex;align-items:center;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--cream);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:11px 22px;transition:all .3s ease;white-space:nowrap;flex:none}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:22px 48px;position:fixed;top:0;left:0;right:0;z-index:50;background:transparent}
+  nav::before{content:'';position:absolute;top:0;left:0;right:0;height:70px;background:linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);z-index:-1;pointer-events:none}
+  .back-btn{display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--cream);text-decoration:none;transition:color .3s;text-shadow:0 1px 6px rgba(0,0,0,0.5)}
+  .back-btn:hover{color:var(--sand)}
+  .nav-cta-pill{display:flex;align-items:center;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--cream);text-decoration:none;border:1px solid rgba(233,226,212,0.5);border-radius:999px;padding:11px 22px;transition:all .3s ease;white-space:nowrap;flex:none;text-shadow:0 1px 6px rgba(0,0,0,0.5)}
   .nav-cta-pill:hover{border-color:var(--sand);color:var(--sand)}
   .pill-short{display:none}
-  .brand{font-family:var(--display);font-size:18px;font-weight:500}
-  .brand i{font-style:italic;color:var(--sand)}
+  .brand{font-family:var(--display);font-size:18px;font-weight:500;text-shadow:0 1px 6px rgba(0,0,0,0.5)}
+  .brand i{font-style:normal;color:inherit}
 
   /* PROJECT HERO */
-  .project-hero{padding:48px 0 32px}
-  .project-header{margin-bottom:48px}
-  .project-header .eyebrow{display:block;margin-bottom:16px}
-  .project-header h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,6vw,72px);line-height:1.1;margin-bottom:12px}
-  .project-header h1 i{font-style:italic;color:var(--sand)}
-  .project-header .details{display:flex;gap:48px;margin-top:24px;flex-wrap:wrap}
-  .detail-item .label{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--sand);margin-bottom:6px}
-  .detail-item .value{font-size:15px;color:var(--cream)}
+  .project-hero-full{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(4%)}
+  .hero-veil{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.25) 45%, rgba(0,0,0,0.55) 100%)}
+  .hero-center{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:920px}
+  .hero-center .eyebrow{display:block;margin-bottom:18px;color:var(--cream);opacity:.8}
+  .hero-center h1{font-family:var(--display);font-weight:700;font-size:clamp(48px,8vw,112px);line-height:1;letter-spacing:-0.01em;margin-bottom:18px;color:var(--cream)}
+  .hero-center h1 i{font-style:italic;color:var(--sand)}
+  .hero-meta{font-size:14px;letter-spacing:0.08em;color:var(--cream);opacity:.85}
 
-  /* GALLERY */
-  .gallery{display:flex;flex-direction:column;gap:16px;margin:48px 0}
+  /* GALLERY — justified layout: row height adapts to each photo's real ratio, so nothing is cropped and rows still fill the width exactly */
+  .gallery{margin:0}
+  .gallery-row{display:flex}
   .gallery-item{overflow:hidden;background:var(--ink-2);cursor:pointer;position:relative}
-  .gallery-item img{width:100%;height:auto;display:block;transition:transform 1s ease;filter:grayscale(3%)}
+  .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1s ease;filter:grayscale(3%)}
   .gallery-item:hover img{transform:scale(1.02);filter:grayscale(0%)}
 
   /* LIGHTBOX */
@@ -75,8 +77,25 @@
   .lightbox-btn:hover{border-color:var(--sand);color:var(--sand)}
   .lightbox-counter{color:var(--muted);font-size:12px;letter-spacing:0.08em}
 
+  /* PRE-FOOTER CONTACT */
+  .pre-footer{padding:56px 0;text-align:center;border-top:1px solid var(--line-soft)}
+  .pre-footer .btn-pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:15px 34px;color:var(--cream);text-decoration:none;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;transition:all .3s ease}
+  .pre-footer .btn-pill:hover{border-color:var(--sand);color:var(--sand)}
+  .pre-footer .lines{display:flex;gap:36px;justify-content:center;flex-wrap:wrap;margin-top:32px;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;font-weight:500;color:var(--cream)}
+  .pre-footer .lines a{display:inline-flex;align-items:center;gap:9px;text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:3px;color:var(--cream);transition:color .3s}
+  .pre-footer .lines a:hover{color:var(--sand)}
+  .pre-footer .lines svg{width:15px;height:15px;flex:none}
+  .pre-footer .hours{margin-top:18px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+
+  /* SCROLL TO TOP */
+  .scroll-top-btn{position:fixed;right:32px;bottom:32px;width:50px;height:50px;border-radius:50%;border:1px solid var(--line);background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .35s ease,border-color .3s ease;z-index:60}
+  .scroll-top-btn.visible{opacity:1;pointer-events:auto}
+  .scroll-top-btn:hover{border-color:var(--sand)}
+  .scroll-top-btn svg{width:18px;height:18px;stroke:var(--cream);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .scroll-top-btn:hover svg{stroke:var(--sand)}
+
   /* FOOTER */
-  footer{padding:54px 0;border-top:1px solid var(--line-soft);margin-top:72px}
+  footer{padding:28px 0 40px;border-top:1px solid var(--line-soft);margin-top:0}
   .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:22px}
   .foot .brand{font-size:19px}
   .foot-links{display:flex;gap:26px}
@@ -88,10 +107,8 @@
     .wrap{padding:0 24px}
     nav{padding:18px 24px}
     .nav-cta-pill{padding:9px 16px}
-    .project-hero{padding:40px 0 24px}
-    .project-header h1{font-size:clamp(32px,6vw,56px)}
-    .project-header .details{gap:32px}
-    .gallery{gap:14px}
+    .project-hero-full{height:100vh}
+    .hero-center h1{font-size:clamp(36px,7.5vw,64px)}
   }
   @media(max-width:520px){
     .wrap{padding:0 16px}
@@ -101,10 +118,9 @@
     .pill-short{display:inline}
     .nav-cta-pill{padding:8px 14px}
     .brand{font-size:15px}
-    .project-hero{padding:32px 0 20px}
-    .project-header h1{font-size:clamp(24px,8vw,40px)}
-    .project-header .details{gap:20px;flex-direction:column}
-    footer{padding:36px 0;margin-top:48px}
+    .project-hero-full{height:100vh}
+    .hero-center h1{font-size:clamp(28px,9vw,44px)}
+    footer{padding:24px 0 32px;margin-top:0}
   }
   @media(prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important}
@@ -115,43 +131,28 @@
 <body>
 
 <!-- NAV -->
-<nav>
+<nav id="nav">
   <a href="projects.html" class="back-btn">← <span class="back-label">All Projects</span></a>
-  <a href="index.html" style="display:flex;align-items:center;gap:10px;position:absolute;left:50%;transform:translateX(-50%);text-decoration:none">
-    <span class="brand">House of <i>White</i></span>
+  <a href="index.html" style="display:flex;align-items:center;position:absolute;left:50%;transform:translateX(-50%);text-decoration:none">
+    <img src="logo/logo-icon-new-transparent.png" alt="House of White" style="height:42px;width:auto">
   </a>
   <a href="book.html" class="nav-cta-pill"><span class="pill-full">Book a consultation</span><span class="pill-short">Book</span></a>
 </nav>
 
-<!-- PROJECT HEADER -->
-<section class="project-hero">
-  <div class="wrap">
-    <div class="project-header reveal">
-      <span class="eyebrow" id="peyebrow">Interior Design</span>
-      <h1 id="ptitle">Project <i>Name</i></h1>
-      <div class="details">
-        <div class="detail-item">
-          <div class="label">Location</div>
-          <div class="value" id="plocation">Dubai</div>
-        </div>
-        <div class="detail-item">
-          <div class="label">Service</div>
-          <div class="value" id="pservice">Full Interior</div>
-        </div>
-        <div class="detail-item">
-          <div class="label">Status</div>
-          <div class="value" id="pstatus">Completed</div>
-        </div>
-      </div>
-    </div>
+<!-- PROJECT HERO -->
+<header class="project-hero-full">
+  <img class="hero-bg" id="heroBg" src="" alt="">
+  <div class="hero-veil"></div>
+  <div class="hero-center reveal">
+    <span class="eyebrow" id="peyebrow">Residential</span>
+    <h1 id="ptitle">Project Name</h1>
+    <div class="hero-meta" id="pherometa">Dubai • Full Interior • Completed</div>
   </div>
-</section>
+</header>
 
 <!-- GALLERY -->
 <section>
-  <div class="wrap">
-    <div class="gallery" id="gallery"></div>
-  </div>
+  <div class="gallery" id="gallery"></div>
 </section>
 
 <!-- LIGHTBOX -->
@@ -171,15 +172,30 @@
   </div>
 </div>
 
+<!-- PRE-FOOTER CONTACT -->
+<section class="pre-footer reveal">
+  <div class="wrap">
+    <a href="book.html" class="btn-pill">Book a consultation</a>
+    <div class="lines">
+      <a href="https://www.instagram.com/howdesign_ae?igsh=MTJ1bGYxOG4zbGNxZg%3D%3D" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>@howdesign_ae</a>
+      <a href="mailto:how.design.ae@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>how.design.ae@gmail.com</a>
+      <a href="https://wa.me/971586771200" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.1a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20.1zm4.5-5.9c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.1-.3.2-.5.1-1.3-.6-2.1-1.1-3-2.5-.1-.2 0-.4.1-.5.2-.2.4-.4.5-.6.1-.2.1-.4 0-.5-.1-.2-.6-1.4-.8-1.9-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.5.1-.6.3-.2.2-.8.8-.8 1.9 0 1.1.8 2.2 1 2.4.1.2 1.8 2.8 4.4 3.8 2.1.8 2.1.5 2.5.5.4 0 1.3-.5 1.5-1 .2-.5.2-1 .1-1.1-.1-.1-.2-.2-.4-.3z"/></svg>+971 58 677 1200</a>
+    </div>
+    <div class="hours">Mon–Sat · 09:00–18:00 · WhatsApp support 24/7</div>
+  </div>
+</section>
+
+<!-- SCROLL TO TOP -->
+<a href="#" id="scrollTop" class="scroll-top-btn" aria-label="Back to top"><svg viewBox="0 0 24 24"><polyline points="6 15 12 9 18 15"></polyline></svg></a>
+
 <!-- FOOTER -->
 <footer>
   <div class="wrap foot">
-    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
-      <img src="assets/logo-icon-new-transparent.png" alt="W" style="height:32px;width:auto">
-      <span class="brand">House of <i>White</i></span>
+    <a href="index.html" style="display:flex;align-items:center;text-decoration:none">
+      <img src="logo/logo-new.png" alt="House of White" style="height:45px;width:auto">
     </a>
     <div class="foot-links">
-      <a href="index.html#work">Projects</a><a href="index.html#studio">Studio</a><a href="testimonials.html">Testimonials</a><a href="index.html#services">Services</a><a href="index.html#contact">Contact</a>
+      <a href="index.html#studio">About Us</a><a href="index.html#work">Projects</a><a href="index.html#services">Services</a><a href="testimonials.html">Testimonials</a><a href="index.html#contact">Contact</a>
     </div>
     <div class="cp">© 2026 House of White · Dubai</div>
   </div>
@@ -187,55 +203,109 @@
 
 <script>
   const projects={
-    1:{title:'Palm Jumeirah Villa',location:'Palm Jumeirah, Dubai',service:'Full Interior Design',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/Palm Jumeirah Villa/1.jpg','assets/projects/Palm Jumeirah Villa/2.jpg','assets/projects/Palm Jumeirah Villa/3.jpg','assets/projects/Palm Jumeirah Villa/4.jpg','assets/projects/Palm Jumeirah Villa/5.jpg','assets/projects/Palm Jumeirah Villa/6.jpg','assets/projects/Palm Jumeirah Villa/7.jpg','assets/projects/Palm Jumeirah Villa/8.jpg']},
-    2:{title:'Azizi Mina',location:'Palm Jumeirah',service:'Interior & Furnishing',status:'Completed',eyebrow:'Residential',renders:['assets/projects/Azizi Mina/1.jpg','assets/projects/Azizi Mina/2.jpg','assets/projects/Azizi Mina/3.jpg','assets/projects/Azizi Mina/4.jpg','assets/projects/Azizi Mina/5.jpg','assets/projects/Azizi Mina/6.jpg','assets/projects/Azizi Mina/7.jpg']},
-    3:{title:'California Village',location:'Dubai',service:'Concept & Build',status:'Completed',eyebrow:'Concept Design',renders:['assets/projects/California Village/1.jpg','assets/projects/California Village/2.jpg','assets/projects/California Village/3.jpg','assets/projects/California Village/4.jpg','assets/projects/California Village/5.jpg','assets/projects/California Village/6.jpg','assets/projects/California Village/7.jpg','assets/projects/California Village/8.jpg','assets/projects/California Village/9.jpg']},
-    4:{title:'Cedre Villas',location:'Emirates',service:'Full Interior',status:'Completed',eyebrow:'Villa Project',renders:['assets/projects/Cedre Villas/1.jpg','assets/projects/Cedre Villas/2.jpg','assets/projects/Cedre Villas/3.jpg','assets/projects/Cedre Villas/4.jpg','assets/projects/Cedre Villas/5.jpg','assets/projects/Cedre Villas/6.jpg','assets/projects/Cedre Villas/7.jpg','assets/projects/Cedre Villas/8.jpg','assets/projects/Cedre Villas/9.jpg']},
-    5:{title:'City Walk 11',location:'Downtown Dubai',service:'Living Spaces',status:'Completed',eyebrow:'Apartment Design',renders:['assets/projects/City Walk 11/1.jpg','assets/projects/City Walk 11/2.jpg','assets/projects/City Walk 11/3.jpg','assets/projects/City Walk 11/4.jpg','assets/projects/City Walk 11/5.jpg','assets/projects/City Walk 11/6.jpg','assets/projects/City Walk 11/7.jpg','assets/projects/City Walk 11/8.jpg']},
-    6:{title:'Damac Hills 2 — Mulberry',location:'Damac Hills',service:'Styling & Furnishing',status:'Completed',eyebrow:'Interior Styling',renders:['assets/projects/Damac Hills 2/1.jpg','assets/projects/Damac Hills 2/2.jpg','assets/projects/Damac Hills 2/3.jpg','assets/projects/Damac Hills 2/4.jpg','assets/projects/Damac Hills 2/5.jpg','assets/projects/Damac Hills 2/6.jpg','assets/projects/Damac Hills 2/7.jpg','assets/projects/Damac Hills 2/8.jpg']},
-    7:{title:'Damac Hills — Horizon Park',location:'Damac Hills',service:'Full Design',status:'Completed',eyebrow:'Residential',renders:['assets/projects/Damac Hills/1.jpg','assets/projects/Damac Hills/2.jpg','assets/projects/Damac Hills/3.jpg','assets/projects/Damac Hills/4.jpg','assets/projects/Damac Hills/5.jpg','assets/projects/Damac Hills/6.jpg','assets/projects/Damac Hills/7.jpg','assets/projects/Damac Hills/8.jpg']},
-    8:{title:'Dubai South Villa',location:'Dubai South',service:'Full Interior',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/Dubai South Villa/1.jpg','assets/projects/Dubai South Villa/2.jpg','assets/projects/Dubai South Villa/3.jpg','assets/projects/Dubai South Villa/4.jpg','assets/projects/Dubai South Villa/5.jpg','assets/projects/Dubai South Villa/6.jpg','assets/projects/Dubai South Villa/7.jpg','assets/projects/Dubai South Villa/8.jpg']},
-    9:{title:'Fairooz Tower',location:'Dubai Marina',service:'Penthouse Design',status:'Completed',eyebrow:'Luxury Design',renders:['assets/projects/Fairooz Tower/1.jpg','assets/projects/Fairooz Tower/2.jpg','assets/projects/Fairooz Tower/3.jpg','assets/projects/Fairooz Tower/4.jpg','assets/projects/Fairooz Tower/5.jpg','assets/projects/Fairooz Tower/6.jpg','assets/projects/Fairooz Tower/7.jpg','assets/projects/Fairooz Tower/8.jpg']},
+    2:{title:'Azizi Mina',location:'Palm Jumeirah',service:'Interior & Furnishing',status:'Completed',eyebrow:'Residential',renders:['assets/projects/Azizi Mina_ Palm Jumeirah/Living room & Kitchen/10000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Living room & Kitchen/20000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Living room & Kitchen/30000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Living room & Kitchen/40000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Living room & Kitchen/50000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Living room & Kitchen/60000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Living room & Kitchen/70000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Living room & Kitchen/80000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Living room & Kitchen/90000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Living room & Kitchen/100000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Living room & Kitchen/150000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Living room & Kitchen/160000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Master bedroom/10000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Master bedroom/20000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Master bedroom/30000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Master bedroom/40000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Master bedroom/50000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Master bedroom/60000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Master bedroom/70000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Master bedroom/80000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Master bedroom/90000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Master bathroom/150000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Master bathroom/160000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Master bathroom/170000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Master bathroom/180000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Master bathroom/190000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Guest bedroom/110000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Guest bedroom/120000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Guest bedroom/130000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Guest bedroom/140000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Guest bedroom2/100000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Guest bedroom2/110000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Guest bedroom2/120000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Guest bedroom2/130000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Guest bedroom2/140000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Guest bedroom2/270000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Guest bedroom2/280000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Guest bathroom/200000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Guest bathroom/210000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Guest bathroom/220000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Powder room/230000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Powder room/240000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Powder room/250000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Powder room/260000.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Terrace/1.jpg','assets/projects/Azizi Mina_ Palm Jumeirah/Terrace/2.jpg']},
+    3:{title:'California Village',location:'Dubai',service:'Concept & Build',status:'Completed',eyebrow:'Concept Design',renders:['assets/projects/California Village/Living Room & Kitchen & Entrance/1.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/10000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/20000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/30000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/40000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/50000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/70000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/80000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/90000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/100000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/110000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/120000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/130000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/180000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/200000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/210000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/220000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/260000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/280000.jpg','assets/projects/California Village/Living Room & Kitchen & Entrance/290000.jpg','assets/projects/California Village/Master bedroom/1.jpg','assets/projects/California Village/Master bedroom/2.jpg','assets/projects/California Village/Master bedroom/3.jpg','assets/projects/California Village/Master bedroom/20000.jpg','assets/projects/California Village/Master bedroom/30000.jpg','assets/projects/California Village/Master bedroom/40000.jpg','assets/projects/California Village/Master bedroom/50000.jpg','assets/projects/California Village/Master bedroom/50000(1).jpg','assets/projects/California Village/Master bedroom/70000.jpg','assets/projects/California Village/Master bedroom/170000.jpg','assets/projects/California Village/Master bedroom/180000.jpg','assets/projects/California Village/Master bedroom/180000(1).jpg','assets/projects/California Village/Master bathroom/100000.jpg','assets/projects/California Village/Master bathroom/110000.jpg','assets/projects/California Village/Master bathroom/120000.jpg','assets/projects/California Village/Master bathroom/130000.jpg','assets/projects/California Village/Master bathroom/140000.jpg','assets/projects/California Village/Master bathroom/150000.jpg','assets/projects/California Village/Master bathroom/160000.jpg','assets/projects/California Village/Game room/10000.jpg','assets/projects/California Village/Game room/20000.jpg','assets/projects/California Village/Game room/30000.jpg','assets/projects/California Village/Game room/40000.jpg','assets/projects/California Village/Game room/50000.jpg','assets/projects/California Village/Game room/60000.jpg','assets/projects/California Village/Game room/70000.jpg','assets/projects/California Village/Powder room/190000.jpg']},
+    4:{title:'Cedre Villas',location:'Emirates',service:'Full Interior',status:'Completed',eyebrow:'Villa Project',renders:['assets/projects/Cedre Villas/Living room & Dining room/10.10000.jpg','assets/projects/Cedre Villas/Living room & Dining room/11.10000.jpg','assets/projects/Cedre Villas/Living room & Dining room/10000.jpg','assets/projects/Cedre Villas/Living room & Dining room/20000.jpg','assets/projects/Cedre Villas/Living room & Dining room/30000.jpg','assets/projects/Cedre Villas/Living room & Dining room/40000.jpg','assets/projects/Cedre Villas/Living room & Dining room/50000.jpg','assets/projects/Cedre Villas/Living room & Dining room/60000.jpg','assets/projects/Cedre Villas/Living room & Dining room/70000.jpg','assets/projects/Cedre Villas/Living room & Dining room/80000.jpg','assets/projects/Cedre Villas/Living room & Dining room/90000.jpg','assets/projects/Cedre Villas/Living room & Dining room/стол 10000.jpg','assets/projects/Cedre Villas/Living room & Dining room/стол 20000.jpg','assets/projects/Cedre Villas/Living room & Dining room/стол 30000.jpg','assets/projects/Cedre Villas/Living room & Dining room/стол 50000.jpg','assets/projects/Cedre Villas/Living room & Dining room/стол 60000.jpg','assets/projects/Cedre Villas/Kitchen & Lounge area/кух 10.10000.jpg','assets/projects/Cedre Villas/Kitchen & Lounge area/кух 12.10000.jpg','assets/projects/Cedre Villas/Kitchen & Lounge area/кух 30000.jpg','assets/projects/Cedre Villas/Kitchen & Lounge area/кух 40000.jpg','assets/projects/Cedre Villas/Kitchen & Lounge area/кух 50000.jpg','assets/projects/Cedre Villas/Kitchen & Lounge area/кух 60000.jpg','assets/projects/Cedre Villas/Kitchen & Lounge area/кух 70000.jpg','assets/projects/Cedre Villas/Kitchen & Lounge area/кух 80000.jpg','assets/projects/Cedre Villas/Kitchen & Lounge area/кух 90000.jpg','assets/projects/Cedre Villas/Kitchen & Lounge area/стол 40000.jpg','assets/projects/Cedre Villas/Master bedroom/10000.jpg','assets/projects/Cedre Villas/Master bedroom/20000.jpg','assets/projects/Cedre Villas/Master bedroom/30000.jpg','assets/projects/Cedre Villas/Master bedroom/40000.jpg','assets/projects/Cedre Villas/Master bedroom/50000.jpg','assets/projects/Cedre Villas/Master bedroom/60000.jpg','assets/projects/Cedre Villas/Master bedroom/70000.jpg','assets/projects/Cedre Villas/Master bedroom/80000.jpg','assets/projects/Cedre Villas/Master bedroom/90000.jpg','assets/projects/Cedre Villas/Master bedroom/100000.jpg','assets/projects/Cedre Villas/Master bedroom/110000.jpg','assets/projects/Cedre Villas/Master bedroom/120000.jpg','assets/projects/Cedre Villas/Master bedroom/130000.jpg','assets/projects/Cedre Villas/Master bedroom/140000.jpg','assets/projects/Cedre Villas/Master bedroom/150000.jpg','assets/projects/Cedre Villas/Master bathroom/мастер 2 2.11.jpg','assets/projects/Cedre Villas/Master bathroom/мастер 2.11.jpg','assets/projects/Cedre Villas/Master bathroom/мастер 3 2.11.jpg','assets/projects/Cedre Villas/Staircase/27.10.jpg','assets/projects/Cedre Villas/Staircase/27.10 2.jpg','assets/projects/Cedre Villas/Staircase/27.10 3.jpg','assets/projects/Cedre Villas/Cedre Villa. Exterior/4.png','assets/projects/Cedre Villas/Cedre Villa. Exterior/11.jpg','assets/projects/Cedre Villas/Cedre Villa. Exterior/22222.jpg','assets/projects/Cedre Villas/Cedre Villa. Exterior/6666666666666.jpg']},
+    5:{title:'City Walk 11',location:'Downtown Dubai',service:'Living Spaces',status:'Completed',eyebrow:'Apartment Design',renders:['assets/projects/City Walk 11/Living room/10000.jpg','assets/projects/City Walk 11/Living room/30000.jpg']},
+    6:{title:'Damac Hills 2 — Mulberry',location:'Damac Hills',service:'Styling & Furnishing',status:'Completed',eyebrow:'Interior Styling',renders:['assets/projects/Damac Hills 2. Mulberry/Ground Floor/10000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/20000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/30000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/50000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/60000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/70000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/80000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/90000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/100000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/110000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/120000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/130000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/140000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/150000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/200000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/210000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/220000.jpg','assets/projects/Damac Hills 2. Mulberry/Ground Floor/230000.jpg','assets/projects/Damac Hills 2. Mulberry/Master bedroom/10000.jpg','assets/projects/Damac Hills 2. Mulberry/Master bedroom/20001.jpg','assets/projects/Damac Hills 2. Mulberry/Master bedroom/120000.jpg','assets/projects/Damac Hills 2. Mulberry/Master bedroom/130001.jpg','assets/projects/Damac Hills 2. Mulberry/Master bedroom/140000.jpg','assets/projects/Damac Hills 2. Mulberry/Master bedroom/150000.jpg','assets/projects/Damac Hills 2. Mulberry/Master bedroom/160001.jpg','assets/projects/Damac Hills 2. Mulberry/Guest bedroom FF/30003.jpg','assets/projects/Damac Hills 2. Mulberry/Guest bedroom FF/40003.jpg','assets/projects/Damac Hills 2. Mulberry/Guest bedroom FF/170003.jpg','assets/projects/Damac Hills 2. Mulberry/Guest bedroom FF/190000.jpg','assets/projects/Damac Hills 2. Mulberry/Guest bedroom FF/200003.jpg','assets/projects/Damac Hills 2. Mulberry/Guest bedroom 2 floor/260000.jpg','assets/projects/Damac Hills 2. Mulberry/Guest bedroom 2 floor/260001.jpg','assets/projects/Damac Hills 2. Mulberry/Guest bedroom 2 floor/270000.jpg','assets/projects/Damac Hills 2. Mulberry/Kids room/50002.jpg','assets/projects/Damac Hills 2. Mulberry/Kids room/60002.jpg','assets/projects/Damac Hills 2. Mulberry/Kids room/70002.jpg','assets/projects/Damac Hills 2. Mulberry/Kids room/80002.jpg','assets/projects/Damac Hills 2. Mulberry/Kids room/90002.jpg','assets/projects/Damac Hills 2. Mulberry/Kids room/100002.jpg','assets/projects/Damac Hills 2. Mulberry/Kids room/110002.jpg','assets/projects/Damac Hills 2. Mulberry/Office/220002.jpg','assets/projects/Damac Hills 2. Mulberry/Office/230002.jpg','assets/projects/Damac Hills 2. Mulberry/Office/240002.jpg','assets/projects/Damac Hills 2. Mulberry/Office/250002.jpg','assets/projects/Damac Hills 2. Mulberry/Powder room/IMG_6973.jpg','assets/projects/Damac Hills 2. Mulberry/Powder room/IMG_6974.jpg','assets/projects/Damac Hills 2. Mulberry/Staircase/1.jpg','assets/projects/Damac Hills 2. Mulberry/Staircase/2.jpg','assets/projects/Damac Hills 2. Mulberry/Staircase/3.jpg','assets/projects/Damac Hills 2. Mulberry/Staircase/4.jpg','assets/projects/Damac Hills 2. Mulberry/Staircase/5.jpg','assets/projects/Damac Hills 2. Mulberry/Staircase/7.jpg','assets/projects/Damac Hills 2. Mulberry/Staircase/8.jpg']},
+    7:{title:'Dubai Hills — Horizon Park',location:'Dubai Hills',service:'Full Design',status:'Completed',eyebrow:'Residential',renders:['assets/projects/Dubai Hills_Horizon Park/Living room & Kitchen/10000.jpg','assets/projects/Dubai Hills_Horizon Park/Living room & Kitchen/20000.jpg','assets/projects/Dubai Hills_Horizon Park/Living room & Kitchen/30000.jpg','assets/projects/Dubai Hills_Horizon Park/Living room & Kitchen/40000.jpg','assets/projects/Dubai Hills_Horizon Park/Living room & Kitchen/70000.jpg','assets/projects/Dubai Hills_Horizon Park/Living room & Kitchen/80000.jpg','assets/projects/Dubai Hills_Horizon Park/Living room & Kitchen/110000.jpg','assets/projects/Dubai Hills_Horizon Park/Living room & Kitchen/120000.jpg','assets/projects/Dubai Hills_Horizon Park/Living room & Kitchen/150000.jpg','assets/projects/Dubai Hills_Horizon Park/Living room & Kitchen/IMG_5621.jpg','assets/projects/Dubai Hills_Horizon Park/Living room & Kitchen/IMG_5622.jpg','assets/projects/Dubai Hills_Horizon Park/Living room & Kitchen/IMG_5625.jpg','assets/projects/Dubai Hills_Horizon Park/Master bedroom/10000.jpg','assets/projects/Dubai Hills_Horizon Park/Master bedroom/20000.jpg','assets/projects/Dubai Hills_Horizon Park/Master bedroom/30000.jpg','assets/projects/Dubai Hills_Horizon Park/Master bedroom/40000.jpg','assets/projects/Dubai Hills_Horizon Park/Master bedroom/70000.jpg','assets/projects/Dubai Hills_Horizon Park/Master bedroom/IMG_5623.jpg','assets/projects/Dubai Hills_Horizon Park/Master bedroom/IMG_5624.jpg','assets/projects/Dubai Hills_Horizon Park/Guest bedroom/10000.jpg','assets/projects/Dubai Hills_Horizon Park/Guest bedroom/20000.jpg','assets/projects/Dubai Hills_Horizon Park/Guest bedroom/30000.jpg','assets/projects/Dubai Hills_Horizon Park/Guest bedroom/40000.jpg','assets/projects/Dubai Hills_Horizon Park/Guest bedroom/50000.jpg','assets/projects/Dubai Hills_Horizon Park/Kids room/20000.jpg','assets/projects/Dubai Hills_Horizon Park/Kids room/30000.jpg','assets/projects/Dubai Hills_Horizon Park/Kids room/40000.jpg','assets/projects/Dubai Hills_Horizon Park/Kids room/60000.jpg','assets/projects/Dubai Hills_Horizon Park/Kids room/IMG_5655.jpg','assets/projects/Dubai Hills_Horizon Park/Kids room/IMG_5656.jpg','assets/projects/Dubai Hills_Horizon Park/Master bathroom/IMG_5658.jpg','assets/projects/Dubai Hills_Horizon Park/Master bathroom/IMG_5659.jpg','assets/projects/Dubai Hills_Horizon Park/Master bathroom/IMG_5660.jpg','assets/projects/Dubai Hills_Horizon Park/Master bathroom/IMG_5661.jpg','assets/projects/Dubai Hills_Horizon Park/Master bathroom/IMG_5667.jpg','assets/projects/Dubai Hills_Horizon Park/Master bathroom/IMG_5668.jpg','assets/projects/Dubai Hills_Horizon Park/Guest Bathroom/70000.jpg','assets/projects/Dubai Hills_Horizon Park/Guest Bathroom/IMG_5669.jpg','assets/projects/Dubai Hills_Horizon Park/Guest Bathroom/IMG_5670.jpg','assets/projects/Dubai Hills_Horizon Park/Guest Bathroom/IMG_5671.jpg','assets/projects/Dubai Hills_Horizon Park/Laundry/20000.jpg']},
+    8:{title:'Dubai South Villa',location:'Dubai South',service:'Full Interior',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/Dubai South Villa/Ground Floor/1.jpg','assets/projects/Dubai South Villa/Ground Floor/1(1).jpg','assets/projects/Dubai South Villa/Ground Floor/1(2).jpg','assets/projects/Dubai South Villa/Ground Floor/1(3).jpg','assets/projects/Dubai South Villa/Ground Floor/2.jpg','assets/projects/Dubai South Villa/Ground Floor/2(1).jpg','assets/projects/Dubai South Villa/Ground Floor/3.jpg','assets/projects/Dubai South Villa/Ground Floor/3(1).jpg','assets/projects/Dubai South Villa/Ground Floor/6.jpg','assets/projects/Dubai South Villa/Ground Floor/11.jpg','assets/projects/Dubai South Villa/Ground Floor/15.jpg','assets/projects/Dubai South Villa/Ground Floor/16.jpg','assets/projects/Dubai South Villa/Ground Floor/22.jpg','assets/projects/Dubai South Villa/Master Bedroom/0_View04.jpg','assets/projects/Dubai South Villa/Master Bedroom/0_View150000.jpg','assets/projects/Dubai South Villa/Master Bedroom/3.jpg','assets/projects/Dubai South Villa/Master Bedroom/4.jpg','assets/projects/Dubai South Villa/Master Bedroom/5.jpg','assets/projects/Dubai South Villa/Master Bedroom/6.jpg','assets/projects/Dubai South Villa/Master Bathroom/0_View01.jpg','assets/projects/Dubai South Villa/Master Bathroom/0_View03.jpg','assets/projects/Dubai South Villa/Master Bathroom/0_View04.jpg','assets/projects/Dubai South Villa/Master Bathroom/0_View05.jpg','assets/projects/Dubai South Villa/Master Bathroom/0_View08.jpg','assets/projects/Dubai South Villa/Guest bathroom/1.jpg','assets/projects/Dubai South Villa/Guest bathroom/2.jpg','assets/projects/Dubai South Villa/Guest bathroom/3.jpg','assets/projects/Dubai South Villa/Guest bathroom/4.jpg','assets/projects/Dubai South Villa/Guest bathroom/5.jpg','assets/projects/Dubai South Villa/Guest bathroom/6.jpg','assets/projects/Dubai South Villa/Powder room/1.jpg','assets/projects/Dubai South Villa/Powder room/2.jpg','assets/projects/Dubai South Villa/Powder room/3.jpg','assets/projects/Dubai South Villa/Powder room/4.jpg','assets/projects/Dubai South Villa/Powder room/5.jpg','assets/projects/Dubai South Villa/Pergola/1.jpg','assets/projects/Dubai South Villa/Pergola/2.jpg','assets/projects/Dubai South Villa/Pergola/3.jpg','assets/projects/Dubai South Villa/Pergola/4.jpg','assets/projects/Dubai South Villa/Pergola/5.jpg','assets/projects/Dubai South Villa/Pergola/6.jpg','assets/projects/Dubai South Villa/Landscaping/1.png','assets/projects/Dubai South Villa/Landscaping/2.png','assets/projects/Dubai South Villa/Landscaping/3.png','assets/projects/Dubai South Villa/Landscaping/4.png','assets/projects/Dubai South Villa/Landscaping/5.png','assets/projects/Dubai South Villa/Landscaping/6.png','assets/projects/Dubai South Villa/Landscaping/7.png','assets/projects/Dubai South Villa/Landscaping/8.png','assets/projects/Dubai South Villa/Landscaping/9.png','assets/projects/Dubai South Villa/Landscaping/10.png']},
+    9:{title:'Fairooz Tower',location:'Dubai Marina',service:'Penthouse Design',status:'Completed',eyebrow:'Luxury Design',renders:['assets/projects/Fairooz Tower/Living room/2.jpg','assets/projects/Fairooz Tower/Living room/3.jpg','assets/projects/Fairooz Tower/Living room/7.jpg','assets/projects/Fairooz Tower/Living room/14.jpg','assets/projects/Fairooz Tower/Living room/15.jpg','assets/projects/Fairooz Tower/Living room/19.jpg','assets/projects/Fairooz Tower/Living room/20.jpg','assets/projects/Fairooz Tower/Living room/10000.jpg','assets/projects/Fairooz Tower/Living room/40000.jpg','assets/projects/Fairooz Tower/Living room/50000.jpg','assets/projects/Fairooz Tower/Living room/100000.jpg','assets/projects/Fairooz Tower/Living room/110000.jpg','assets/projects/Fairooz Tower/Living room/120000.jpg','assets/projects/Fairooz Tower/Living room/130000.jpg','assets/projects/Fairooz Tower/Living room/160000.jpg','assets/projects/Fairooz Tower/Master bedroom/1.jpg','assets/projects/Fairooz Tower/Master bedroom/4.jpg','assets/projects/Fairooz Tower/Master bedroom/6.jpg','assets/projects/Fairooz Tower/Master bedroom/9.jpg','assets/projects/Fairooz Tower/Master bedroom/10.jpg','assets/projects/Fairooz Tower/Master bedroom/20000.jpg','assets/projects/Fairooz Tower/Master bedroom/30000.jpg','assets/projects/Fairooz Tower/Master bedroom/50000.jpg','assets/projects/Fairooz Tower/Master bedroom/70000.jpg','assets/projects/Fairooz Tower/Master bedroom/80000.jpg','assets/projects/Fairooz Tower/Master bedroom/110000.jpg','assets/projects/Fairooz Tower/Master bedroom/120000.jpg','assets/projects/Fairooz Tower/Master bathroom/1.jpg','assets/projects/Fairooz Tower/Master bathroom/2.jpg','assets/projects/Fairooz Tower/Master bathroom/3.jpg','assets/projects/Fairooz Tower/Master bathroom/6.jpg','assets/projects/Fairooz Tower/Master bathroom/40000.jpg','assets/projects/Fairooz Tower/Master bathroom/50000.jpg','assets/projects/Fairooz Tower/Dining room/8.jpg','assets/projects/Fairooz Tower/Dining room/9.jpg','assets/projects/Fairooz Tower/Dining room/18.jpg','assets/projects/Fairooz Tower/Dining room/170000.jpg','assets/projects/Fairooz Tower/Kitchen/22.jpg','assets/projects/Fairooz Tower/Kitchen/25.jpg','assets/projects/Fairooz Tower/Kitchen/210000.jpg','assets/projects/Fairooz Tower/Kitchen/230000.jpg','assets/projects/Fairooz Tower/Kitchen/260000.jpg','assets/projects/Fairooz Tower/Powder room/7.jpg','assets/projects/Fairooz Tower/Powder room/8.jpg','assets/projects/Fairooz Tower/Powder room/9.jpg','assets/projects/Fairooz Tower/Powder room/10.jpg']},
     11:{title:'Downtown Penthouse',location:'Downtown Dubai',service:'Full Interior',status:'Completed',eyebrow:'Penthouse',renders:['assets/projects/Downtown Penthouse/1.jpg','assets/projects/Downtown Penthouse/2.jpg','assets/projects/Downtown Penthouse/3.jpg','assets/projects/Downtown Penthouse/4.jpg','assets/projects/Downtown Penthouse/5.jpg','assets/projects/Downtown Penthouse/6.jpg','assets/projects/Downtown Penthouse/7.jpg','assets/projects/Downtown Penthouse/8.jpg']},
-    12:{title:'Palm Jumeirah Grandeur',location:'Palm Jumeirah',service:'Full Interior Design',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/Palm Jumeirah Grandeur/1.jpg','assets/projects/Palm Jumeirah Grandeur/2.jpg','assets/projects/Palm Jumeirah Grandeur/3.jpg','assets/projects/Palm Jumeirah Grandeur/4.jpg','assets/projects/Palm Jumeirah Grandeur/5.jpg','assets/projects/Palm Jumeirah Grandeur/6.jpg','assets/projects/Palm Jumeirah Grandeur/7.jpg','assets/projects/Palm Jumeirah Grandeur/8.jpg']}
+    12:{title:'Palm Jumeirah Grandeur',location:'Palm Jumeirah',service:'Full Interior Design',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/Palm Jumeirah. Grandeur/Master bedroom/190000.jpg','assets/projects/Palm Jumeirah. Grandeur/Master bedroom/200000.jpg','assets/projects/Palm Jumeirah. Grandeur/Master bedroom/210000.jpg','assets/projects/Palm Jumeirah. Grandeur/Master bedroom/220000.jpg','assets/projects/Palm Jumeirah. Grandeur/Master bedroom/230000.jpg','assets/projects/Palm Jumeirah. Grandeur/Master bedroom/240000.jpg','assets/projects/Palm Jumeirah. Grandeur/Master bedroom/250000.jpg','assets/projects/Palm Jumeirah. Grandeur/Master bedroom/260000.jpg','assets/projects/Palm Jumeirah. Grandeur/Master bedroom/270000.jpg','assets/projects/Palm Jumeirah. Grandeur/Master bedroom/280000.jpg','assets/projects/Palm Jumeirah. Grandeur/Master bedroom/290000.jpg','assets/projects/Palm Jumeirah. Grandeur/Master bedroom/300000.jpg']},
+    13:{title:'JVT Villa',location:'Jumeirah Village Triangle',service:'Full Interior Design',status:'Completed',eyebrow:'Villa Design',renders:['assets/projects/JVT Villa/Ground Floor/10000.jpg','assets/projects/JVT Villa/Ground Floor/20000.jpg','assets/projects/JVT Villa/Ground Floor/30000.jpg','assets/projects/JVT Villa/Ground Floor/40000.jpg','assets/projects/JVT Villa/Ground Floor/50000.jpg','assets/projects/JVT Villa/Ground Floor/70000.jpg','assets/projects/JVT Villa/Ground Floor/80000.jpg','assets/projects/JVT Villa/Ground Floor/100000.jpg','assets/projects/JVT Villa/Ground Floor/110000.jpg','assets/projects/JVT Villa/Ground Floor/120000.jpg','assets/projects/JVT Villa/Ground Floor/130000.jpg','assets/projects/JVT Villa/Ground Floor/140000.jpg','assets/projects/JVT Villa/Ground Floor/150000.jpg','assets/projects/JVT Villa/Ground Floor/190000.jpg','assets/projects/JVT Villa/Master bedroom/1.jpg','assets/projects/JVT Villa/Master bedroom/2.jpg','assets/projects/JVT Villa/Master bedroom/3.jpg','assets/projects/JVT Villa/Master bedroom/4.jpg','assets/projects/JVT Villa/Master bedroom/4(1).jpg','assets/projects/JVT Villa/Master bedroom/6.jpg','assets/projects/JVT Villa/Master bedroom/50000.jpg','assets/projects/JVT Villa/Master bedroom/70000.jpg','assets/projects/JVT Villa/Master bedroom/80000.jpg','assets/projects/JVT Villa/Twin bedroom/3.jpg','assets/projects/JVT Villa/Twin bedroom/4.jpg','assets/projects/JVT Villa/Twin bedroom/5.jpg','assets/projects/JVT Villa/Twin bedroom/6.jpg','assets/projects/JVT Villa/Twin bedroom/10000.jpg','assets/projects/JVT Villa/Twin bedroom/20000.jpg','assets/projects/JVT Villa/Twin bathrooms/1.jpg','assets/projects/JVT Villa/Twin bathrooms/2.jpg','assets/projects/JVT Villa/Twin bathrooms/3.jpg','assets/projects/JVT Villa/Twin bathrooms/4.jpg','assets/projects/JVT Villa/Twin bathrooms/5.jpg','assets/projects/JVT Villa/Twin bathrooms/6.jpg','assets/projects/JVT Villa/Twin bathrooms/8.jpg','assets/projects/JVT Villa/FF_Middle bedroom/1.jpg','assets/projects/JVT Villa/FF_Middle bedroom/2.jpg','assets/projects/JVT Villa/FF_Middle bedroom/3.jpg','assets/projects/JVT Villa/FF_Middle bedroom/4.jpg','assets/projects/JVT Villa/FF_Middle bedroom/5.jpg','assets/projects/JVT Villa/FF_Middle bedroom/6.jpg','assets/projects/JVT Villa/FF_Middle bedroom/7.jpg','assets/projects/JVT Villa/FF_middle bathroom/1.jpg','assets/projects/JVT Villa/FF_middle bathroom/2.jpg','assets/projects/JVT Villa/FF_middle bathroom/3.jpg','assets/projects/JVT Villa/FF_middle bathroom/4.jpg','assets/projects/JVT Villa/FF_middle bathroom/5.jpg','assets/projects/JVT Villa/FF_middle bathroom/6.jpg','assets/projects/JVT Villa/FF_middle bathroom/7.jpg','assets/projects/JVT Villa/FF_middle bathroom/8.jpg','assets/projects/JVT Villa/Gym/20000.jpg','assets/projects/JVT Villa/Gym/30000.jpg','assets/projects/JVT Villa/Gym/160000.jpg','assets/projects/JVT Villa/Gym/170000.jpg','assets/projects/JVT Villa/Gym/180000.jpg','assets/projects/JVT Villa/Powder Room/1.jpg','assets/projects/JVT Villa/Powder Room/2.jpg','assets/projects/JVT Villa/Powder Room/3.jpg','assets/projects/JVT Villa/Powder Room/4.jpg']},
+    14:{title:'Rimal 5',location:'Rimal, Dubai',service:'Interior & Furnishing',status:'Completed',eyebrow:'Residential',renders:['assets/projects/Rimal 5/Living & Kitchen/2.jpg','assets/projects/Rimal 5/Living & Kitchen/4.jpg','assets/projects/Rimal 5/Living & Kitchen/5.jpg','assets/projects/Rimal 5/Living & Kitchen/6.jpg','assets/projects/Rimal 5/Living & Kitchen/7.jpg','assets/projects/Rimal 5/Living & Kitchen/8.jpg','assets/projects/Rimal 5/Living & Kitchen/9.jpg','assets/projects/Rimal 5/Living & Kitchen/11.jpg','assets/projects/Rimal 5/Living & Kitchen/33.jpg','assets/projects/Rimal 5/Master Bedroom/1.3.jpg','assets/projects/Rimal 5/Master Bedroom/2.jpg','assets/projects/Rimal 5/Master Bedroom/4.jpg','assets/projects/Rimal 5/Master Bedroom/4(1).jpg','assets/projects/Rimal 5/Master Bedroom/5.jpg','assets/projects/Rimal 5/Bathroom/1.jpg','assets/projects/Rimal 5/Bathroom/1(1).jpg','assets/projects/Rimal 5/Bathroom/1(2).jpg','assets/projects/Rimal 5/Bathroom/2.jpg','assets/projects/Rimal 5/Bathroom/2(1).jpg','assets/projects/Rimal 5/Bathroom/2(2).jpg','assets/projects/Rimal 5/Bathroom/3.jpg','assets/projects/Rimal 5/Bathroom/3(1).jpg','assets/projects/Rimal 5/Bathroom/4.jpg','assets/projects/Rimal 5/Bathroom/4(1).jpg','assets/projects/Rimal 5/Bathroom/4(2).jpg','assets/projects/Rimal 5/Bathroom/5.jpg','assets/projects/Rimal 5/Bathroom/5(1).jpg']},
+    15:{title:'Rimal 6',location:'Rimal, Dubai',service:'Interior & Furnishing',status:'Completed',eyebrow:'Residential',renders:['assets/projects/Rimal 6/Living room & Kitchen/Dining Room_1.jpg','assets/projects/Rimal 6/Living room & Kitchen/Dining Room_2.jpg','assets/projects/Rimal 6/Living room & Kitchen/Entrance_1.jpg','assets/projects/Rimal 6/Living room & Kitchen/Entrance_2.jpg','assets/projects/Rimal 6/Living room & Kitchen/Hallway_1.jpg','assets/projects/Rimal 6/Living room & Kitchen/Kitchen_1.jpg','assets/projects/Rimal 6/Living room & Kitchen/Kitchen_2.jpg','assets/projects/Rimal 6/Living room & Kitchen/Living Room_1.jpg','assets/projects/Rimal 6/Living room & Kitchen/Living Room_2.jpg','assets/projects/Rimal 6/Living room & Kitchen/Living Room_3.jpg','assets/projects/Rimal 6/Living room & Kitchen/Living Room_4.jpg','assets/projects/Rimal 6/Master bedroom/Master Bedroom Wardrobe_1.jpg','assets/projects/Rimal 6/Master bedroom/Master Bedroom Wardrobe_2.jpg','assets/projects/Rimal 6/Master bedroom/Master Bedroom Wardrobe_3.jpg','assets/projects/Rimal 6/Master bedroom/Master Bedroom_1.jpg','assets/projects/Rimal 6/Master bedroom/Master Bedroom_2.jpg','assets/projects/Rimal 6/Master bedroom/Master Bedroom_3.jpg','assets/projects/Rimal 6/Master bedroom/Master Bedroom_4.jpg','assets/projects/Rimal 6/Master bedroom/Master Bedroom_5.jpg','assets/projects/Rimal 6/Master bedroom/Master Bedroom_6.jpg','assets/projects/Rimal 6/Master bedroom/Master Bedroom_7.jpg','assets/projects/Rimal 6/Master bathroom/Master Bathroom_1.jpg','assets/projects/Rimal 6/Master bathroom/Master Bathroom_2.jpg','assets/projects/Rimal 6/Master bathroom/Master Bathroom_4.jpg','assets/projects/Rimal 6/Master bathroom/Master Bathroom_5.jpg','assets/projects/Rimal 6/Master bathroom/Master Bathroom_6.jpg','assets/projects/Rimal 6/Guest bedroom/Guest Room_1.jpg','assets/projects/Rimal 6/Guest bedroom/Guest Room_2.jpg','assets/projects/Rimal 6/Guest bedroom/Guest Room_3.jpg','assets/projects/Rimal 6/Guest bedroom/Guest Room_4.jpg','assets/projects/Rimal 6/Guest bedroom/Guest Room_5.jpg','assets/projects/Rimal 6/Guest bedroom/Guest Room_6.jpg','assets/projects/Rimal 6/Guest bedroom/Guest Room_7.jpg','assets/projects/Rimal 6/Guest bathroom/Guest Room Bath_1.jpg','assets/projects/Rimal 6/Guest bathroom/Guest Room Bath_2.jpg','assets/projects/Rimal 6/Guest bathroom/Guest Room Bath_3.jpg','assets/projects/Rimal 6/Kidsroom/Kids Room_1.jpg','assets/projects/Rimal 6/Kidsroom/Kids Room_2.jpg','assets/projects/Rimal 6/Kidsroom/Kids Room_3.jpg','assets/projects/Rimal 6/Kidsroom/Kids Room_4.jpg','assets/projects/Rimal 6/Kidsroom/Kids Room_5.jpg','assets/projects/Rimal 6/Kidsroom/Kids Room_6.jpg','assets/projects/Rimal 6/Laundry/Laundry_1.jpg','assets/projects/Rimal 6/Laundry/Laundry_2.jpg','assets/projects/Rimal 6/Laundry/Laundry_3.jpg','assets/projects/Rimal 6/Powder room/Guest Toilet_1.jpg','assets/projects/Rimal 6/Powder room/Guest Toilet_2.jpg','assets/projects/Rimal 6/Powder room/Guest Toilet_3.jpg']}
   };
 
   let currentImageIndex=0;
-  let currentProjectId=1;
+  let currentProjectId=2;
 
   const params=new URLSearchParams(window.location.search);
-  const projectId=parseInt(params.get('id'))||1;
+  const projectId=parseInt(params.get('id'))||2;
   currentProjectId=projectId;
   
   if(projects[projectId]){
     const project=projects[projectId];
     document.getElementById('peyebrow').textContent=project.eyebrow;
     document.getElementById('ptitle').textContent=project.title;
-    document.getElementById('plocation').textContent=project.location;
-    document.getElementById('pservice').textContent=project.service;
-    document.getElementById('pstatus').textContent=project.status;
+    document.getElementById('pherometa').textContent=project.location+' • '+project.service+' • '+project.status;
+    document.getElementById('heroBg').src=project.renders[0];
     document.title=project.title+' — House of White';
-    
-    // Создаем галерею с локальными путями
-    const gallery=document.getElementById('gallery');
-    project.renders.forEach((render,i)=>{
-      const item=document.createElement('div');
-      item.className='gallery-item reveal';
-      const img=document.createElement('img');
-      img.loading='lazy';
-      img.src=render;
-      img.alt='Project image';
-      img.dataset.index=i;
-      img.addEventListener('click',()=>openLightbox(i));
-      item.appendChild(img);
-      gallery.appendChild(item);
-    });
-    
+
     document.getElementById('totalImages').textContent=project.renders.length;
-    
-    // Reveal animations
-    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:0.15});
-    document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*80)+'ms';io.observe(el)});
+    buildJustifiedGallery(project.renders);
+  }
+
+  // Reveal animation for hero text and the pre-footer contact block (gallery rows handle their own reveal)
+  const generalIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');generalIO.unobserve(e.target)}}),{threshold:0.1});
+  document.querySelectorAll('.reveal:not(.gallery-row)').forEach(el=>generalIO.observe(el));
+
+  // Justified gallery: row height adapts to each photo's real aspect ratio,
+  // so every image is shown in full (no crop) while rows still fill the width exactly (no gaps).
+  function loadRatio(src){
+    return new Promise(resolve=>{
+      const img=new Image();
+      img.onload=()=>resolve(img.naturalWidth/img.naturalHeight||4/3);
+      img.onerror=()=>resolve(4/3);
+      img.src=src;
+    });
+  }
+
+  let justifyResizeTimer;
+  async function buildJustifiedGallery(renders){
+    const gallery=document.getElementById('gallery');
+    const ratios=await Promise.all(renders.map(loadRatio));
+    const metas=renders.map((src,index)=>({src,index,ratio:ratios[index]}));
+
+    function render(){
+      gallery.innerHTML='';
+      const containerWidth=gallery.clientWidth||window.innerWidth;
+      const targetRowHeight=window.innerWidth<700?260:480;
+      const rows=[];
+      let row=[],rowRatio=0;
+      metas.forEach(m=>{
+        row.push(m);
+        rowRatio+=m.ratio;
+        if(targetRowHeight*rowRatio>=containerWidth){
+          rows.push(row);
+          row=[];rowRatio=0;
+        }
+      });
+      if(row.length)rows.push(row);
+
+      rows.forEach((rowItems,ri)=>{
+        const sumRatio=rowItems.reduce((s,m)=>s+m.ratio,0);
+        let rowHeight=containerWidth/sumRatio;
+        const isLastRow=ri===rows.length-1;
+        if(isLastRow&&rowHeight>targetRowHeight*1.6)rowHeight=targetRowHeight;
+        const rowEl=document.createElement('div');
+        rowEl.className='gallery-row reveal';
+        rowEl.style.height=Math.round(rowHeight)+'px';
+        rowItems.forEach(m=>{
+          const item=document.createElement('div');
+          item.className='gallery-item';
+          item.style.flex='0 0 '+(rowHeight*m.ratio)+'px';
+          const img=document.createElement('img');
+          img.loading='lazy';
+          img.src=m.src;
+          img.alt='Project image';
+          img.addEventListener('click',()=>openLightbox(m.index));
+          item.appendChild(img);
+          rowEl.appendChild(item);
+        });
+        gallery.appendChild(rowEl);
+      });
+
+      const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:0.1});
+      document.querySelectorAll('.gallery-row.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*60)+'ms';io.observe(el)});
+    }
+
+    render();
+    addEventListener('resize',()=>{
+      clearTimeout(justifyResizeTimer);
+      justifyResizeTimer=setTimeout(render,200);
+    });
   }
 
   // LIGHTBOX FUNCTIONS
@@ -289,6 +359,15 @@
   document.querySelectorAll('img').forEach(img=>{
     img.addEventListener('error',()=>{img.style.opacity=0.3;img.parentElement.style.background='linear-gradient(150deg,#221d16,#15120d)'});
   });
+
+  // Scroll-to-top button — appears once the footer comes into view
+  const scrollTopBtn=document.getElementById('scrollTop');
+  const footerEl=document.querySelector('footer');
+  if(scrollTopBtn&&footerEl){
+    const stObserver=new IntersectionObserver(es=>es.forEach(e=>scrollTopBtn.classList.toggle('visible',e.isIntersecting)),{threshold:0.1});
+    stObserver.observe(footerEl);
+    scrollTopBtn.addEventListener('click',e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'})});
+  }
 </script>
 </body>
 </html>
