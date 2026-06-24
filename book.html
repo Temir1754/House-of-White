@@ -261,6 +261,19 @@
     document.getElementById('confirmBtn').href = 'https://wa.me/971586771200?text='+msg;
     document.getElementById('confirmSection').classList.add('show');
     setTimeout(()=>document.getElementById('confirmSection').scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+    saveBooking(selDate, time);
+  }
+
+  function saveBooking(date, time){
+    fetch('/api/bookings', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      credentials: 'include',
+      body: JSON.stringify({
+        date: date.toISOString().slice(0,10),
+        time: time,
+      }),
+    }).catch(()=>{});
   }
 
   renderCal();

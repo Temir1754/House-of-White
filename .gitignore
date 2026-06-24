@@ -1,2 +1,5 @@
 TODO.md
 IMG_4734.JPG
+.env
+backend/.env
+backend/node_modules
