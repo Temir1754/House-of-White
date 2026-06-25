@@ -52,6 +52,13 @@ router.post('/google', async (req, res) => {
     );
     const user = rows[0];
 
+    // Link this Google account to a client profile created by the studio,
+    // matched by email — only if that profile isn't already linked to someone else.
+    await pool.query(
+      `UPDATE clients SET user_id = $1 WHERE LOWER(email) = LOWER($2) AND user_id IS NULL`,
+      [user.id, user.email]
+    );
+
     const token = jwt.sign(
       { id: user.id, email: user.email, name: user.name, isAdmin: user.is_admin },
       process.env.JWT_SECRET,
