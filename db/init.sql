@@ -134,7 +134,7 @@ CREATE TABLE spec_items (
 CREATE TABLE site_visits (
   id SERIAL PRIMARY KEY,
   client_project_id INTEGER NOT NULL REFERENCES client_projects(id) ON DELETE CASCADE,
-  visit_date DATE NOT NULL,
+  visit_date TEXT NOT NULL,
   note TEXT,
   file_key TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()

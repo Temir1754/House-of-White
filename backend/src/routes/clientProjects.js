@@ -80,7 +80,7 @@ async function loadFullProject(slug) {
   }
 
   const { rows: visitRows } = await pool.query(
-    'SELECT id, visit_date, note, file_key FROM site_visits WHERE client_project_id = $1 ORDER BY visit_date DESC',
+    'SELECT id, visit_date, note, file_key FROM site_visits WHERE client_project_id = $1 ORDER BY id DESC',
     [project.id]
   );
   const visits = visitRows.map((v) => ({ id: v.id, date: v.visit_date, note: v.note, fileKey: v.file_key }));
@@ -204,14 +204,46 @@ router.post('/:slug/rooms', requireAuth, requireAdmin, async (req, res) => {
 });
 
 router.patch('/rooms/:id', requireAuth, requireAdmin, async (req, res) => {
-  const { name, status, activeVariant } = req.body;
+  const { name, status, activeVariant, sortOrder } = req.body;
   const { rows } = await pool.query(
     `UPDATE rooms SET name = COALESCE($1, name), status = COALESCE($2, status),
-       active_variant = COALESCE($3, active_variant) WHERE id = $4 RETURNING *`,
-    [name || null, status || null, activeVariant ?? null, req.params.id]
+       active_variant = COALESCE($3, active_variant), sort_order = COALESCE($4, sort_order)
+     WHERE id = $5 RETURNING *`,
+    [name || null, status || null, activeVariant ?? null, sortOrder ?? null, req.params.id]
   );
   if (!rows[0]) return res.status(404).json({ error: 'Not found' });
   res.json(rows[0]);
+});
+
+router.delete('/rooms/:id', requireAuth, requireAdmin, async (req, res) => {
+  await pool.query('DELETE FROM rooms WHERE id = $1', [req.params.id]);
+  res.json({ ok: true });
+});
+
+router.post('/rooms/:id/variants', requireAuth, requireAdmin, async (req, res) => {
+  const { label } = req.body;
+  if (!label) return res.status(400).json({ error: 'Missing label' });
+  const { rows } = await pool.query(
+    'INSERT INTO room_variants (room_id, label) VALUES ($1, $2) RETURNING *',
+    [req.params.id, label]
+  );
+  res.status(201).json({ ...rows[0], photos: [] });
+});
+
+router.patch('/room-variants/:id', requireAuth, requireAdmin, async (req, res) => {
+  const { label } = req.body;
+  if (!label) return res.status(400).json({ error: 'Missing label' });
+  const { rows } = await pool.query(
+    'UPDATE room_variants SET label = $1 WHERE id = $2 RETURNING *',
+    [label, req.params.id]
+  );
+  if (!rows[0]) return res.status(404).json({ error: 'Not found' });
+  res.json(rows[0]);
+});
+
+router.delete('/room-variants/:id', requireAuth, requireAdmin, async (req, res) => {
+  await pool.query('DELETE FROM room_variants WHERE id = $1', [req.params.id]);
+  res.json({ ok: true });
 });
 
 router.post('/room-variants/:id/photos', requireAuth, requireAdmin, upload.single('file'), async (req, res) => {
@@ -247,6 +279,13 @@ router.patch('/room-photos/:id', requireAuth, requireAdmin, async (req, res) => 
   res.json(rows[0]);
 });
 
+router.delete('/room-photos/:id', requireAuth, requireAdmin, async (req, res) => {
+  const { rows } = await pool.query('SELECT file_key FROM room_photos WHERE id = $1', [req.params.id]);
+  if (rows[0]) await minioClient.removeObject(BUCKET, rows[0].file_key).catch(() => {});
+  await pool.query('DELETE FROM room_photos WHERE id = $1', [req.params.id]);
+  res.json({ ok: true });
+});
+
 router.post('/room-photos/:id/comments', requireAuth, async (req, res) => {
   const { text, x, y } = req.body;
   if (!text) return res.status(400).json({ error: 'Missing text' });
@@ -272,13 +311,13 @@ router.post('/:slug/spec-categories', requireAuth, requireAdmin, async (req, res
 });
 
 router.post('/spec-categories/:id/items', requireAuth, requireAdmin, async (req, res) => {
-  const { name, room, note, price, qty } = req.body;
+  const { name, room, note, price, qty, status } = req.body;
   if (!name) return res.status(400).json({ error: 'Missing name' });
 
   const { rows } = await pool.query(
-    `INSERT INTO spec_items (category_id, name, room, note, price, qty)
-     VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-    [req.params.id, name, room || null, note || null, price || 0, qty || 1]
+    `INSERT INTO spec_items (category_id, name, room, note, price, qty, status)
+     VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+    [req.params.id, name, room || null, note || null, price || 0, qty || 1, status || 'wait']
   );
   res.status(201).json(rows[0]);
 });
@@ -292,6 +331,31 @@ router.patch('/spec-items/:id', requireAuth, requireAdmin, async (req, res) => {
     [name || null, room ?? null, note ?? null, price ?? null, qty ?? null, status || null, req.params.id]
   );
   if (!rows[0]) return res.status(404).json({ error: 'Not found' });
+  res.json(rows[0]);
+});
+
+router.delete('/spec-items/:id', requireAuth, requireAdmin, async (req, res) => {
+  await pool.query('DELETE FROM spec_items WHERE id = $1', [req.params.id]);
+  res.json({ ok: true });
+});
+
+router.patch('/:slug/client', requireAuth, requireAdmin, async (req, res) => {
+  const { name, phone, email, address, propertyType, area, since, measurements, handover } = req.body;
+  const { rows: projectRows } = await pool.query('SELECT client_id FROM client_projects WHERE slug = $1', [req.params.slug]);
+  if (!projectRows[0]) return res.status(404).json({ error: 'Project not found' });
+
+  const { rows } = await pool.query(
+    `UPDATE clients SET
+       name = COALESCE($1, name), phone = COALESCE($2, phone), email = COALESCE($3, email),
+       address = COALESCE($4, address), property_type = COALESCE($5, property_type),
+       area = COALESCE($6, area), client_since = COALESCE($7, client_since),
+       measurements_date = COALESCE($8, measurements_date), handover_date = COALESCE($9, handover_date)
+     WHERE id = $10 RETURNING *`,
+    [
+      name ?? null, phone ?? null, email ?? null, address ?? null, propertyType ?? null,
+      area ?? null, since ?? null, measurements ?? null, handover ?? null, projectRows[0].client_id,
+    ]
+  );
   res.json(rows[0]);
 });
 

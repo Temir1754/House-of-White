@@ -535,14 +535,15 @@
       sideLabel.insertAdjacentHTML('afterend','<div style="padding:14px 20px;font-size:12px;color:var(--muted)">Пока нет ни одного проекта.</div>');
       return;
     }
-    const subNav=document.getElementById('subNav');
+    let anchor=document.getElementById('subNav');
     list.forEach(p=>{
       const el=document.createElement('div');
       el.className='proj-item';
       el.textContent=p.label;
       el.dataset.project=p.slug;
       el.onclick=()=>switchProject(el);
-      subNav.after(el);
+      anchor.after(el);
+      anchor=el;
     });
     await switchProject(document.querySelector('.proj-item'));
   }
@@ -676,18 +677,26 @@
     data.visits.forEach(v=>{
       const el=document.createElement('div');
       el.className='visit';
-      el.innerHTML=`<img src="${v.img}"><div><div class="vdate">${v.date}</div><div class="vnote">${v.note}</div></div>`;
+      const imgHtml=v.fileKey?`<img class="lazy-photo" data-photo-id="${v.id}">`:'';
+      el.innerHTML=`${imgHtml}<div><div class="vdate">${v.date}</div><div class="vnote">${v.note}</div></div>`;
       visitsList.appendChild(el);
     });
   }
 
+  function persistClientField(key,value){
+    fetchJSON('/api/client-projects/'+currentProject+'/client',{method:'PATCH',body:JSON.stringify({[key]:value})}).catch(()=>{});
+  }
+
   function updateClientField(key,value){
     PROJECTS[currentProject].client[key]=value;
+    persistClientField(key,value);
     if(key==='phone'||key==='email'||key==='since') renderClientPanelOnly();
   }
 
   function updateAreaField(value){
-    PROJECTS[currentProject].client.area=value?value+' м²':'';
+    const area=value?value+' м²':'';
+    PROJECTS[currentProject].client.area=area;
+    persistClientField('area',area);
   }
 
   function updateEmailPart(part,value){
@@ -695,6 +704,7 @@
     let [user,domain]=(c.email||'').split('@');
     if(part==='user') user=value; else domain=value;
     c.email=(user||domain)?(user||'')+'@'+(domain||''):'';
+    persistClientField('email',c.email);
     renderClientPanelOnly();
   }
 
@@ -802,6 +812,7 @@
       // reopened a past stage and it needs rework — move the project back to it
       data.stage=vs;
     }
+    fetchJSON('/api/client-projects/'+currentProject,{method:'PATCH',body:JSON.stringify({stage:data.stage,stageStatuses:data.stageStatuses})}).catch(()=>{});
     renderProject(currentProject);
   }
 
@@ -810,6 +821,7 @@
     const data=PROJECTS[currentProject];
     const idx=(order.indexOf(data.status)+1)%order.length;
     data.status=order[idx];
+    fetchJSON('/api/client-projects/'+currentProject,{method:'PATCH',body:JSON.stringify({status:data.status})}).catch(()=>{});
     renderProject(currentProject);
   }
 
@@ -851,11 +863,14 @@
     const data=PROJECTS[currentProject];
     const it=data.spec[ci].items[ii];
     it.status=order[(order.indexOf(it.status)+1)%order.length];
+    fetchJSON('/api/client-projects/spec-items/'+it.id,{method:'PATCH',body:JSON.stringify({status:it.status})}).catch(()=>{});
     renderProject(currentProject);
   }
 
   function deleteSpecItem(ci,ii){
     const data=PROJECTS[currentProject];
+    const it=data.spec[ci].items[ii];
+    fetchJSON('/api/client-projects/spec-items/'+it.id,{method:'DELETE'}).catch(()=>{});
     data.spec[ci].items.splice(ii,1);
     if(!data.spec[ci].items.length) data.spec.splice(ci,1);
     renderProject(currentProject);
@@ -907,7 +922,7 @@
     inp.value=Math.max(1,v+delta);
   }
 
-  function addItem(){
+  async function addItem(){
     const name=document.getElementById('newItemName').value.trim();
     if(!name) return;
     const cat=document.getElementById('newItemCat').value.trim()||'Другое';
@@ -918,8 +933,12 @@
     const status=document.getElementById('newItemStatus').value;
     const data=PROJECTS[currentProject];
     let catData=data.spec.find(c=>c.cat===cat);
-    if(!catData){catData={cat,items:[]};data.spec.push(catData);}
-    catData.items.push({name,room,note,price,qty,status});
+    if(!catData){
+      catData=await fetchJSON('/api/client-projects/'+currentProject+'/spec-categories',{method:'POST',body:JSON.stringify({name:cat})});
+      data.spec.push(catData);
+    }
+    const item=await fetchJSON('/api/client-projects/spec-categories/'+catData.id+'/items',{method:'POST',body:JSON.stringify({name,room,note,price,qty,status})});
+    catData.items.push(item);
     document.getElementById('newItemName').value='';
     document.getElementById('newItemNote').value='';
     document.getElementById('newItemPrice').value='';
@@ -934,6 +953,7 @@
     const num=parseFloat(val.replace(/[^\d.]/g,''));
     if(isNaN(num)) return;
     data.budget.total=num;
+    fetchJSON('/api/client-projects/'+currentProject,{method:'PATCH',body:JSON.stringify({budgetTotal:num})}).catch(()=>{});
     renderProject(currentProject);
   }
   function updateSpecCount(){
@@ -946,6 +966,20 @@
   const fmtMoney=n=>Number(n||0).toLocaleString('ru-RU')+' AED';
   const esc=v=>(v||'').toString().replace(/"/g,'&quot;');
 
+  const photoUrlCache={};
+  async function resolvePhotoUrl(photoId){
+    if(photoUrlCache[photoId]) return photoUrlCache[photoId];
+    const {url}=await fetchJSON('/api/client-projects/room-photos/'+photoId+'/url');
+    photoUrlCache[photoId]=url;
+    return url;
+  }
+
+  function resolvePhotoImages(){
+    document.querySelectorAll('img.lazy-photo[data-photo-id]').forEach(img=>{
+      resolvePhotoUrl(img.dataset.photoId).then(url=>{img.src=url}).catch(()=>{});
+    });
+  }
+
   function renderRoomsList(data){
     const roomsWrap=document.getElementById('renderRooms');
     roomsWrap.innerHTML='';
@@ -957,7 +991,7 @@
         else if(p.comments&&p.comments.length) badge=`<span class="badge cm">💬 ${p.comments.length}</span>`;
         return `<div class="render-tile">
             <div class="img-wrap" onclick="openPhotoLightbox(${ri},${pi})">
-              <img src="${p.src}">
+              <img class="lazy-photo" data-photo-id="${p.id}">
               ${badge}
               <button class="rdel" onclick="event.stopPropagation();deletePhoto(${ri},${pi})">✕</button>
             </div>
@@ -998,63 +1032,69 @@
         </div>`;
       roomsWrap.appendChild(block);
     });
+    resolvePhotoImages();
   }
 
-  function filesToPhotos(fileList,callback){
-    const files=[...fileList];
-    const photos=[];
-    let remaining=files.length;
-    if(!remaining) return;
-    files.forEach(file=>{
-      const reader=new FileReader();
-      reader.onload=()=>{
-        photos.push({src:reader.result,caption:'',comments:[],approved:false});
-        remaining--;
-        if(remaining===0) callback(photos);
-      };
-      reader.readAsDataURL(file);
-    });
+  async function uploadPhoto(variantId,file){
+    const form=new FormData();
+    form.append('file',file);
+    const res=await fetch('/api/client-projects/room-variants/'+variantId+'/photos',{method:'POST',credentials:'include',body:form});
+    if(!res.ok) throw new Error('Upload failed');
+    return res.json();
   }
 
-  function handleFileInput(e,ri){
-    filesToPhotos(e.target.files,photos=>{
-      const room=PROJECTS[currentProject].rooms[ri];
-      room.variants[room.activeVariant].photos.push(...photos);
-      renderProject(currentProject);
-    });
+  async function handleFileInput(e,ri){
+    const room=PROJECTS[currentProject].rooms[ri];
+    const variant=room.variants[room.activeVariant];
+    for(const file of [...e.target.files]){
+      const photo=await uploadPhoto(variant.id,file).catch(()=>null);
+      if(photo) variant.photos.push(photo);
+    }
     e.target.value='';
+    renderProject(currentProject);
   }
 
-  function handleRoomDrop(e,ri){
+  async function handleRoomDrop(e,ri){
     e.preventDefault();
     e.currentTarget.classList.remove('drag');
     if(!e.dataTransfer.files.length) return;
-    filesToPhotos(e.dataTransfer.files,photos=>{
-      const room=PROJECTS[currentProject].rooms[ri];
-      room.variants[room.activeVariant].photos.push(...photos);
-      renderProject(currentProject);
-    });
+    const room=PROJECTS[currentProject].rooms[ri];
+    const variant=room.variants[room.activeVariant];
+    for(const file of [...e.dataTransfer.files]){
+      const photo=await uploadPhoto(variant.id,file).catch(()=>null);
+      if(photo) variant.photos.push(photo);
+    }
+    renderProject(currentProject);
   }
 
   function deletePhoto(ri,pi){
     const room=PROJECTS[currentProject].rooms[ri];
+    const photo=room.variants[room.activeVariant].photos[pi];
+    fetchJSON('/api/client-projects/room-photos/'+photo.id,{method:'DELETE'}).catch(()=>{});
     room.variants[room.activeVariant].photos.splice(pi,1);
     renderProject(currentProject);
   }
 
   function updateCaption(ri,pi,value){
-    PROJECTS[currentProject].rooms[ri].variants[PROJECTS[currentProject].rooms[ri].activeVariant].photos[pi].caption=value;
+    const photo=PROJECTS[currentProject].rooms[ri].variants[PROJECTS[currentProject].rooms[ri].activeVariant].photos[pi];
+    photo.caption=value;
+    fetchJSON('/api/client-projects/room-photos/'+photo.id,{method:'PATCH',body:JSON.stringify({caption:value})}).catch(()=>{});
   }
 
   function switchVariant(ri,vi){
-    PROJECTS[currentProject].rooms[ri].activeVariant=vi;
+    const room=PROJECTS[currentProject].rooms[ri];
+    room.activeVariant=vi;
+    fetchJSON('/api/client-projects/rooms/'+room.id,{method:'PATCH',body:JSON.stringify({activeVariant:vi})}).catch(()=>{});
     renderProject(currentProject);
   }
 
-  function addRoomVariant(ri){
+  async function addRoomVariant(ri){
     const room=PROJECTS[currentProject].rooms[ri];
-    room.variants.push({label:'Вариант '+(room.variants.length+1),photos:[]});
+    const label='Вариант '+(room.variants.length+1);
+    const variant=await fetchJSON('/api/client-projects/rooms/'+room.id+'/variants',{method:'POST',body:JSON.stringify({label})});
+    room.variants.push(variant);
     room.activeVariant=room.variants.length-1;
+    fetchJSON('/api/client-projects/rooms/'+room.id,{method:'PATCH',body:JSON.stringify({activeVariant:room.activeVariant})}).catch(()=>{});
     renderProject(currentProject);
   }
 
@@ -1063,6 +1103,7 @@
     const name=prompt('Название варианта:',room.variants[vi].label);
     if(!name||!name.trim()) return;
     room.variants[vi].label=name.trim();
+    fetchJSON('/api/client-projects/room-variants/'+room.variants[vi].id,{method:'PATCH',body:JSON.stringify({label:name.trim()})}).catch(()=>{});
     renderProject(currentProject);
   }
 
@@ -1070,9 +1111,11 @@
     const room=PROJECTS[currentProject].rooms[ri];
     if(room.variants.length<=1) return;
     if(!confirm(`Удалить вариант «${room.variants[vi].label}» вместе со всеми его фото?`)) return;
+    fetchJSON('/api/client-projects/room-variants/'+room.variants[vi].id,{method:'DELETE'}).catch(()=>{});
     room.variants.splice(vi,1);
     if(room.activeVariant>=room.variants.length) room.activeVariant=room.variants.length-1;
     else if(room.activeVariant>vi) room.activeVariant--;
+    fetchJSON('/api/client-projects/rooms/'+room.id,{method:'PATCH',body:JSON.stringify({activeVariant:room.activeVariant})}).catch(()=>{});
     renderProject(currentProject);
   }
 
@@ -1080,6 +1123,7 @@
     const order=['draft','progress','revise','approved'];
     const room=PROJECTS[currentProject].rooms[ri];
     room.status=order[(order.indexOf(room.status)+1)%order.length];
+    fetchJSON('/api/client-projects/rooms/'+room.id,{method:'PATCH',body:JSON.stringify({status:room.status})}).catch(()=>{});
     renderProject(currentProject);
   }
 
@@ -1088,11 +1132,16 @@
     const j=ri+dir;
     if(j<0||j>=rooms.length) return;
     [rooms[ri],rooms[j]]=[rooms[j],rooms[ri]];
+    rooms.forEach((room,idx)=>{
+      fetchJSON('/api/client-projects/rooms/'+room.id,{method:'PATCH',body:JSON.stringify({sortOrder:idx})}).catch(()=>{});
+    });
     renderProject(currentProject);
   }
 
   function deleteRoom(ri){
     if(!confirm('Удалить эту комнату со всеми фото?')) return;
+    const room=PROJECTS[currentProject].rooms[ri];
+    fetchJSON('/api/client-projects/rooms/'+room.id,{method:'DELETE'}).catch(()=>{});
     PROJECTS[currentProject].rooms.splice(ri,1);
     renderProject(currentProject);
   }
@@ -1107,7 +1156,7 @@
     lbRi=ri;lbPi=pi;
     const room=PROJECTS[currentProject].rooms[ri];
     const photo=room.variants[room.activeVariant].photos[pi];
-    document.getElementById('lbImg').src=photo.src;
+    resolvePhotoUrl(photo.id).then(url=>{document.getElementById('lbImg').src=url}).catch(()=>{});
     const commentsHtml=(photo.comments&&photo.comments.length)
       ? photo.comments.map(c=>`<div class="lb-comment${c.from==='studio'?' studio':''}"><span class="who">${c.from==='studio'?'Студия':'Клиент'}</span>${c.text}</div>`).join('')
       : `<div class="lb-empty">Комментариев от клиента пока нет.</div>`;
@@ -1121,11 +1170,12 @@
     const room=PROJECTS[currentProject].rooms[lbRi];
     const photo=room.variants[room.activeVariant].photos[lbPi];
     photo.approved=approved;
+    fetchJSON('/api/client-projects/room-photos/'+photo.id,{method:'PATCH',body:JSON.stringify({approved})}).catch(()=>{});
     document.getElementById('lbApproved').textContent=approved?'✓ Клиент согласовал это фото':'Ожидает решения клиента';
     renderRoomsList(PROJECTS[currentProject]);
   }
 
-  function addStudioReply(){
+  async function addStudioReply(){
     if(lbRi===null) return;
     const input=document.getElementById('lbReplyInput');
     const text=input.value.trim();
@@ -1133,7 +1183,8 @@
     const room=PROJECTS[currentProject].rooms[lbRi];
     const photo=room.variants[room.activeVariant].photos[lbPi];
     if(!photo.comments) photo.comments=[];
-    photo.comments.push({text,from:'studio'});
+    const comment=await fetchJSON('/api/client-projects/room-photos/'+photo.id+'/comments',{method:'POST',body:JSON.stringify({text})});
+    photo.comments.push({...comment,from:'studio'});
     input.value='';
     openPhotoLightbox(lbRi,lbPi);
     renderRoomsList(PROJECTS[currentProject]);
@@ -1144,43 +1195,48 @@
     document.getElementById('photoLightbox').classList.remove('open');
   }
 
-  function addRoomBlock(){
+  async function addRoomBlock(){
     const name=document.getElementById('newRoomBlockName').value.trim();
     if(!name) return;
-    PROJECTS[currentProject].rooms.push({name,status:'draft',activeVariant:0,variants:[{label:'Вариант 1',photos:[]}]});
+    const room=await fetchJSON('/api/client-projects/'+currentProject+'/rooms',{method:'POST',body:JSON.stringify({name})});
+    PROJECTS[currentProject].rooms.push(room);
     document.getElementById('newRoomBlockName').value='';
     renderProject(currentProject);
   }
 
-  function addVisit(){
+  async function addVisit(){
     const date=document.getElementById('newVisitDate').value.trim();
     const note=document.getElementById('newVisitNote').value.trim();
     if(!date||!note) return;
-    PROJECTS[currentProject].visits.unshift({date,note,img:'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=200&q=80'});
+    const visit=await fetchJSON('/api/client-projects/'+currentProject+'/visits',{method:'POST',body:JSON.stringify({date,note})});
+    PROJECTS[currentProject].visits.unshift(visit);
     document.getElementById('newVisitDate').value='';
     document.getElementById('newVisitNote').value='';
     renderProject(currentProject);
   }
 
-  function addProject(){
+  async function addProject(){
     const name=prompt('Название проекта — например, Имя клиента · Название проекта:');
-    if(!name) return;
-    const id='custom'+Object.keys(PROJECTS).length;
-    PROJECTS[id]={
-      label:name,stage:0,status:'wait',
-      client:{
-        name:name,phone:'',email:'',address:'',propertyType:'',area:'',
-        since:new Date().toISOString().slice(0,10),
-        measurements:'',handover:''
-      },
-      rooms:[],spec:[],budget:{total:0},visits:[]
-    };
+    if(!name||!name.trim()) return;
+    const slug=name.trim().toLowerCase()
+      .replace(/[^a-zа-я0-9\s]/gi,'')
+      .replace(/\s+/g,'-')+'-'+Date.now().toString(36);
+    let project;
+    try{
+      project=await fetchJSON('/api/client-projects',{method:'POST',body:JSON.stringify({
+        slug,label:name.trim(),client:{name:name.trim()},
+      })});
+    }catch(err){
+      alert('Не удалось создать проект');
+      return;
+    }
     const el=document.createElement('div');
     el.className='proj-item';
-    el.textContent=name;
-    el.dataset.project=id;
+    el.textContent=name.trim();
+    el.dataset.project=project.slug;
     el.onclick=()=>switchProject(el);
     document.getElementById('subNav').after(el);
+    await switchProject(el);
   }
 
   const SPEC_CAT_OPTIONS=[
