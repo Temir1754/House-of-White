@@ -25,44 +25,65 @@ async function loadFullProject(slug) {
     'SELECT * FROM rooms WHERE client_project_id = $1 ORDER BY sort_order, id',
     [project.id]
   );
+  const fullRooms = [];
   for (const room of rooms) {
-    const { rows: variants } = await pool.query(
+    const { rows: variantRows } = await pool.query(
       'SELECT * FROM room_variants WHERE room_id = $1 ORDER BY sort_order, id',
       [room.id]
     );
-    for (const variant of variants) {
-      const { rows: photos } = await pool.query(
+    const variants = [];
+    for (const variant of variantRows) {
+      const { rows: photoRows } = await pool.query(
         'SELECT * FROM room_photos WHERE variant_id = $1 ORDER BY sort_order, id',
         [variant.id]
       );
-      for (const photo of photos) {
+      const photos = [];
+      for (const photo of photoRows) {
         const { rows: comments } = await pool.query(
           'SELECT id, text, x, y, created_by, created_at FROM photo_comments WHERE photo_id = $1 ORDER BY id',
           [photo.id]
         );
-        photo.comments = comments;
+        photos.push({
+          id: photo.id,
+          fileKey: photo.file_key,
+          caption: photo.caption,
+          approved: photo.approved,
+          comments,
+        });
       }
-      variant.photos = photos;
+      variants.push({ id: variant.id, label: variant.label, photos });
     }
-    room.variants = variants;
+    fullRooms.push({
+      id: room.id,
+      name: room.name,
+      status: room.status,
+      activeVariant: room.active_variant,
+      variants,
+    });
   }
 
-  const { rows: categories } = await pool.query(
+  const { rows: categoryRows } = await pool.query(
     'SELECT * FROM spec_categories WHERE client_project_id = $1 ORDER BY sort_order, id',
     [project.id]
   );
-  for (const cat of categories) {
-    const { rows: items } = await pool.query(
-      'SELECT * FROM spec_items WHERE category_id = $1 ORDER BY sort_order, id',
-      [cat.id]
+  const spec = [];
+  for (const category of categoryRows) {
+    const { rows: itemRows } = await pool.query(
+      'SELECT id, name, room, note, price, qty, status FROM spec_items WHERE category_id = $1 ORDER BY sort_order, id',
+      [category.id]
     );
-    cat.items = items;
+    spec.push({
+      id: category.id,
+      cat: category.name,
+      items: itemRows.map((it) => ({ ...it, price: Number(it.price) })),
+    });
   }
 
-  const { rows: visits } = await pool.query(
-    'SELECT * FROM site_visits WHERE client_project_id = $1 ORDER BY visit_date DESC',
+  const { rows: visitRows } = await pool.query(
+    'SELECT id, visit_date, note, file_key FROM site_visits WHERE client_project_id = $1 ORDER BY visit_date DESC',
     [project.id]
   );
+  const visits = visitRows.map((v) => ({ id: v.id, date: v.visit_date, note: v.note, fileKey: v.file_key }));
 
   return {
     id: project.id,
@@ -85,8 +106,8 @@ async function loadFullProject(slug) {
       handover: project.handover_date,
       userId: project.client_user_id,
     },
-    rooms,
-    spec: categories,
+    rooms: fullRooms,
+    spec,
     visits,
   };
 }

@@ -289,7 +289,6 @@
     <a href="links.html" class="side-brand">House of <i>White</i></a>
 
     <div class="side-label">Проекты</div>
-    <div class="proj-item active" data-project="palm" onclick="switchProject(this)">Palm Jumeirah Villa</div>
     <div class="sub-nav" id="subNav">
       <div class="sub-item active" data-page="overview" onclick="switchPage(this)">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>О проекте
@@ -310,9 +309,6 @@
         <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Добавить проект
       </div>
     </div>
-
-    <div class="proj-item" data-project="azizi" onclick="switchProject(this)">Azizi Mina</div>
-    <div class="proj-item" data-project="cedre" onclick="switchProject(this)">Cedre Villas</div>
   </aside>
 
   <!-- MAIN -->
@@ -452,127 +448,42 @@
 </div>
 
 <script>
-  // ---- DEMO PROJECT DATA ----
+  // ---- PROJECT DATA (loaded from backend — see initProjects() near the bottom) ----
   const STEP_LABELS=['Консультация','Концепция','Дизайн','Визуализации','Закупка','Сдача'];
 
-  const PROJECTS={
-    palm:{
-      label:'Лейла А. — Palm Jumeirah Villa',
-      stage:3,
-      status:'ok',
-      client:{
-        name:'Лейла А.',
-        phone:'+971 58 677 1200',
-        email:'layla.a@example.com',
-        address:'Palm Jumeirah, Frond M, Дубай',
-        propertyType:'Вилла',
-        area:'420 м²',
-        since:'2026-01-14',
-        measurements:'2026-01-14',
-        handover:'2026-09-01'
-      },
-      rooms:[
-        {name:'Кухня-гостиная',status:'progress',activeVariant:0,variants:[
-          {label:'Вариант 1',photos:[
-            {src:'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=600&q=80',caption:'',comments:[],approved:true},
-            {src:'https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=600&q=80',caption:'',comments:[{text:'Можно немного теплее оттенок дерева на острове?'}],approved:false}
-          ]}
-        ]},
-        {name:'Мастер-спальня',status:'draft',activeVariant:0,variants:[
-          {label:'Вариант 1',photos:[
-            {src:'https://images.unsplash.com/photo-1615875605825-5eb9bb5d52ac?auto=format&fit=crop&w=600&q=80',caption:'',comments:[],approved:false}
-          ]}
-        ]}
-      ],
-      spec:[
-        {cat:'Мебель',items:[
-          {name:'Диван — Minotti Spencer',room:'Кухня-гостиная',note:'ткань: бежевый лён',price:48000,qty:1,status:'ok'},
-          {name:'Кровать — Poliform Letto',room:'Мастер-спальня',note:'180×200 см',price:32000,qty:1,status:'go'}
-        ]},
-        {cat:'Освещение',items:[
-          {name:'Подвес — Flos Arrangements',room:'Кухня-гостиная',note:'латунь',price:9500,qty:3,status:'done'}
-        ]}
-      ],
-      budget:{total:320000},
-      visits:[
-        {date:'12 июня 2026',note:'Проверена черновая электрика — соответствует плану. Стена на кухне готова под плитку.',img:'https://images.unsplash.com/photo-1600566753086-00d4648855d8?auto=format&fit=crop&w=200&q=80'},
-        {date:'28 мая 2026',note:'Проверена поставка напольного покрытия — партия по цвету соответствует образцу.',img:'https://images.unsplash.com/photo-1598928506179-801c28fc3e5f?auto=format&fit=crop&w=200&q=80'}
-      ]
-    },
-    azizi:{
-      label:'Демо-клиент — Azizi Mina',
-      stage:1,
-      status:'wait',
-      client:{
-        name:'Демо-клиент',
-        phone:'+971 58 677 1200',
-        email:'',
-        address:'Azizi Mina, Palm Jumeirah, Дубай',
-        propertyType:'Апартаменты',
-        area:'140 м²',
-        since:'2026-03-05',
-        measurements:'',
-        handover:''
-      },
-      rooms:[
-        {name:'Гостиная',status:'draft',activeVariant:0,variants:[
-          {label:'Вариант 1',photos:[
-            {src:'https://images.unsplash.com/photo-1615529328331-f8917597711f?auto=format&fit=crop&w=600&q=80',caption:'',comments:[],approved:false}
-          ]}
-        ]}
-      ],
-      spec:[
-        {cat:'Мебель',items:[
-          {name:'Диван — модульный',room:'Гостиная',note:'ткань: серый велюр',price:22000,qty:1,status:'wait'}
-        ]}
-      ],
-      budget:{total:180000},
-      visits:[]
-    },
-    cedre:{
-      label:'Демо-клиент — Cedre Villas',
-      stage:4,
-      status:'done',
-      client:{
-        name:'Демо-клиент',
-        phone:'+971 58 677 1200',
-        email:'',
-        address:'Cedre Villas, Дубай',
-        propertyType:'Вилла',
-        area:'510 м²',
-        since:'2025-11-03',
-        measurements:'2025-12-03',
-        handover:'2026-07-01'
-      },
-      rooms:[
-        {name:'Кухня',status:'approved',activeVariant:0,variants:[
-          {label:'Вариант 1',photos:[
-            {src:'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=600&q=80',caption:'',comments:[],approved:true}
-          ]}
-        ]},
-        {name:'Столовая',status:'progress',activeVariant:0,variants:[
-          {label:'Вариант 1',photos:[
-            {src:'https://images.unsplash.com/photo-1600121848571-19c0ba7ffaf2?auto=format&fit=crop&w=600&q=80',caption:'',comments:[],approved:false}
-          ]}
-        ]}
-      ],
-      spec:[
-        {cat:'Мебель',items:[
-          {name:'Обеденный стол',room:'Столовая',note:'мрамор',price:38000,qty:1,status:'done'},
-          {name:'Стулья — 6 шт',room:'Столовая',note:'кожа',price:4000,qty:6,status:'ok'}
-        ]},
-        {cat:'Декор',items:[
-          {name:'Зеркало напольное',room:'Прихожая',note:'',price:6500,qty:1,status:'go'}
-        ]}
-      ],
-      budget:{total:410000},
-      visits:[
-        {date:'2 июня 2026',note:'Финальная проверка перед сдачей — отделка кухни завершена.',img:'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=200&q=80'}
-      ]
-    }
-  };
+  const PROJECTS={};
+  let currentProject=null;
 
-  let currentProject='palm';
+  async function fetchJSON(url,opts){
+    const res=await fetch(url,{credentials:'include',headers:{'Content-Type':'application/json'},...opts});
+    if(!res.ok) throw new Error('Request failed: '+res.status);
+    return res.json();
+  }
+
+  async function initProjects(){
+    const sideLabel=document.querySelector('.side-label');
+    let list;
+    try{
+      list=await fetchJSON('/api/client-projects');
+    }catch(err){
+      sideLabel.insertAdjacentHTML('afterend','<div style="padding:14px 20px;font-size:12px;color:var(--muted)">Войдите как администратор, чтобы увидеть реальные проекты.</div>');
+      return;
+    }
+    if(!list.length){
+      sideLabel.insertAdjacentHTML('afterend','<div style="padding:14px 20px;font-size:12px;color:var(--muted)">Пока нет ни одного проекта.</div>');
+      return;
+    }
+    const subNav=document.getElementById('subNav');
+    list.forEach(p=>{
+      const el=document.createElement('div');
+      el.className='proj-item';
+      el.textContent=p.label;
+      el.dataset.project=p.slug;
+      el.onclick=()=>switchProject(el);
+      subNav.after(el);
+    });
+    await switchProject(document.querySelector('.proj-item'));
+  }
 
   function renderProject(id){
     const data=PROJECTS[id];
@@ -849,7 +760,7 @@
     document.getElementById('sidebar').classList.remove('open');
   }
 
-  function switchProject(el){
+  async function switchProject(el){
     document.querySelectorAll('.proj-item').forEach(p=>p.classList.remove('active'));
     el.classList.add('active');
 
@@ -857,7 +768,16 @@
     document.querySelector('.side-label').after(el);
     el.after(document.getElementById('subNav'));
 
-    renderProject(el.dataset.project);
+    const slug=el.dataset.project;
+    if(!PROJECTS[slug]){
+      try{
+        PROJECTS[slug]=await fetchJSON('/api/client-projects/'+slug);
+      }catch(err){
+        alert('Не удалось загрузить проект');
+        return;
+      }
+    }
+    renderProject(slug);
 
     // reset to the first sub-page (О проекте) on every project switch
     const firstSub=document.querySelector('.sub-item[data-page]');
@@ -1212,7 +1132,7 @@
   document.getElementById('newItemCatWrap').innerHTML=buildSimpleDropdown('newItemCat',SPEC_CAT_OPTIONS,'Мебель','Категория');
   document.getElementById('newItemStatusWrap').innerHTML=buildSimpleDropdown('newItemStatus',SPEC_STATUS_OPTIONS,'wait','Статус');
 
-  renderProject('palm');
+  initProjects();
 </script>
 </body>
 </html>
