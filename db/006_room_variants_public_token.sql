@@ -1,0 +1,1 @@
+ALTER TABLE room_variants ADD COLUMN IF NOT EXISTS public_token TEXT UNIQUE;

@@ -8,6 +8,7 @@ import bookingsRoutes from './routes/bookings.js';
 import projectsRoutes from './routes/projects.js';
 import uploadRoutes from './routes/upload.js';
 import clientProjectsRoutes from './routes/clientProjects.js';
+import publicRoutes from './routes/public.js';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use('/api/bookings', bookingsRoutes);
 app.use('/api/projects', projectsRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/client-projects', clientProjectsRoutes);
+app.use('/api/public', publicRoutes);
 
 app.use((err, req, res, next) => {
   console.error('Request error:', err);

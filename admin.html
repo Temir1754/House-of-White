@@ -31,7 +31,7 @@
 
   /* SIDEBAR */
   .sidebar{width:260px;flex:none;background:var(--ink-2);border-right:1px solid var(--line-soft);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
-  .side-brand{padding:22px 20px;border-bottom:1px solid var(--line-soft);font-family:var(--display);font-size:18px;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--cream)}
+  .side-brand{padding:26px 20px;border-bottom:1px solid var(--line-soft);font-family:var(--display);font-size:18px;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;color:var(--cream)}
   .side-brand i{font-style:italic;color:var(--sand)}
 
   .side-label{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--faint);padding:18px 20px 8px}
@@ -291,7 +291,8 @@
 
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
-    <h1>House of <i style="color:var(--sand);font-style:italic">White</i> — Вход</h1>
+    <img src="logo/logo-new.png" alt="House of White" style="height:48px;width:auto;display:block;margin:0 auto 18px">
+    <h1>Вход</h1>
     <div class="login-error" id="loginError">Неверный email или пароль</div>
     <input type="email" id="loginEmail" placeholder="Email" autocomplete="username">
     <div style="position:relative">
@@ -308,7 +309,7 @@
 
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
-    <a href="links.html" class="side-brand">House of <i>White</i></a>
+    <a href="links.html" class="side-brand"><img src="logo/logo-new.png" alt="House of White" style="width:160px;height:auto"></a>
 
     <div class="side-label">Проекты</div>
     <div class="sub-nav" id="subNav">
@@ -1020,7 +1021,7 @@
           </div>
           <div class="room-block-actions">
             <div class="variant-tabs">${tabs}<button class="variant-pill" onclick="addRoomVariant(${ri})">+ Вариант</button></div>
-            <button class="link-pill" onclick="copyLink()"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.66 0l3-3a4 4 0 10-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 00-5.66 0l-3 3a4 4 0 105.66 5.66l1-1"/></svg>Публичная ссылка</button>
+            <button class="link-pill" onclick="copyLink(${ri})"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.66 0l3-3a4 4 0 10-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 00-5.66 0l-3 3a4 4 0 105.66 5.66l1-1"/></svg>Публичная ссылка</button>
           </div>
         </div>
         <div class="render-grid" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleRoomDrop(event,${ri})">
@@ -1145,8 +1146,17 @@
     renderProject(currentProject);
   }
 
-  function copyLink(){
-    alert('Публичная ссылка будет доступна после подключения базы данных.');
+  async function copyLink(ri){
+    const room=PROJECTS[currentProject].rooms[ri];
+    const variant=room.variants[room.activeVariant];
+    try{
+      const {token}=await fetchJSON('/api/client-projects/room-variants/'+variant.id+'/public-link',{method:'POST'});
+      const url=location.origin+'/view.html?token='+token;
+      await navigator.clipboard.writeText(url);
+      alert('Ссылка скопирована:\n'+url);
+    }catch(err){
+      alert('Не удалось создать ссылку');
+    }
   }
 
   let lbRi=null,lbPi=null;

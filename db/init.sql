@@ -89,7 +89,8 @@ CREATE TABLE room_variants (
   id SERIAL PRIMARY KEY,
   room_id INTEGER NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,
   label TEXT NOT NULL,
-  sort_order INTEGER NOT NULL DEFAULT 0
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  public_token TEXT UNIQUE
 );
 
 CREATE TABLE room_photos (

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>House of White — Просмотр</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#000;--cream:#E9E2D4;--muted:#9A9180;--sand:#B49B78;--line:rgba(233,226,212,0.13)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--ink);color:var(--cream);font-family:'Jost',system-ui,sans-serif;font-weight:300;min-height:100vh}
+  header{padding:24px;text-align:center;border-bottom:1px solid var(--line)}
+  header img{height:44px}
+  h1{font-weight:400;font-size:18px;margin-top:14px}
+  h1 small{display:block;color:var(--muted);font-size:12px;margin-top:4px;letter-spacing:.05em}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;padding:24px;max-width:1100px;margin:0 auto}
+  .tile{border-radius:6px;overflow:hidden;background:#141414}
+  .tile img{width:100%;display:block}
+  .cap{padding:10px 12px;font-size:12px;color:var(--muted)}
+  .empty{text-align:center;color:var(--muted);padding:60px 20px;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <img src="logo/logo-new.png" alt="House of White">
+  <h1 id="title">Загрузка…</h1>
+</header>
+<div class="grid" id="grid"></div>
+
+<script>
+  const token=new URLSearchParams(location.search).get('token');
+  const titleEl=document.getElementById('title');
+  const grid=document.getElementById('grid');
+
+  if(!token){
+    titleEl.textContent='Ссылка недействительна';
+  }else{
+    fetch('/api/public/room-variants/'+token).then(r=>{
+      if(!r.ok) throw new Error();
+      return r.json();
+    }).then(data=>{
+      titleEl.innerHTML=`${data.roomName}<small>${data.label}</small>`;
+      if(!data.photos.length){
+        grid.innerHTML='<div class="empty">Пока нет загруженных фото.</div>';
+        return;
+      }
+      grid.innerHTML=data.photos.map(p=>`<div class="tile"><img src="${p.url}" alt="">${p.caption?`<div class="cap">${p.caption}</div>`:''}</div>`).join('');
+    }).catch(()=>{
+      titleEl.textContent='Ссылка недействительна или устарела';
+    });
+  }
+</script>
+</body>
+</html>

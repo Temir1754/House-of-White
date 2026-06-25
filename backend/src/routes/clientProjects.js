@@ -285,6 +285,18 @@ router.delete('/room-variants/:id', requireAuth, requireAdmin, async (req, res) 
   res.json({ ok: true });
 });
 
+router.post('/room-variants/:id/public-link', requireAuth, requireAdmin, async (req, res) => {
+  const { rows: existing } = await pool.query('SELECT public_token FROM room_variants WHERE id = $1', [req.params.id]);
+  if (!existing[0]) return res.status(404).json({ error: 'Not found' });
+
+  let token = existing[0].public_token;
+  if (!token) {
+    token = randomUUID();
+    await pool.query('UPDATE room_variants SET public_token = $1 WHERE id = $2', [token, req.params.id]);
+  }
+  res.json({ token });
+});
+
 router.post('/room-variants/:id/photos', requireAuth, requireAdmin, upload.single('file'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file' });
 
