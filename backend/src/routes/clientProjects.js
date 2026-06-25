@@ -2,7 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import { randomUUID } from 'crypto';
 import { pool } from '../db.js';
-import { minioClient, BUCKET } from '../minio.js';
+import { minioClient, minioPublicClient, BUCKET } from '../minio.js';
 import { requireAuth, requireAdmin } from '../middleware/auth.js';
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 200 * 1024 * 1024 } });
@@ -298,7 +298,7 @@ router.get('/room-photos/:id/url', requireAuth, async (req, res) => {
   if (!(await canAccessPhoto(req, req.params.id))) return res.status(403).json({ error: 'Forbidden' });
   const { rows } = await pool.query('SELECT file_key FROM room_photos WHERE id = $1', [req.params.id]);
   if (!rows[0]) return res.status(404).json({ error: 'Not found' });
-  const url = await minioClient.presignedGetObject(BUCKET, rows[0].file_key, 24 * 60 * 60);
+  const url = await minioPublicClient.presignedGetObject(BUCKET, rows[0].file_key, 24 * 60 * 60);
   res.json({ url });
 });
 

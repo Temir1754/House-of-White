@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import { randomUUID } from 'crypto';
-import { minioClient, BUCKET } from '../minio.js';
+import { minioClient, minioPublicClient, BUCKET } from '../minio.js';
 import { pool } from '../db.js';
 import { requireAuth, requireAdmin } from '../middleware/auth.js';
 
@@ -30,7 +30,7 @@ router.get('/:fileId/url', requireAuth, async (req, res) => {
   const { rows } = await pool.query('SELECT file_key FROM project_files WHERE id = $1', [req.params.fileId]);
   if (!rows[0]) return res.status(404).json({ error: 'Not found' });
 
-  const url = await minioClient.presignedGetObject(BUCKET, rows[0].file_key, 24 * 60 * 60);
+  const url = await minioPublicClient.presignedGetObject(BUCKET, rows[0].file_key, 24 * 60 * 60);
   res.json({ url });
 });
 
