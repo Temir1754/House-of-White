@@ -294,7 +294,10 @@
     <h1>House of <i style="color:var(--sand);font-style:italic">White</i> — Вход</h1>
     <div class="login-error" id="loginError">Неверный email или пароль</div>
     <input type="email" id="loginEmail" placeholder="Email" autocomplete="username">
-    <input type="password" id="loginPassword" placeholder="Пароль" autocomplete="current-password">
+    <div style="position:relative">
+      <input type="password" id="loginPassword" placeholder="Пароль" autocomplete="current-password" style="padding-right:40px">
+      <button type="button" onclick="toggleLoginPasswordVisibility()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;letter-spacing:0.05em">ПОКАЗАТЬ</button>
+    </div>
     <button class="btn-line" style="width:100%;text-align:center" onclick="doAdminLogin()">Войти</button>
   </div>
 </div>
@@ -485,6 +488,14 @@
       document.getElementById('loginScreen').style.display='flex';
       document.getElementById('appRoot').style.display='none';
     }
+  }
+
+  function toggleLoginPasswordVisibility(){
+    const input=document.getElementById('loginPassword');
+    const btn=event.target;
+    const showing=input.type==='text';
+    input.type=showing?'password':'text';
+    btn.textContent=showing?'ПОКАЗАТЬ':'СКРЫТЬ';
   }
 
   async function doAdminLogin(){
