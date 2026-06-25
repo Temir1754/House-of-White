@@ -139,11 +139,11 @@
   .room-add-row button{background:var(--sand);color:var(--ink);border:none;border-radius:4px;padding:0 18px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer}
 
   /* PANEL (used in other pages) */
-  .panel{border:1px solid var(--line);border-radius:4px;background:var(--ink-2);margin-bottom:18px;overflow:hidden}
+  .panel{border:1px solid var(--line);border-radius:4px;background:var(--ink-2);margin-bottom:28px;overflow:hidden}
   .panel-head{padding:18px 20px;border-bottom:1px solid var(--line-soft)}
   .panel-head b{font-size:13.5px;font-weight:400;letter-spacing:0.06em;text-transform:uppercase}
   .panel-head small{display:block;color:var(--muted);font-size:11px;margin-top:3px;letter-spacing:0.04em}
-  .panel-body{padding:20px}
+  .panel-body{padding:44px}
 
   .client-grid{display:grid;grid-template-columns:160px 1fr;gap:12px 16px;align-items:center}
   .client-grid .cl-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--sand);align-self:start;padding-top:9px}
@@ -170,13 +170,13 @@
   /* custom dropdown — always opens downward, themed like the rest of the form */
   .csel{position:relative;flex:1}
   .csel[data-role="day"]{flex:0 0 80px}
-  .csel-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:6px;background:var(--ink-3);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:8px 10px;font-family:var(--sans);font-size:13px;cursor:pointer}
+  .csel-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:6px;background:var(--ink-3);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:16px 14px;font-family:var(--sans);font-size:13px;cursor:pointer}
   .csel-btn:hover{border-color:var(--sand)}
   .csel-btn svg{width:12px;height:12px;flex:none;stroke:var(--muted);fill:none;stroke-width:2;transition:transform .2s}
   .csel.open .csel-btn svg{transform:rotate(180deg)}
-  .csel-menu{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--ink-3);border:1px solid var(--line);border-radius:4px;max-height:min(500px,70vh);overflow-y:auto;z-index:60;box-shadow:0 12px 30px rgba(0,0,0,0.5)}
+  .csel-menu{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--ink-3);border:1px solid var(--line);border-radius:4px;max-height:min(320px,70vh);overflow-y:auto;z-index:9999;box-shadow:0 12px 30px rgba(0,0,0,0.5)}
   .csel.open .csel-menu{display:block}
-  .csel-opt{padding:9px 12px;font-size:13px;color:var(--cream);cursor:pointer}
+  .csel-opt{padding:13px 14px;font-size:13px;color:var(--cream);cursor:pointer}
   .csel-opt:hover{background:var(--ink-4)}
   .csel-opt.selected{color:var(--sand)}
 
@@ -187,11 +187,20 @@
 
   .spec-cat{margin-bottom:16px}
   .spec-cat:last-child{margin-bottom:0}
-  .spec-cat-title{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--sand);margin-bottom:8px}
-  .item{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line-soft)}
+  .spec-cat-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:6px}
+  .spec-cat-title{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--sand);display:flex;align-items:center;gap:8px}
+  .cat-count{background:var(--ink-3);color:var(--muted);font-size:10px;letter-spacing:normal;padding:2px 8px;border-radius:30px}
+  .cat-add-btn{flex:none;background:none;border:1px solid var(--line);color:var(--cream);border-radius:30px;padding:8px 16px;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:border-color .2s,color .2s}
+  .cat-add-btn:hover{border-color:var(--sand);color:var(--sand)}
+  .item{display:grid;grid-template-columns:56px 1fr auto auto auto auto;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line-soft)}
   .item:last-child{border-bottom:none}
-  .item-info .name{font-size:13px}
-  .item-info .desc{font-size:11px;color:var(--muted);margin-top:2px}
+  .item-thumb{width:56px;height:56px;border-radius:6px;background:var(--ink-3);display:flex;align-items:center;justify-content:center;flex:none}
+  .item-thumb svg{width:22px;height:22px;stroke:var(--faint);fill:none;stroke-width:1.4}
+  .item-info .name{font-size:13.5px}
+  .item-info .desc{font-size:11px;color:var(--muted);margin-top:3px}
+  .item-info .item-price{font-size:11px;color:var(--sand);margin-top:4px}
+  .item-qty{font-size:12px;color:var(--muted);white-space:nowrap}
+  .item-sum{font-size:13px;color:var(--cream);font-family:var(--display);white-space:nowrap}
   .pill{font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:30px;border:1px solid var(--line);white-space:nowrap;cursor:pointer;background:none;color:var(--muted)}
 
   /* APPROVAL STATUS COLORS (этап проекта) */
@@ -206,25 +215,26 @@
   .del-btn:hover{color:var(--danger)}
 
   .add-row{display:grid;grid-template-columns:1.4fr 1fr 0.7fr auto;gap:8px;margin-top:14px}
-  .add-row input,.add-row select{background:var(--ink-3);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:9px 10px;font-family:var(--sans);font-size:12px}
+  .add-row input,.add-row select{background:var(--ink-3);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:16px 14px;font-family:var(--sans);font-size:13px}
   .add-row button{background:var(--sand);color:var(--ink);border:none;border-radius:4px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer}
 
-  .spec-add-row{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
-  .spec-add-row .si-text{flex:1 1 180px;min-width:150px}
-  .spec-add-row .csel-wrap{flex:1 1 160px;min-width:140px}
-  .spec-add-row .csel-wrap .csel{width:100%;height:100%}
-  .spec-add-row .csel-btn{width:100%;height:100%}
-  .spec-add-row .csel-btn span{white-space:normal;line-height:1.25;text-align:left}
-  .spec-add-row .price-field{flex:1 1 140px;min-width:120px}
-  .spec-add-row .qty-field{flex:0 0 110px}
-  .spec-add-row button.add-btn{flex:0 0 auto;padding:0 20px}
+  .spec-add-card{margin-top:24px;padding:28px;border:1px solid var(--line);border-radius:6px;background:var(--ink-3)}
+  .spec-add-title{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--sand);margin-bottom:20px}
+  .spec-add-row1{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:14px;margin-bottom:20px}
+  .spec-add-row1 input{width:100%;background:var(--ink-2);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:16px 14px;font-family:var(--sans);font-size:13px}
+  .spec-add-note{width:100%;background:var(--ink-2);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:16px 14px;font-family:var(--sans);font-size:13px;margin-bottom:20px}
+  .spec-add-row3{display:grid;grid-template-columns:auto 1fr 2fr;gap:14px;align-items:stretch}
+  .spec-add-row3 .qty-field{width:140px}
+  .spec-add-card .csel-btn,.spec-add-card .price-field,.spec-add-card .qty-field{background:var(--ink-2)}
+  .add-btn-wide{background:var(--sand);color:var(--ink);border:none;border-radius:4px;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;white-space:nowrap;padding:0 24px}
+  .add-btn-wide:hover{opacity:.88}
 
   .price-field,.qty-field{display:flex;align-items:stretch;background:var(--ink-3);border:1px solid var(--line);border-radius:4px;overflow:hidden}
-  .price-field input,.qty-field input{background:none;border:none;color:var(--cream);font-family:var(--sans);font-size:12px;width:100%;padding:9px 10px}
+  .price-field input,.qty-field input{background:none;border:none;color:var(--cream);font-family:var(--sans);font-size:13px;width:100%;padding:16px 14px}
   .price-field input:focus,.qty-field input:focus{outline:none}
   .price-field .field-unit{flex:none;padding:0 10px;font-size:10.5px;letter-spacing:.06em;color:var(--sand);border-left:1px solid var(--line);display:flex;align-items:center}
-  .qty-field input{text-align:center;padding:9px 0;flex:1;min-width:0}
-  .qty-btn{flex:none;display:flex;align-items:center;justify-content:center;background:none;border:none;color:var(--muted);width:26px;cursor:pointer;font-size:14px;line-height:1}
+  .qty-field input{text-align:center;padding:16px 0;flex:1;min-width:0}
+  .qty-btn{flex:none;display:flex;align-items:center;justify-content:center;background:none;border:none;color:var(--muted);width:34px;cursor:pointer;font-size:16px;line-height:1}
   .qty-btn:hover{color:var(--sand)}
 
   /* .add-row button styles a generic gold submit button — override it back to the normal
@@ -390,19 +400,24 @@
           <div class="panel-head"><b>Мебель и материалы</b><small id="specCount"></small></div>
           <div class="panel-body">
             <div id="specList"></div>
-            <div class="add-row spec-add-row">
-              <input id="newItemName" class="si-text" type="text" placeholder="Название позиции — например, Кресло B&amp;B Italia">
-              <div id="newItemCatWrap" class="csel-wrap"></div>
-              <div id="newItemRoomWrap" class="csel-wrap"></div>
-              <input id="newItemNote" class="si-text" type="text" placeholder="Деталь — цвет, материал...">
-              <div class="price-field"><input id="newItemPrice" type="text" inputmode="decimal" placeholder="0"><span class="field-unit">AED</span></div>
-              <div class="qty-field">
-                <button type="button" class="qty-btn" onclick="stepQty(-1)">−</button>
-                <input id="newItemQty" type="text" inputmode="numeric" value="1">
-                <button type="button" class="qty-btn" onclick="stepQty(1)">+</button>
+            <div class="spec-add-card">
+              <div class="spec-add-title">Добавить новую позицию</div>
+              <div class="spec-add-row1">
+                <input id="newItemName" type="text" placeholder="Название позиции — например, Кресло B&amp;B Italia">
+                <div id="newItemCatWrap" class="csel-wrap"></div>
+                <div id="newItemRoomWrap" class="csel-wrap"></div>
+                <div id="newItemStatusWrap" class="csel-wrap"></div>
               </div>
-              <div id="newItemStatusWrap" class="csel-wrap"></div>
-              <button class="add-btn" onclick="addItem()">Добавить</button>
+              <input id="newItemNote" class="spec-add-note" type="text" placeholder="Деталь — цвет, материал, размеры, артикул, примечания...">
+              <div class="spec-add-row3">
+                <div class="qty-field">
+                  <button type="button" class="qty-btn" onclick="stepQty(-1)">−</button>
+                  <input id="newItemQty" type="text" inputmode="numeric" value="1">
+                  <button type="button" class="qty-btn" onclick="stepQty(1)">+</button>
+                </div>
+                <div class="price-field"><input id="newItemPrice" type="text" inputmode="decimal" placeholder="0"><span class="field-unit">AED</span></div>
+                <button class="add-btn-wide" onclick="addItem()">+ Добавить позицию</button>
+              </div>
             </div>
             <div class="note">Нажимайте на статус, чтобы менять его: Ожидание → В поиске → Заказано → Согласовано. Бюджет на странице «Бюджет» считается автоматически из позиций со статусом «Заказано» и «Согласовано».</div>
           </div>
@@ -622,14 +637,24 @@
       catEl.className='spec-cat';
       catEl.dataset.cat=cat.cat;
       const itemsHtml=cat.items.map((it,ii)=>{
-        const descParts=[it.room,it.note,it.qty>1?it.qty+' шт':'',it.price?fmtMoney(it.price*(it.qty||1)):''].filter(Boolean);
+        const descParts=[it.room,it.note].filter(Boolean);
         return `<div class="item">
-          <div class="item-info"><div class="name">${esc(it.name)}</div><div class="desc">${esc(descParts.join(' · '))}</div></div>
+          <div class="item-thumb"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+          <div class="item-info">
+            <div class="name">${esc(it.name)}</div>
+            <div class="desc">${esc(descParts.join(' · '))}</div>
+            ${it.price?`<div class="item-price">${fmtMoney(it.price)}</div>`:''}
+          </div>
           <button class="pill ${it.status}" onclick="cycleSpecStatus(${ci},${ii})">${statusMap[it.status]}</button>
+          <div class="item-qty">${it.qty} шт.</div>
+          <div class="item-sum">${it.price?fmtMoney(it.price*(it.qty||1)):'—'}</div>
           <button class="del-btn" onclick="deleteSpecItem(${ci},${ii})">✕</button>
         </div>`;
       }).join('');
-      catEl.innerHTML=`<div class="spec-cat-title">${cat.cat}</div>${itemsHtml}`;
+      catEl.innerHTML=`<div class="spec-cat-head">
+          <div class="spec-cat-title">${esc(cat.cat)}<span class="cat-count">${cat.items.length}</span></div>
+          <button class="cat-add-btn" onclick="focusAddItem('${esc(cat.cat).replace(/'/g,"\\'")}')">+ Добавить позицию</button>
+        </div>${itemsHtml}`;
       specList.appendChild(catEl);
     });
     updateSpecCount();
@@ -887,6 +912,15 @@
         <button type="button" class="csel-btn" onclick="toggleDropdown(this)"><span>${esc(selectedLabel)}</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
         <div class="csel-menu">${opts}</div>
       </div><input type="hidden" id="${hiddenId}" value="${esc(selectedValue)}">`;
+  }
+
+  function focusAddItem(catName){
+    const wrap=document.getElementById('newItemCatWrap');
+    const opt=[...wrap.querySelectorAll('.csel-opt')].find(o=>o.dataset.value===catName);
+    if(opt) selectFieldOption(opt);
+    const nameInput=document.getElementById('newItemName');
+    nameInput.scrollIntoView({behavior:'smooth',block:'center'});
+    nameInput.focus();
   }
 
   function selectFieldOption(opt){
