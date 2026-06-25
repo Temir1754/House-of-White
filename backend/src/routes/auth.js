@@ -1,10 +1,36 @@
 import { Router } from 'express';
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import { pool } from '../db.js';
 
 const router = Router();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+router.post('/admin-login', async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: 'Missing email/password' });
+
+  const { rows } = await pool.query('SELECT * FROM admin_users WHERE email = $1', [email]);
+  const admin = rows[0];
+  if (!admin || !(await bcrypt.compare(password, admin.password_hash))) {
+    return res.status(401).json({ error: 'Invalid credentials' });
+  }
+
+  const token = jwt.sign(
+    { id: admin.id, email: admin.email, name: admin.name, isAdmin: true },
+    process.env.JWT_SECRET,
+    { expiresIn: '30d' }
+  );
+
+  res.cookie('token', token, {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: true,
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+  });
+  res.json({ user: { id: admin.id, email: admin.email, name: admin.name, isAdmin: true } });
+});
 
 router.post('/google', async (req, res) => {
   const { credential } = req.body;

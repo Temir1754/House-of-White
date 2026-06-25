@@ -278,11 +278,28 @@
     .content{padding:18px 18px 60px}
     .chip{font-size:9px;padding:5px 9px}
   }
+
+  .login-screen{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;justify-content:center;z-index:100}
+  .login-box{width:320px;padding:32px;border:1px solid var(--line);border-radius:6px}
+  .login-box h1{font-family:var(--display);font-weight:400;font-size:20px;margin-bottom:24px}
+  .login-box input{width:100%;background:var(--ink-3);border:1px solid var(--line);color:var(--cream);padding:11px 12px;border-radius:4px;font-size:13px;margin-bottom:12px}
+  .login-box input:focus{outline:none;border-color:var(--sand)}
+  .login-error{color:var(--danger);font-size:12px;margin-bottom:12px;display:none}
 </style>
 </head>
 <body>
 
-<div class="app">
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <h1>House of <i style="color:var(--sand);font-style:italic">White</i> — Вход</h1>
+    <div class="login-error" id="loginError">Неверный email или пароль</div>
+    <input type="email" id="loginEmail" placeholder="Email" autocomplete="username">
+    <input type="password" id="loginPassword" placeholder="Пароль" autocomplete="current-password">
+    <button class="btn-line" style="width:100%;text-align:center" onclick="doAdminLogin()">Войти</button>
+  </div>
+</div>
+
+<div class="app" id="appRoot" style="display:none">
 
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
@@ -458,6 +475,35 @@
     const res=await fetch(url,{credentials:'include',headers:{'Content-Type':'application/json'},...opts});
     if(!res.ok) throw new Error('Request failed: '+res.status);
     return res.json();
+  }
+
+  async function checkAuthAndInit(){
+    try{
+      await fetchJSON('/api/auth/me');
+      showApp();
+    }catch(err){
+      document.getElementById('loginScreen').style.display='flex';
+      document.getElementById('appRoot').style.display='none';
+    }
+  }
+
+  async function doAdminLogin(){
+    const email=document.getElementById('loginEmail').value.trim();
+    const password=document.getElementById('loginPassword').value;
+    const errEl=document.getElementById('loginError');
+    errEl.style.display='none';
+    try{
+      await fetchJSON('/api/auth/admin-login',{method:'POST',body:JSON.stringify({email,password})});
+      showApp();
+    }catch(err){
+      errEl.style.display='block';
+    }
+  }
+
+  function showApp(){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('appRoot').style.display='flex';
+    initProjects();
   }
 
   async function initProjects(){
@@ -1132,7 +1178,7 @@
   document.getElementById('newItemCatWrap').innerHTML=buildSimpleDropdown('newItemCat',SPEC_CAT_OPTIONS,'Мебель','Категория');
   document.getElementById('newItemStatusWrap').innerHTML=buildSimpleDropdown('newItemStatus',SPEC_STATUS_OPTIONS,'wait','Статус');
 
-  initProjects();
+  checkAuthAndInit();
 </script>
 </body>
 </html>
