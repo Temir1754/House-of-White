@@ -7,6 +7,7 @@ import authRoutes from './routes/auth.js';
 import bookingsRoutes from './routes/bookings.js';
 import projectsRoutes from './routes/projects.js';
 import uploadRoutes from './routes/upload.js';
+import clientProjectsRoutes from './routes/clientProjects.js';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/bookings', bookingsRoutes);
 app.use('/api/projects', projectsRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/client-projects', clientProjectsRoutes);
 
 const port = process.env.PORT || 4000;
 
