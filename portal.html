@@ -387,15 +387,21 @@
     }
   }
 
+  function renderGoogleButton(){
+    if(window.google?.accounts?.id){
+      google.accounts.id.initialize({client_id:'932760765418-6coadj0qp3bbdth5b5rcqmp799vu4cq0.apps.googleusercontent.com',callback:handleGoogleLogin});
+      google.accounts.id.renderButton(document.getElementById('g_id_signin'),{theme:'outline',size:'large'});
+    }else{
+      setTimeout(renderGoogleButton,100);
+    }
+  }
+
   async function checkAuthAndInit(){
     try{
       await fetchJSON('/api/auth/me');
       await showApp();
     }catch(err){
-      if(window.google?.accounts?.id){
-        google.accounts.id.initialize({client_id:'932760765418-6coadj0qp3bbdth5b5rcqmp799vu4cq0.apps.googleusercontent.com',callback:handleGoogleLogin});
-        google.accounts.id.renderButton(document.getElementById('g_id_signin'),{theme:'outline',size:'large'});
-      }
+      renderGoogleButton();
     }
   }
 
