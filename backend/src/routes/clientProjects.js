@@ -39,10 +39,18 @@ async function loadFullProject(slug) {
       );
       const photos = [];
       for (const photo of photoRows) {
-        const { rows: comments } = await pool.query(
-          'SELECT id, text, x, y, created_by, created_at FROM photo_comments WHERE photo_id = $1 ORDER BY id',
+        const { rows: commentRows } = await pool.query(
+          'SELECT id, text, x, y, author_name, from_studio, created_at FROM photo_comments WHERE photo_id = $1 ORDER BY id',
           [photo.id]
         );
+        const comments = commentRows.map((c) => ({
+          id: c.id,
+          text: c.text,
+          x: c.x,
+          y: c.y,
+          from: c.from_studio ? 'studio' : 'client',
+          authorName: c.author_name,
+        }));
         photos.push({
           id: photo.id,
           fileKey: photo.file_key,
@@ -122,6 +130,20 @@ async function canAccess(req, slug) {
   return rows.length > 0;
 }
 
+async function canAccessPhoto(req, photoId) {
+  if (req.user?.isAdmin) return true;
+  const { rows } = await pool.query(
+    `SELECT 1 FROM room_photos rp
+     JOIN room_variants rv ON rv.id = rp.variant_id
+     JOIN rooms r ON r.id = rv.room_id
+     JOIN client_projects cp ON cp.id = r.client_project_id
+     JOIN clients c ON c.id = cp.client_id
+     WHERE rp.id = $1 AND c.user_id = $2`,
+    [photoId, req.user?.id]
+  );
+  return rows.length > 0;
+}
+
 router.get('/', requireAuth, requireAdmin, async (req, res) => {
   const { rows } = await pool.query(
     `SELECT cp.id, cp.slug, cp.label, cp.stage, cp.status, cp.budget_total,
@@ -130,6 +152,17 @@ router.get('/', requireAuth, requireAdmin, async (req, res) => {
      ORDER BY cp.created_at DESC`
   );
   res.json(rows);
+});
+
+router.get('/mine', requireAuth, async (req, res) => {
+  const { rows } = await pool.query(
+    `SELECT cp.slug FROM client_projects cp JOIN clients c ON c.id = cp.client_id
+     WHERE c.user_id = $1 ORDER BY cp.created_at DESC LIMIT 1`,
+    [req.user.id]
+  );
+  if (!rows[0]) return res.status(404).json({ error: 'No project found for this account' });
+  const project = await loadFullProject(rows[0].slug);
+  res.json(project);
 });
 
 router.get('/:slug', requireAuth, async (req, res) => {
@@ -262,14 +295,18 @@ router.post('/room-variants/:id/photos', requireAuth, requireAdmin, upload.singl
 });
 
 router.get('/room-photos/:id/url', requireAuth, async (req, res) => {
+  if (!(await canAccessPhoto(req, req.params.id))) return res.status(403).json({ error: 'Forbidden' });
   const { rows } = await pool.query('SELECT file_key FROM room_photos WHERE id = $1', [req.params.id]);
   if (!rows[0]) return res.status(404).json({ error: 'Not found' });
   const url = await minioClient.presignedGetObject(BUCKET, rows[0].file_key, 24 * 60 * 60);
   res.json({ url });
 });
 
-router.patch('/room-photos/:id', requireAuth, requireAdmin, async (req, res) => {
+router.patch('/room-photos/:id', requireAuth, async (req, res) => {
+  if (!(await canAccessPhoto(req, req.params.id))) return res.status(403).json({ error: 'Forbidden' });
   const { caption, approved } = req.body;
+  if (caption !== undefined && !req.user.isAdmin) return res.status(403).json({ error: 'Only studio can edit captions' });
+
   const { rows } = await pool.query(
     `UPDATE room_photos SET caption = COALESCE($1, caption), approved = COALESCE($2, approved)
      WHERE id = $3 RETURNING *`,
@@ -287,11 +324,13 @@ router.delete('/room-photos/:id', requireAuth, requireAdmin, async (req, res) =>
 });
 
 router.post('/room-photos/:id/comments', requireAuth, async (req, res) => {
+  if (!(await canAccessPhoto(req, req.params.id))) return res.status(403).json({ error: 'Forbidden' });
   const { text, x, y } = req.body;
   if (!text) return res.status(400).json({ error: 'Missing text' });
   const { rows } = await pool.query(
-    `INSERT INTO photo_comments (photo_id, text, x, y, created_by) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-    [req.params.id, text, x ?? null, y ?? null, req.user.id]
+    `INSERT INTO photo_comments (photo_id, text, x, y, created_by, author_name, from_studio)
+     VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+    [req.params.id, text, x ?? null, y ?? null, req.user.id, req.user.name || req.user.email || null, !!req.user.isAdmin]
   );
   res.status(201).json(rows[0]);
 });

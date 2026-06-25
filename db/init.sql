@@ -108,7 +108,9 @@ CREATE TABLE photo_comments (
   text TEXT NOT NULL,
   x NUMERIC,
   y NUMERIC,
-  created_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  created_by INTEGER,
+  author_name TEXT,
+  from_studio BOOLEAN NOT NULL DEFAULT FALSE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 

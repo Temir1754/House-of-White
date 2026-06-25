@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
   :root{
     --ink:#000000; --ink-2:#0D0D0D; --ink-3:#141414;
@@ -188,17 +189,32 @@
   .approve-row .ap-yes.active{background:var(--ok);color:var(--ink);border-color:var(--ok)}
   .approve-row .ap-no:hover{border-color:var(--sand);color:var(--sand)}
   .approve-row .ap-no.active{background:var(--sand);color:var(--ink);border-color:var(--sand)}
+
+  .login-screen{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;justify-content:center;z-index:300}
+  .login-box{width:320px;padding:32px;border:1px solid var(--line);border-radius:6px;text-align:center}
+  .login-box h1{font-family:var(--display);font-weight:400;font-size:20px;margin-bottom:10px}
+  .login-box p{color:var(--muted);font-size:12.5px;margin-bottom:24px;line-height:1.6}
+  .login-note{margin-top:16px;font-size:11px;color:var(--faint)}
 </style>
 </head>
 <body>
 
-<div class="app">
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <h1>House of <i style="color:var(--sand);font-style:italic">White</i></h1>
+    <p>Войдите через Google, чтобы увидеть ваш проект</p>
+    <div id="g_id_signin" style="display:flex;justify-content:center"></div>
+    <div class="login-note" id="loginNote"></div>
+  </div>
+</div>
+
+<div class="app" id="appRoot" style="display:none">
 
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <a href="links.html" class="side-brand">House of <i>White</i></a>
     <div class="side-label">Проект</div>
-    <div class="proj-item">Palm Jumeirah Villa</div>
+    <div class="proj-item" id="sideProjLabel">—</div>
     <div class="sub-nav">
       <div class="sub-item active" data-page="overview" onclick="switchPage(this)">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>О проекте
@@ -233,19 +249,12 @@
       <!-- OVERVIEW -->
       <div class="page active" data-page="overview">
         <div class="hero">
-          <span class="eyebrow">Для Лейлы А. · Дубай Марина</span>
+          <span class="eyebrow" id="heroEyebrow">—</span>
           <h1>Ваш проект дизайна<br>уже <i>готов.</i></h1>
           <p>Мы прошли весь путь вместе — от первых идей до полностью продуманного интерьера. Всё по вашему проекту теперь здесь.</p>
           <div class="sign">— House of White</div>
 
-          <div class="progress">
-            <div class="pstep done"><span class="mk"></span><span class="lb">Консультация</span></div>
-            <div class="pstep done"><span class="mk"></span><span class="lb">Концепция</span></div>
-            <div class="pstep done"><span class="mk"></span><span class="lb">Дизайн</span></div>
-            <div class="pstep now"><span class="mk"></span><span class="lb">Визуализации</span></div>
-            <div class="pstep"><span class="mk"></span><span class="lb">Закупка</span></div>
-            <div class="pstep"><span class="mk"></span><span class="lb">Сдача</span></div>
-          </div>
+          <div class="progress" id="progressSteps"></div>
         </div>
       </div>
 
@@ -264,68 +273,8 @@
 
       <!-- SPECIFICATION -->
       <div class="page" data-page="spec">
-
-        <!-- FURNITURE -->
-        <div class="spec-cat">
-          <div class="spec-cat-title">Мебель</div>
-          <div class="spec-table-wrap"><table class="spec-table">
-            <thead><tr><th>Позиция</th><th class="num">Кол-во</th><th class="num">Цена, AED</th><th class="num">Сумма, AED</th><th>Статус</th></tr></thead>
-            <tbody>
-              <tr><td><div class="name">Диван — Minotti Spencer</div><div class="desc">Гостиная · ткань: бежевый лён · 3-местный</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">1</td><td class="num">18 500</td><td class="num">18 500</td><td><span class="pill ok">Согласовано</span></td></tr>
-              <tr><td><div class="name">Обеденный стол — Flexform Atlante</div><div class="desc">Столовая · 220×100 см · дуб</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">1</td><td class="num">9 800</td><td class="num">9 800</td><td><span class="pill ok">Согласовано</span></td></tr>
-              <tr><td><div class="name">Кровать — Poliform Letto</div><div class="desc">Спальня · 180×200 см · тканевое изголовье</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">1</td><td class="num">12 400</td><td class="num">12 400</td><td><span class="pill go">В поиске</span></td></tr>
-              <tr><td><div class="name">Кресло — B&amp;B Italia Mart</div><div class="desc">Гостиная · цвет: песочный</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">2</td><td class="num">7 200</td><td class="num">14 400</td><td><span class="pill go">В поиске</span></td></tr>
-            </tbody>
-            <tfoot><tr><td colspan="3">Итого по категории</td><td class="num"><b>55 100</b></td><td></td></tr></tfoot>
-          </table></div>
-        </div>
-
-        <!-- LIGHTING -->
-        <div class="spec-cat">
-          <div class="spec-cat-title">Освещение</div>
-          <div class="spec-table-wrap"><table class="spec-table">
-            <thead><tr><th>Позиция</th><th class="num">Кол-во</th><th class="num">Цена, AED</th><th class="num">Сумма, AED</th><th>Статус</th></tr></thead>
-            <tbody>
-              <tr><td><div class="name">Подвес — Flos Arrangements</div><div class="desc">Столовая · латунь · 3 светильника</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">1</td><td class="num">6 500</td><td class="num">6 500</td><td><span class="pill done">Заказано</span></td></tr>
-              <tr><td><div class="name">Торшер — Artemide Tolomeo</div><div class="desc">Гостиная · алюминий</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">1</td><td class="num">2 100</td><td class="num">2 100</td><td><span class="pill go">В поиске</span></td></tr>
-              <tr><td><div class="name">Прикроватные светильники — Astro Niche</div><div class="desc">Спальня · 2 шт · матовый белый</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">2</td><td class="num">850</td><td class="num">1 700</td><td><span class="pill wait">Ожидание</span></td></tr>
-            </tbody>
-            <tfoot><tr><td colspan="3">Итого по категории</td><td class="num"><b>10 300</b></td><td></td></tr></tfoot>
-          </table></div>
-        </div>
-
-        <!-- TEXTILES -->
-        <div class="spec-cat">
-          <div class="spec-cat-title">Текстиль</div>
-          <div class="spec-table-wrap"><table class="spec-table">
-            <thead><tr><th>Позиция</th><th class="num">Кол-во</th><th class="num">Цена, AED</th><th class="num">Сумма, AED</th><th>Статус</th></tr></thead>
-            <tbody>
-              <tr><td><div class="name">Шторы — Dedar Milano</div><div class="desc">Гостиная и спальня · лён · цвет слоновой кости</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">1</td><td class="num">5 200</td><td class="num">5 200</td><td><span class="pill done">Заказано</span></td></tr>
-              <tr><td><div class="name">Ковёр — Deirdre Dyson</div><div class="desc">Гостиная · 300×250 см · шерсть</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">1</td><td class="num">8 900</td><td class="num">8 900</td><td><span class="pill go">В поиске</span></td></tr>
-              <tr><td><div class="name">Набор подушек — Society Limonta</div><div class="desc">Диван · 6 шт · разные текстуры</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">6</td><td class="num">320</td><td class="num">1 920</td><td><span class="pill wait">Ожидание</span></td></tr>
-            </tbody>
-            <tfoot><tr><td colspan="3">Итого по категории</td><td class="num"><b>16 020</b></td><td></td></tr></tfoot>
-          </table></div>
-        </div>
-
-        <!-- DECOR -->
-        <div class="spec-cat">
-          <div class="spec-cat-title">Декор и искусство</div>
-          <div class="spec-table-wrap"><table class="spec-table">
-            <thead><tr><th>Позиция</th><th class="num">Кол-во</th><th class="num">Цена, AED</th><th class="num">Сумма, AED</th><th>Статус</th></tr></thead>
-            <tbody>
-              <tr><td><div class="name">Большое полотно — уточняется с клиентом</div><div class="desc">Гостиная · над диваном · 150×100 см</div></td><td class="num">1</td><td class="num">—</td><td class="num">—</td><td><span class="pill wait">Ожидание</span></td></tr>
-              <tr><td><div class="name">Набор ваз — Audo Copenhagen</div><div class="desc">Столовая и буфет · 3 шт · керамика</div><a class="lk" href="#" target="_blank">Открыть →</a></td><td class="num">3</td><td class="num">480</td><td class="num">1 440</td><td><span class="pill go">В поиске</span></td></tr>
-              <tr><td><div class="name">Книги для кофейного столика</div><div class="desc">Гостиная · архитектура и искусство · 5 изданий</div></td><td class="num">5</td><td class="num">150</td><td class="num">750</td><td><span class="pill wait">Ожидание</span></td></tr>
-            </tbody>
-            <tfoot><tr><td colspan="3">Итого по категории</td><td class="num"><b>2 190</b></td><td></td></tr></tfoot>
-          </table></div>
-        </div>
-
-        <div class="spec-foot">
-          <span>4 категории · 13 позиций</span>
-          <span>Итого по проекту <b>AED 83 610</b></span>
-        </div>
+        <div id="specBody"></div>
+        <div class="spec-foot" id="specFoot"></div>
       </div>
 
       <!-- DOWNLOAD PROJECT -->
@@ -420,59 +369,144 @@
     document.getElementById('sidebar').classList.remove('open');
   }
 
-  // ---- ROOMS & PHOTOS DATA ----
-  const ROOMS=[
-    {name:'Прихожая',photos:[
-      'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1400&q=80'
-    ]},
-    {name:'Кухня-гостиная',photos:[
-      'https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=1400&q=80',
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80'
-    ]},
-    {name:'Мастер-спальня',photos:[
-      'https://images.unsplash.com/photo-1615875605825-5eb9bb5d52ac?auto=format&fit=crop&w=1400&q=80'
-    ]}
-  ];
+  const STEP_LABELS=['Консультация','Концепция','Дизайн','Визуализации','Закупка','Сдача'];
 
-  // flat list of all photos in order, each with a stable id, for prev/next + per-photo state
-  const PHOTOS=[];
-  ROOMS.forEach((room,ri)=>room.photos.forEach((src,pi)=>{
-    PHOTOS.push({id:`${ri}-${pi}`,room:room.name,src});
-  }));
+  async function fetchJSON(url,opts){
+    const res=await fetch(url,{credentials:'include',headers:{'Content-Type':'application/json'},...opts});
+    if(!res.ok) throw new Error('Request failed: '+res.status);
+    return res.json();
+  }
 
-  const commentsByPhoto={};   // id -> [{x,y,text}]
-  const approvalByPhoto={};   // id -> true | false | undefined
+  async function handleGoogleLogin(response){
+    const note=document.getElementById('loginNote');
+    try{
+      await fetchJSON('/api/auth/google',{method:'POST',body:JSON.stringify({credential:response.credential})});
+      await showApp();
+    }catch(err){
+      note.textContent='Не удалось войти. Попробуйте снова.';
+    }
+  }
+
+  async function checkAuthAndInit(){
+    try{
+      await fetchJSON('/api/auth/me');
+      await showApp();
+    }catch(err){
+      if(window.google?.accounts?.id){
+        google.accounts.id.initialize({client_id:'932760765418-6coadj0qp3bbdth5b5rcqmp799vu4cq0.apps.googleusercontent.com',callback:handleGoogleLogin});
+        google.accounts.id.renderButton(document.getElementById('g_id_signin'),{theme:'outline',size:'large'});
+      }
+    }
+  }
+
+  let PROJECT=null;
+  const PHOTOS=[];   // flat list across all rooms' active variant, for the review lightbox prev/next
+
+  async function showApp(){
+    try{
+      PROJECT=await fetchJSON('/api/client-projects/mine');
+    }catch(err){
+      document.getElementById('loginNote').textContent='Для вашего аккаунта пока не найден проект. Обратитесь в студию.';
+      return;
+    }
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('appRoot').style.display='flex';
+    renderAll();
+  }
+
+  function renderAll(){
+    document.getElementById('sideProjLabel').textContent=PROJECT.label;
+    document.getElementById('heroEyebrow').textContent=`Для ${PROJECT.client.name}${PROJECT.client.address?' · '+PROJECT.client.address:''}`;
+
+    const stepsWrap=document.getElementById('progressSteps');
+    stepsWrap.innerHTML='';
+    STEP_LABELS.forEach((label,i)=>{
+      const el=document.createElement('div');
+      el.className='pstep'+(i<PROJECT.stage?' done':i===PROJECT.stage?' now':'');
+      el.innerHTML=`<span class="mk"></span><span class="lb">${label}</span>`;
+      stepsWrap.appendChild(el);
+    });
+
+    PHOTOS.length=0;
+    PROJECT.rooms.forEach(room=>{
+      const variant=room.variants[room.activeVariant];
+      (variant?.photos||[]).forEach(photo=>PHOTOS.push({...photo,room:room.name}));
+    });
+    renderRooms();
+    renderSpec();
+  }
+
+  const photoUrlCache={};
+  async function resolvePhotoUrl(photoId){
+    if(photoUrlCache[photoId]) return photoUrlCache[photoId];
+    const {url}=await fetchJSON('/api/client-projects/room-photos/'+photoId+'/url');
+    photoUrlCache[photoId]=url;
+    return url;
+  }
+
+  function resolvePhotoImages(){
+    document.querySelectorAll('img.lazy-photo[data-photo-id]').forEach(img=>{
+      resolvePhotoUrl(img.dataset.photoId).then(url=>{img.src=url}).catch(()=>{});
+    });
+  }
 
   function renderRooms(){
     const wrap=document.getElementById('vizBody');
     wrap.querySelectorAll('.room-block').forEach(b=>b.remove());
-    ROOMS.forEach((room,ri)=>{
+    PROJECT.rooms.forEach(room=>{
+      const variant=room.variants[room.activeVariant];
+      const photos=variant?.photos||[];
+      if(!photos.length) return;
       const block=document.createElement('div');
       block.className='room-block';
       const grid=document.createElement('div');
       grid.className='render-grid';
-      room.photos.forEach((src,pi)=>{
-        const id=`${ri}-${pi}`;
+      photos.forEach(photo=>{
         const tile=document.createElement('div');
         tile.className='render-tile';
-        tile.onclick=()=>openReviewById(id);
-        const badges=badgeHtml(id);
-        tile.innerHTML=`<img loading="lazy" src="${src}" alt="">${badges}`;
+        tile.onclick=()=>openReviewById(photo.id);
+        tile.innerHTML=`<img class="lazy-photo" loading="lazy" data-photo-id="${photo.id}" alt="">${badgeHtml(photo)}`;
         grid.appendChild(tile);
       });
       block.innerHTML=`<div class="room-block-title">${room.name}</div>`;
       block.appendChild(grid);
       wrap.insertBefore(block,wrap.querySelector('.note'));
     });
+    resolvePhotoImages();
   }
 
-  function badgeHtml(id){
-    const n=(commentsByPhoto[id]||[]).length;
-    const ap=approvalByPhoto[id];
-    let html='';
-    if(ap===true) html+=`<span class="badge ok">✓ Согласовано</span>`;
-    else if(n>0) html+=`<span class="badge cm">💬 ${n}</span>`;
-    return html;
+  function badgeHtml(photo){
+    if(photo.approved) return `<span class="badge ok">✓ Согласовано</span>`;
+    if((photo.comments||[]).length>0) return `<span class="badge cm">💬 ${photo.comments.length}</span>`;
+    return '';
+  }
+
+  function renderSpec(){
+    const body=document.getElementById('specBody');
+    body.innerHTML='';
+    const statusMap={wait:'Ожидание',go:'В поиске',done:'Заказано',ok:'Согласовано'};
+    let totalItems=0,totalSum=0;
+    PROJECT.spec.forEach(cat=>{
+      const catEl=document.createElement('div');
+      catEl.className='spec-cat';
+      let catSum=0;
+      const rowsHtml=cat.items.map(it=>{
+        const sum=(it.price||0)*(it.qty||1);
+        catSum+=sum;totalItems++;totalSum+=sum;
+        return `<tr><td><div class="name">${it.name}</div><div class="desc">${[it.room,it.note].filter(Boolean).join(' · ')}</div></td>
+          <td class="num">${it.qty}</td><td class="num">${(it.price||0).toLocaleString('ru-RU')}</td><td class="num">${sum.toLocaleString('ru-RU')}</td>
+          <td><span class="pill ${it.status}">${statusMap[it.status]||it.status}</span></td></tr>`;
+      }).join('');
+      catEl.innerHTML=`<div class="spec-cat-title">${cat.cat}</div>
+        <div class="spec-table-wrap"><table class="spec-table">
+          <thead><tr><th>Позиция</th><th class="num">Кол-во</th><th class="num">Цена, AED</th><th class="num">Сумма, AED</th><th>Статус</th></tr></thead>
+          <tbody>${rowsHtml}</tbody>
+          <tfoot><tr><td colspan="3">Итого по категории</td><td class="num"><b>${catSum.toLocaleString('ru-RU')}</b></td><td></td></tr></tfoot>
+        </table></div>`;
+      body.appendChild(catEl);
+    });
+    document.getElementById('specFoot').innerHTML=
+      `<span>${PROJECT.spec.length} категории · ${totalItems} позиций</span><span>Итого по проекту <b>AED ${totalSum.toLocaleString('ru-RU')}</b></span>`;
   }
 
   let currentIndex=0;
@@ -495,16 +529,15 @@
     const p=PHOTOS[currentIndex];
     document.getElementById('reviewTitle').textContent=p.room;
     document.getElementById('reviewSub').textContent=`Фото ${currentIndex+1} из ${PHOTOS.length}`;
-    document.getElementById('reviewImg').src=p.src;
+    resolvePhotoUrl(p.id).then(url=>{document.getElementById('reviewImg').src=url}).catch(()=>{});
     document.getElementById('navCounter').textContent=`${currentIndex+1} / ${PHOTOS.length}`;
     document.getElementById('navPrev').disabled=currentIndex===0;
     document.getElementById('navNext').disabled=currentIndex===PHOTOS.length-1;
     pendingPin=null;
     document.getElementById('reviewAdd').classList.remove('show');
     renderComments();
-    const approved=approvalByPhoto[p.id];
-    document.getElementById('apYes').classList.toggle('active',approved===true);
-    document.getElementById('apNo').classList.toggle('active',approved===false);
+    document.getElementById('apYes').classList.toggle('active',p.approved===true);
+    document.getElementById('apNo').classList.toggle('active',p.approved===false);
   }
 
   function closeReview(){
@@ -518,9 +551,9 @@
     const rect=wrap.getBoundingClientRect();
     const x=((e.clientX-rect.left)/rect.width*100).toFixed(2);
     const y=((e.clientY-rect.top)/rect.height*100).toFixed(2);
-    const id=PHOTOS[currentIndex].id;
+    const p=PHOTOS[currentIndex];
     pendingPin={x,y};
-    placeTempPin(x,y,(commentsByPhoto[id]||[]).length+1);
+    placeTempPin(x,y,(p.comments||[]).length+1);
     document.getElementById('reviewAdd').classList.add('show');
     document.getElementById('reviewInput').focus();
   });
@@ -535,14 +568,15 @@
     document.getElementById('reviewImgWrap').appendChild(pin);
   }
 
-  function submitPin(){
+  async function submitPin(){
     const text=document.getElementById('reviewInput').value.trim();
     if(!text||!pendingPin) return;
-    const id=PHOTOS[currentIndex].id;
-    if(!commentsByPhoto[id]) commentsByPhoto[id]=[];
-    commentsByPhoto[id].push({...pendingPin,text});
+    const p=PHOTOS[currentIndex];
+    if(!p.comments) p.comments=[];
+    const comment=await fetchJSON('/api/client-projects/room-photos/'+p.id+'/comments',{method:'POST',body:JSON.stringify({text,x:pendingPin.x,y:pendingPin.y})}).catch(()=>null);
+    if(comment) p.comments.push(comment);
     document.getElementById('reviewInput').value='';
-    document.querySelectorAll('.pin.temp').forEach(p=>p.remove());
+    document.querySelectorAll('.pin.temp').forEach(el=>el.remove());
     pendingPin=null;
     document.getElementById('reviewAdd').classList.remove('show');
     renderComments();
@@ -553,8 +587,8 @@
     const wrap=document.getElementById('reviewImgWrap');
     const list=document.getElementById('reviewComments');
     list.innerHTML='';
-    const id=PHOTOS[currentIndex].id;
-    const comments=commentsByPhoto[id]||[];
+    const p=PHOTOS[currentIndex];
+    const comments=p.comments||[];
     comments.forEach((c,i)=>{
       const pin=document.createElement('div');
       pin.className='pin';
@@ -565,21 +599,22 @@
 
       const row=document.createElement('div');
       row.className='rc';
-      row.innerHTML=`<span class="num">${i+1}</span><span class="txt">${c.text}<small>Только что</small></span>`;
+      row.innerHTML=`<span class="num">${i+1}</span><span class="txt">${c.text}<small>${c.from==='studio'?'Студия':'Вы'}</small></span>`;
       list.appendChild(row);
     });
   }
 
   function setApproval(approved){
-    const id=PHOTOS[currentIndex].id;
-    approvalByPhoto[id]=approved;
+    const p=PHOTOS[currentIndex];
+    p.approved=approved;
+    fetchJSON('/api/client-projects/room-photos/'+p.id,{method:'PATCH',body:JSON.stringify({approved})}).catch(()=>{});
     document.getElementById('apYes').classList.toggle('active',approved);
     document.getElementById('apNo').classList.toggle('active',!approved);
   }
 
   document.getElementById('reviewInput').addEventListener('keydown',e=>{if(e.key==='Enter')submitPin()});
 
-  renderRooms();
+  checkAuthAndInit();
 </script>
 </body>
 </html>
