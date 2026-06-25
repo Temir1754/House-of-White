@@ -11,6 +11,11 @@ import clientProjectsRoutes from './routes/clientProjects.js';
 
 dotenv.config();
 
+// An uncaught error in any single request shouldn't take down the whole
+// backend (and every other user's request) — log it and keep running.
+process.on('unhandledRejection', (err) => console.error('Unhandled rejection:', err));
+process.on('uncaughtException', (err) => console.error('Uncaught exception:', err));
+
 const app = express();
 app.use(cors({ origin: process.env.CORS_ORIGIN || true, credentials: true }));
 app.use(express.json());
@@ -22,6 +27,11 @@ app.use('/api/bookings', bookingsRoutes);
 app.use('/api/projects', projectsRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/client-projects', clientProjectsRoutes);
+
+app.use((err, req, res, next) => {
+  console.error('Request error:', err);
+  res.status(500).json({ error: 'Internal server error' });
+});
 
 const port = process.env.PORT || 4000;
 

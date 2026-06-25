@@ -233,7 +233,13 @@ router.post('/:slug/rooms', requireAuth, requireAdmin, async (req, res) => {
     [roomRows[0].id]
   );
 
-  res.status(201).json({ ...roomRows[0], variants: [{ ...variantRows[0], photos: [] }] });
+  res.status(201).json({
+    id: roomRows[0].id,
+    name: roomRows[0].name,
+    status: roomRows[0].status,
+    activeVariant: roomRows[0].active_variant,
+    variants: [{ id: variantRows[0].id, label: variantRows[0].label, photos: [] }],
+  });
 });
 
 router.patch('/rooms/:id', requireAuth, requireAdmin, async (req, res) => {
@@ -298,8 +304,13 @@ router.get('/room-photos/:id/url', requireAuth, async (req, res) => {
   if (!(await canAccessPhoto(req, req.params.id))) return res.status(403).json({ error: 'Forbidden' });
   const { rows } = await pool.query('SELECT file_key FROM room_photos WHERE id = $1', [req.params.id]);
   if (!rows[0]) return res.status(404).json({ error: 'Not found' });
-  const url = await minioPublicClient.presignedGetObject(BUCKET, rows[0].file_key, 24 * 60 * 60);
-  res.json({ url });
+  try {
+    const url = await minioPublicClient.presignedGetObject(BUCKET, rows[0].file_key, 24 * 60 * 60);
+    res.json({ url });
+  } catch (err) {
+    console.error('Failed to generate presigned URL:', err);
+    res.status(500).json({ error: 'Failed to generate URL' });
+  }
 });
 
 router.patch('/room-photos/:id', requireAuth, async (req, res) => {

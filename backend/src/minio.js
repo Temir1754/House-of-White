@@ -14,6 +14,7 @@ export const minioPublicClient = new Client({
   endPoint: process.env.MINIO_PUBLIC_HOST || process.env.MINIO_ENDPOINT,
   port: Number(process.env.MINIO_PUBLIC_PORT || 443),
   useSSL: (process.env.MINIO_PUBLIC_SSL ?? 'true') === 'true',
+  region: 'us-east-1',
   accessKey: process.env.MINIO_ROOT_USER,
   secretKey: process.env.MINIO_ROOT_PASSWORD,
 });
