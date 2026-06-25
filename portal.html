@@ -408,6 +408,8 @@
   let PROJECT=null;
   const PHOTOS=[];   // flat list across all rooms' active variant, for the review lightbox prev/next
 
+  let loggedIn=false;
+
   async function showApp(){
     try{
       PROJECT=await fetchJSON('/api/client-projects/mine');
@@ -415,10 +417,16 @@
       document.getElementById('loginNote').textContent='Для вашего аккаунта пока не найден проект. Обратитесь в студию.';
       return;
     }
+    loggedIn=true;
     document.getElementById('loginScreen').style.display='none';
     document.getElementById('appRoot').style.display='flex';
     renderAll();
   }
+
+  // refetch automatically when the tab regains focus, so studio updates show up without a manual refresh
+  document.addEventListener('visibilitychange',()=>{
+    if(loggedIn && document.visibilityState==='visible') showApp();
+  });
 
   function renderAll(){
     document.getElementById('sideProjLabel').textContent=PROJECT.label;
