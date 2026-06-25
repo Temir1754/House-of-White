@@ -390,7 +390,7 @@
   function renderGoogleButton(){
     if(window.google?.accounts?.id){
       google.accounts.id.initialize({client_id:'932760765418-6coadj0qp3bbdth5b5rcqmp799vu4cq0.apps.googleusercontent.com',callback:handleGoogleLogin});
-      google.accounts.id.renderButton(document.getElementById('g_id_signin'),{theme:'outline',size:'large'});
+      google.accounts.id.renderButton(document.getElementById('g_id_signin'),{theme:'filled_black',size:'large',shape:'pill',text:'continue_with'});
     }else{
       setTimeout(renderGoogleButton,100);
     }
