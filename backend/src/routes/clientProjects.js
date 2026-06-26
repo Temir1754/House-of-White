@@ -470,8 +470,13 @@ router.get('/:slug/boq', requireAuth, async (req, res) => {
   const project = await loadFullProject(req.params.slug);
   if (!project) return res.status(404).json({ error: 'Not found' });
 
+  const isEn = req.query.lang === 'en';
+  const t = isEn
+    ? { title: 'BOQ', col: ['Item', 'Room', 'Status', 'Qty', 'Price', 'Sum'], status: { wait: 'Pending', go: 'Sourcing', done: 'Ordered', ok: 'Approved' }, empty: 'No items yet.', total: 'Total (ordered/approved)' }
+    : { title: 'BOQ', col: ['Позиция', 'Комната', 'Статус', 'Кол-во', 'Цена', 'Сумма'], status: { wait: 'Ожидание', go: 'В поиске', done: 'Заказано', ok: 'Согласовано' }, empty: 'Позиций пока нет.', total: 'Итого (заказано/согласовано)' };
+
   const isCommitted = (it) => it.status === 'done' || it.status === 'ok';
-  const statusLabels = { wait: 'Ожидание', go: 'В поиске', done: 'Заказано', ok: 'Согласовано' };
+  const statusLabels = t.status;
   let grandTotal = 0;
 
   const sections = project.spec
@@ -492,14 +497,14 @@ router.get('/:slug/boq', requireAuth, async (req, res) => {
         .join('');
       return `<h2>${escapeHtml(cat.cat)}</h2>
         <table>
-          <thead><tr><th>Позиция</th><th>Комната</th><th>Статус</th><th class="num">Кол-во</th><th class="num">Цена</th><th class="num">Сумма</th></tr></thead>
+          <thead><tr><th>${t.col[0]}</th><th>${t.col[1]}</th><th>${t.col[2]}</th><th class="num">${t.col[3]}</th><th class="num">${t.col[4]}</th><th class="num">${t.col[5]}</th></tr></thead>
           <tbody>${rows}</tbody>
         </table>`;
     })
     .join('');
 
   const html = `<!DOCTYPE html>
-<html lang="ru"><head><meta charset="utf-8">
+<html lang="${isEn ? 'en' : 'ru'}"><head><meta charset="utf-8">
 <title>BOQ — ${escapeHtml(project.label)}</title>
 <style>
   body{font-family:Arial,sans-serif;color:#1a1a1a;max-width:900px;margin:40px auto;padding:0 20px}
@@ -514,10 +519,10 @@ router.get('/:slug/boq', requireAuth, async (req, res) => {
   @media print{body{margin:0;padding:20px}}
 </style></head>
 <body>
-  <h1>House of White — BOQ</h1>
-  <div class="meta">${escapeHtml(project.label)} · ${escapeHtml(project.client.name)} · ${new Date().toLocaleDateString('ru-RU')}</div>
-  ${sections || '<p>Позиций пока нет.</p>'}
-  <div class="total">Итого (заказано/согласовано): ${fmtMoney(grandTotal)}</div>
+  <h1>House of White — ${t.title}</h1>
+  <div class="meta">${escapeHtml(project.label)} · ${escapeHtml(project.client.name)} · ${new Date().toLocaleDateString(isEn ? 'en-GB' : 'ru-RU')}</div>
+  ${sections || `<p>${t.empty}</p>`}
+  <div class="total">${t.total}: ${fmtMoney(grandTotal)}</div>
 </body></html>`;
 
   res.set('Content-Type', 'text/html; charset=utf-8');
