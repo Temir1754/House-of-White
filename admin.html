@@ -1350,20 +1350,15 @@
     await switchProject(el);
   }
 
-  // Option values are kept as the original Russian strings — they're the actual
-  // category names already stored against existing client projects in the
-  // database, so changing them here would silently fork new items into a
-  // duplicate "Furniture" category instead of the existing "Мебель" one.
-  // Only the displayed labels are translated.
   const SPEC_CAT_OPTIONS=[
-    ['Мебель','Furniture'],['Освещение','Lighting'],['Декор','Decor'],['Текстиль','Textiles'],
-    ['Шторы','Curtains'],['Сантехника','Plumbing'],['Кухонная техника','Kitchen Appliances'],
-    ['Двери и фурнитура','Doors & Hardware'],['Напольные покрытия','Flooring'],
-    ['Отделка стен и потолков','Wall & Ceiling Finishes'],['Зеркала и арт-объекты','Mirrors & Art Objects'],
-    ['Прочее','Miscellaneous'],['__custom__','+ Custom category…']
+    ['Furniture','Furniture'],['Lighting','Lighting'],['Decor','Decor'],['Textiles','Textiles'],
+    ['Curtains','Curtains'],['Plumbing','Plumbing'],['Kitchen Appliances','Kitchen Appliances'],
+    ['Doors & Hardware','Doors & Hardware'],['Flooring','Flooring'],
+    ['Wall & Ceiling Finishes','Wall & Ceiling Finishes'],['Mirrors & Art Objects','Mirrors & Art Objects'],
+    ['Miscellaneous','Miscellaneous'],['__custom__','+ Custom category…']
   ];
   const SPEC_STATUS_OPTIONS=[['wait','Pending'],['go','Sourcing'],['done','Ordered'],['ok','Approved']];
-  document.getElementById('newItemCatWrap').innerHTML=buildSimpleDropdown('newItemCat',SPEC_CAT_OPTIONS,'Мебель','Category');
+  document.getElementById('newItemCatWrap').innerHTML=buildSimpleDropdown('newItemCat',SPEC_CAT_OPTIONS,'Furniture','Category');
   document.getElementById('newItemStatusWrap').innerHTML=buildSimpleDropdown('newItemStatus',SPEC_STATUS_OPTIONS,'wait','Status');
 
   checkAuthAndInit();
