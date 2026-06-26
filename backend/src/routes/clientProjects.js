@@ -1,9 +1,23 @@
 import { Router } from 'express';
 import multer from 'multer';
+import sharp from 'sharp';
 import { randomUUID } from 'crypto';
 import { pool } from '../db.js';
 import { minioClient, minioPublicClient, BUCKET } from '../minio.js';
 import { requireAuth, requireAdmin } from '../middleware/auth.js';
+
+// Room photos come straight from phones/cameras (often 3-6MB) and are only
+// ever viewed on screen, so we downscale + re-encode before storing —
+// cuts portal/admin load times without a visible quality loss.
+async function compressPhoto(file) {
+  if (!file.mimetype.startsWith('image/') || file.mimetype === 'image/gif') return file;
+  const buffer = await sharp(file.buffer)
+    .rotate()
+    .resize({ width: 2000, height: 2000, fit: 'inside', withoutEnlargement: true })
+    .jpeg({ quality: 82 })
+    .toBuffer();
+  return { buffer, mimetype: 'image/jpeg', originalname: file.originalname.replace(/\.\w+$/, '') + '.jpg' };
+}
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 200 * 1024 * 1024 } });
 const router = Router();
@@ -319,9 +333,10 @@ router.post('/room-variants/:id/public-link', requireAuth, requireAdmin, async (
 router.post('/room-variants/:id/photos', requireAuth, requireAdmin, upload.single('file'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file' });
 
-  const key = `rooms/${req.params.id}/${randomUUID()}-${req.file.originalname}`;
-  await minioClient.putObject(BUCKET, key, req.file.buffer, req.file.size, {
-    'Content-Type': req.file.mimetype,
+  const file = await compressPhoto(req.file);
+  const key = `rooms/${req.params.id}/${randomUUID()}-${file.originalname}`;
+  await minioClient.putObject(BUCKET, key, file.buffer, file.buffer.length, {
+    'Content-Type': file.mimetype,
   });
 
   const { rows } = await pool.query(
