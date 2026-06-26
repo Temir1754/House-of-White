@@ -110,7 +110,8 @@
   .album-desc{font-size:12.5px;color:var(--muted);max-width:380px;margin:0 auto;line-height:1.7}
 
   /* FILES */
-  .files{display:flex;flex-direction:column;gap:10px}
+  .files{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+  .file-group-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--sand);margin-bottom:2px}
   .file-lk{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--line);border-radius:4px;text-decoration:none;color:var(--cream);background:var(--ink-3);transition:border-color .3s}
   .file-lk:hover{border-color:var(--sand)}
   .file-lk .ic{width:18px;height:18px;stroke:var(--sand);fill:none;stroke-width:1.4;flex:none}
@@ -287,22 +288,14 @@
           <div class="album-desc">Все материалы по проекту собраны в одном месте: визуализации, чертежи и смета — доступны для просмотра и скачивания в любое время.</div>
         </div>
 
-        <div class="files">
-          <a class="file-lk" href="#">
-            <svg class="ic" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-            <span class="txt"><b>3D Visualisation</b><small>Все рендеры в полном разрешении</small></span>
-            <span class="arr">→</span>
-          </a>
-          <a class="file-lk" href="#">
-            <svg class="ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 9h16M9 9v11"/></svg>
-            <span class="txt"><b>Tech. Drawings</b><small>Планировки · электрика · мебель на заказ</small></span>
-            <span class="arr">→</span>
-          </a>
-          <a class="file-lk" href="#">
-            <svg class="ic" viewBox="0 0 24 24"><path d="M7 3h10v18H7zM10 8h4M10 12h4M10 16h4"/></svg>
-            <span class="txt"><b>BOQ</b><small>Полная разбивка бюджета</small></span>
-            <span class="arr">→</span>
-          </a>
+        <div class="files" id="docList-renders-group">
+          <div class="file-group-label">3D Visualisation</div>
+        </div>
+        <div class="files" id="docList-drawings-group">
+          <div class="file-group-label">Tech. Drawings</div>
+        </div>
+        <div class="files" id="docList-boq-group">
+          <div class="file-group-label">BOQ</div>
         </div>
       </div>
 
@@ -448,6 +441,46 @@
     });
     renderRooms();
     renderSpec();
+    renderDocuments();
+  }
+
+  function renderDocuments(){
+    const icons={
+      renders:'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
+      drawings:'<path d="M4 4h16v16H4zM4 9h16M9 9v11"/>',
+      boq:'<path d="M7 3h10v18H7zM10 8h4M10 12h4M10 16h4"/>',
+    };
+    ['renders','drawings','boq'].forEach(cat=>{
+      const group=document.getElementById('docList-'+cat+'-group');
+      const docs=(PROJECT.documents||[]).filter(d=>d.category===cat);
+      group.querySelectorAll('.file-lk').forEach(el=>el.remove());
+      docs.forEach(doc=>{
+        const a=document.createElement('a');
+        a.className='file-lk';
+        a.href='#';
+        a.innerHTML=`<svg class="ic" viewBox="0 0 24 24">${icons[cat]}</svg><span class="txt"><b></b></span><span class="arr">→</span>`;
+        a.querySelector('b').textContent=doc.fileName;
+        a.onclick=(e)=>{e.preventDefault();downloadDocument(doc.id)};
+        group.appendChild(a);
+      });
+      if(!docs.length){
+        const note=document.createElement('div');
+        note.className='note';
+        note.style.fontSize='11px';
+        note.style.color='var(--faint)';
+        note.textContent='Файлы пока не загружены.';
+        group.appendChild(note);
+      }
+    });
+  }
+
+  async function downloadDocument(id){
+    try{
+      const {url}=await fetchJSON('/api/client-projects/documents/'+id+'/url');
+      window.open(url,'_blank');
+    }catch{
+      alert('Не удалось получить файл.');
+    }
   }
 
   const photoUrlCache={};
