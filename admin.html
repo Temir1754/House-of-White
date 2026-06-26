@@ -51,7 +51,7 @@
 
   /* MAIN */
   .main{flex:1;min-width:0}
-  .topbar{display:flex;justify-content:space-between;align-items:center;padding:20px 32px;border-bottom:1px solid var(--line-soft);position:sticky;top:0;background:rgba(0,0,0,0.92);backdrop-filter:blur(14px);z-index:10}
+  .topbar{display:flex;justify-content:space-between;align-items:center;padding:20px 32px;border-bottom:1px solid var(--line-soft);position:sticky;top:0;background:rgba(0,0,0,0.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);z-index:10}
   .topbar h1{font-family:var(--display);font-weight:400;font-size:24px}
   .chip{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);padding:6px 12px;border-radius:30px;display:flex;align-items:center;gap:7px}
   .dot{width:6px;height:6px;border-radius:50%;background:var(--sand);flex:none}
@@ -390,7 +390,7 @@
       </div>
       <div style="display:flex;gap:10px;align-items:center">
         <div class="chip"><span class="dot"></span><span id="topProj">Leila A. — Palm Jumeirah Villa</span></div>
-        <a href="/portal" target="_blank" class="btn-line">View as Client →</a>
+        <a href="/portal" target="_blank" rel="noopener" class="btn-line">View as Client →</a>
       </div>
     </div>
 
@@ -681,7 +681,7 @@
     rows.push(`<div class="cl-label">Client since</div>${buildMonthYearPicker('since',c.since)}`);
     rows.push(`<div class="cl-label">Measurements</div>${buildMonthYearPicker('measurements',c.measurements)}`);
     rows.push(`<div class="cl-label">Planned handover</div>${buildMonthYearPicker('handover',c.handover)}`);
-    if(c.phone) rows.push(`<div class="cl-label">Message</div><a href="https://wa.me/${(c.phone||'').replace(/[^\d]/g,'')}" target="_blank">WhatsApp →</a>`);
+    if(c.phone) rows.push(`<div class="cl-label">Message</div><a href="https://wa.me/${(c.phone||'').replace(/[^\d]/g,'')}" target="_blank" rel="noopener">WhatsApp →</a>`);
     if(c.email) rows.push(`<div class="cl-label">Email</div><a href="mailto:${esc(c.email)}">${esc(c.email)} →</a>`);
 
     document.getElementById('clientGrid').innerHTML=rows.join('');
