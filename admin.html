@@ -790,7 +790,7 @@
   }
 
   function buildMonthYearPicker(key,value){
-    const [y,m,d]=(value||'').split('-');
+    const [y,m,d]=(value||'').slice(0,10).split('-');
     const nowYear=new Date().getFullYear();
     const years=[];
     for(let yr=nowYear-3;yr<=nowYear+5;yr++) years.push(yr);
