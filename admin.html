@@ -1126,8 +1126,17 @@
       const form=new FormData();
       form.append('file',file);
       form.append('category',category);
-      const res=await fetch('/api/client-projects/'+slug+'/documents',{method:'POST',credentials:'include',body:form});
-      if(res.ok) PROJECTS[slug].documents.push(await res.json());
+      try{
+        const res=await fetch('/api/client-projects/'+slug+'/documents',{method:'POST',credentials:'include',body:form});
+        if(res.ok){
+          PROJECTS[slug].documents.push(await res.json());
+        }else{
+          const body=await res.text().catch(()=>'');
+          alert('Не удалось загрузить файл «'+file.name+'»: '+res.status+' '+body);
+        }
+      }catch(err){
+        alert('Не удалось загрузить файл «'+file.name+'»: '+err.message);
+      }
     }
     e.target.value='';
     renderProject(slug);
