@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>House of White — Панель студии</title>
+<title>House of White — Studio Panel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
@@ -62,7 +62,7 @@
   .page{display:none}
   .page.active{display:block}
 
-  /* ROOM BLOCK (Визуализации) */
+  /* ROOM BLOCK (Renders) */
   .room-block{margin-bottom:36px}
   .room-block-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
   .room-block-head h2{font-family:var(--display);font-weight:400;font-size:19px}
@@ -203,7 +203,7 @@
   .item-sum{font-size:13px;color:var(--cream);font-family:var(--display);white-space:nowrap}
   .pill{font-size:9.5px;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:30px;border:1px solid var(--line);white-space:nowrap;cursor:pointer;background:none;color:var(--muted)}
 
-  /* APPROVAL STATUS COLORS (этап проекта) */
+  /* APPROVAL STATUS COLORS (project stage) */
   .status-draft{color:#757575;border-color:rgba(117,117,117,0.4)}
   .status-progress{color:#EF6C00;border-color:rgba(239,108,0,0.4)}
   .status-revise{color:#C62828;border-color:rgba(198,40,40,0.4)}
@@ -309,16 +309,16 @@
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
     <img src="logo/logo-new.png" alt="House of White" style="height:48px;width:auto;display:block;margin:0 auto 18px">
-    <h1>Вход</h1>
-    <div class="login-error" id="loginError">Неверный email или пароль</div>
+    <h1>Sign in</h1>
+    <div class="login-error" id="loginError">Invalid email or password</div>
     <input type="email" id="loginEmail" placeholder="Email" autocomplete="username">
     <div style="position:relative">
-      <input type="password" id="loginPassword" placeholder="Пароль" autocomplete="current-password" style="padding-right:40px">
+      <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password" style="padding-right:40px">
       <button type="button" id="loginPwToggle" onclick="toggleLoginPasswordVisibility()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;display:flex">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z"/><circle cx="12" cy="12" r="3"/></svg>
       </button>
     </div>
-    <button class="btn-line" style="width:100%;text-align:center" onclick="doAdminLogin()">Войти</button>
+    <button class="btn-line" style="width:100%;text-align:center" onclick="doAdminLogin()">Sign in</button>
   </div>
 </div>
 
@@ -328,28 +328,28 @@
   <aside class="sidebar" id="sidebar">
     <a href="links.html" class="side-brand"><img src="logo/logo-new.png" alt="House of White" style="width:160px;height:auto"></a>
 
-    <div class="side-label">Проекты</div>
+    <div class="side-label">Projects</div>
     <div class="sub-nav" id="subNav">
       <div class="sub-item active" data-page="overview" onclick="switchPage(this)">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>О проекте
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>Overview
       </div>
       <div class="sub-item" data-page="renders" onclick="switchPage(this)">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Визуализации
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Renders
       </div>
       <div class="sub-item" data-page="spec" onclick="switchPage(this)">
-        <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/></svg>Комплектация
+        <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/></svg>Specification
       </div>
       <div class="sub-item" data-page="budget" onclick="switchPage(this)">
-        <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg>Бюджет
+        <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg>Budget
       </div>
       <div class="sub-item" data-page="documents" onclick="switchPage(this)">
-        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 9h16M9 9v11"/></svg>Файлы проекта
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 9h16M9 9v11"/></svg>Project Files
       </div>
       <div class="sub-item" data-page="visits" onclick="switchPage(this)">
-        <svg viewBox="0 0 24 24"><path d="M12 21s-7-5.3-7-11a7 7 0 0114 0c0 5.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Авторский надзор
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7-5.3-7-11a7 7 0 0114 0c0 5.7-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Site Visits
       </div>
       <div class="sub-item" onclick="addProject()">
-        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Добавить проект
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add Project
       </div>
     </div>
   </aside>
@@ -359,11 +359,11 @@
     <div class="topbar">
       <div style="display:flex;align-items:center">
         <button class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
-        <h1 id="topTitle">О проекте</h1>
+        <h1 id="topTitle">Overview</h1>
       </div>
       <div style="display:flex;gap:10px;align-items:center">
-        <div class="chip"><span class="dot"></span><span id="topProj">Лейла А. — Palm Jumeirah Villa</span></div>
-        <a href="portal.html" target="_blank" class="btn-line">Открыть как клиент →</a>
+        <div class="chip"><span class="dot"></span><span id="topProj">Leila A. — Palm Jumeirah Villa</span></div>
+        <a href="portal.html" target="_blank" class="btn-line">View as Client →</a>
       </div>
     </div>
 
@@ -372,7 +372,7 @@
       <!-- OVERVIEW -->
       <div class="page active" data-page="overview">
         <div class="panel">
-          <div class="panel-head"><b>Этап проекта</b><small>Согласуйте текущий этап, чтобы открыть следующий. Прошлые этапы можно открыть для проверки</small></div>
+          <div class="panel-head"><b>Project Stage</b><small>Approve the current stage to unlock the next one. Past stages can be reopened for review</small></div>
           <div class="panel-body">
             <div class="steps" id="stepsRow"></div>
             <div style="display:flex;align-items:center;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line-soft)">
@@ -383,42 +383,42 @@
         </div>
         <div class="panel">
           <div class="panel-head" style="display:flex;align-items:center;justify-content:space-between">
-            <div><b>Клиент</b><small>Нажмите на поле, чтобы изменить</small></div>
+            <div><b>Client</b><small>Click a field to edit it</small></div>
             <button class="pill" id="clientStatusPill" onclick="cycleClientStatus()"></button>
           </div>
           <div class="panel-body">
             <div class="client-grid" id="clientGrid"></div>
-            <button class="btn-line" id="saveClientBtn" onclick="saveClientInfo()" style="margin-top:18px">Сохранить</button>
+            <button class="btn-line" id="saveClientBtn" onclick="saveClientInfo()" style="margin-top:18px">Save</button>
           </div>
         </div>
       </div>
 
-      <!-- RENDERS (Визуализации) -->
+      <!-- RENDERS -->
       <div class="page" data-page="renders">
 
         <div id="renderRooms"></div>
 
         <div class="room-add-row">
-          <input id="newRoomBlockName" type="text" placeholder="Название комнаты — например, Прихожая">
-          <button onclick="addRoomBlock()">Добавить комнату</button>
+          <input id="newRoomBlockName" type="text" placeholder="Room name — e.g. Entrance Hall">
+          <button onclick="addRoomBlock()">Add Room</button>
         </div>
       </div>
 
-      <!-- SPEC (Комплектация) -->
+      <!-- SPEC (Specification) -->
       <div class="page" data-page="spec">
         <div class="panel">
-          <div class="panel-head"><b>Мебель и материалы</b><small id="specCount"></small></div>
+          <div class="panel-head"><b>Furniture & Materials</b><small id="specCount"></small></div>
           <div class="panel-body">
             <div id="specList"></div>
             <div class="spec-add-card">
-              <div class="spec-add-title">Добавить новую позицию</div>
+              <div class="spec-add-title">Add New Item</div>
               <div class="spec-add-row1">
-                <input id="newItemName" type="text" placeholder="Название позиции — например, Кресло B&amp;B Italia">
+                <input id="newItemName" type="text" placeholder="Item name — e.g. B&amp;B Italia Armchair">
                 <div id="newItemCatWrap" class="csel-wrap"></div>
                 <div id="newItemRoomWrap" class="csel-wrap"></div>
                 <div id="newItemStatusWrap" class="csel-wrap"></div>
               </div>
-              <input id="newItemNote" class="spec-add-note" type="text" placeholder="Деталь — цвет, материал, размеры, артикул, примечания...">
+              <input id="newItemNote" class="spec-add-note" type="text" placeholder="Details — color, material, dimensions, SKU, notes...">
               <div class="spec-add-row3">
                 <div class="qty-field">
                   <button type="button" class="qty-btn" onclick="stepQty(-1)">−</button>
@@ -426,10 +426,10 @@
                   <button type="button" class="qty-btn" onclick="stepQty(1)">+</button>
                 </div>
                 <div class="price-field"><input id="newItemPrice" type="text" inputmode="decimal" placeholder="0"><span class="field-unit">AED</span></div>
-                <button class="add-btn-wide" onclick="addItem()">+ Добавить позицию</button>
+                <button class="add-btn-wide" onclick="addItem()">+ Add Item</button>
               </div>
             </div>
-            <div class="note">Нажимайте на статус, чтобы менять его: Ожидание → В поиске → Заказано → Согласовано. Бюджет на странице «Бюджет» считается автоматически из позиций со статусом «Заказано» и «Согласовано».</div>
+            <div class="note">Click the status to cycle it: Pending → Sourcing → Ordered → Approved. The Budget page totals are calculated automatically from items with status "Ordered" or "Approved".</div>
           </div>
         </div>
       </div>
@@ -437,59 +437,59 @@
       <!-- BUDGET -->
       <div class="page" data-page="budget">
         <div class="budget-cards">
-          <div class="bcard"><div class="lb">Бюджет всего</div><div class="val" id="budgetTotal" onclick="editBudgetTotal()" style="cursor:pointer" title="Нажмите, чтобы изменить"></div></div>
-          <div class="bcard"><div class="lb">Потрачено</div><div class="val" id="budgetSpent"></div></div>
-          <div class="bcard"><div class="lb">Остаток</div><div class="val" id="budgetLeft"></div></div>
+          <div class="bcard"><div class="lb">Total Budget</div><div class="val" id="budgetTotal" onclick="editBudgetTotal()" style="cursor:pointer" title="Click to edit"></div></div>
+          <div class="bcard"><div class="lb">Spent</div><div class="val" id="budgetSpent"></div></div>
+          <div class="bcard"><div class="lb">Remaining</div><div class="val" id="budgetLeft"></div></div>
         </div>
         <div class="panel">
-          <div class="panel-head"><b>Расход бюджета</b><small id="budgetPercentLabel"></small></div>
+          <div class="panel-head"><b>Budget Spend</b><small id="budgetPercentLabel"></small></div>
           <div class="panel-body">
             <div class="bar"><div class="bar-fill" id="budgetBar" style="width:0%"></div></div>
           </div>
         </div>
         <div class="panel">
-          <div class="panel-head"><b>Расход по категориям</b><small>Только позиции со статусом «Заказано» и «Согласовано»</small></div>
+          <div class="panel-head"><b>Spend by Category</b><small>Only items with status "Ordered" or "Approved"</small></div>
           <div class="panel-body">
             <div id="budgetCatList"></div>
           </div>
         </div>
-        <div class="note">«Потрачено» считается автоматически из позиций комплектации со статусом «Заказано» и «Согласовано». «Бюджет всего» — нажмите на сумму, чтобы изменить вручную.</div>
+        <div class="note">"Spent" is calculated automatically from spec items with status "Ordered" or "Approved". "Total Budget" — click the amount to edit it manually.</div>
       </div>
 
-      <!-- PROJECT DOCUMENTS (Файлы проекта) -->
+      <!-- PROJECT DOCUMENTS -->
       <div class="page" data-page="documents">
         <div class="panel">
-          <div class="panel-head"><b>3D Visualisation</b><small>Ссылка на альбом рендеров (Google Drive, Яндекс.Диск и т.п.) — клиент видит её на странице «Скачать проект»</small></div>
+          <div class="panel-head"><b>3D Visualisation</b><small>Link to the render album (Google Drive, Yandex.Disk, etc.) — the client sees it on the "Download Project" page</small></div>
           <div class="panel-body">
             <div id="docList-renders"></div>
-            <button class="btn-line" onclick="addDocLink('renders')" style="margin-top:10px">+ Добавить ссылку</button>
+            <button class="btn-line" onclick="addDocLink('renders')" style="margin-top:10px">+ Add Link</button>
           </div>
         </div>
         <div class="panel">
-          <div class="panel-head"><b>Tech. Drawings</b><small>Ссылка на чертежи — планировки, электрика, мебель на заказ</small></div>
+          <div class="panel-head"><b>Tech. Drawings</b><small>Link to drawings — floor plans, electrical, custom furniture</small></div>
           <div class="panel-body">
             <div id="docList-drawings"></div>
-            <button class="btn-line" onclick="addDocLink('drawings')" style="margin-top:10px">+ Добавить ссылку</button>
+            <button class="btn-line" onclick="addDocLink('drawings')" style="margin-top:10px">+ Add Link</button>
           </div>
         </div>
         <div class="panel">
-          <div class="panel-head"><b>BOQ</b><small>Формируется автоматически из «Комплектации» — отдельно грузить не нужно</small></div>
+          <div class="panel-head"><b>BOQ</b><small>Generated automatically from the Specification — no need to upload separately</small></div>
           <div class="panel-body">
-            <button class="btn-line" onclick="openBoq()">Открыть BOQ →</button>
+            <button class="btn-line" onclick="openBoq()">Open BOQ →</button>
           </div>
         </div>
       </div>
 
-      <!-- AUTHOR SUPERVISION (Авторский надзор) -->
+      <!-- SITE VISITS -->
       <div class="page" data-page="visits">
         <div class="panel">
-          <div class="panel-head"><b>Выезды на объект</b><small>Фотоотчёты с датами</small></div>
+          <div class="panel-head"><b>Site Visits</b><small>Photo reports with dates</small></div>
           <div class="panel-body">
             <div id="visitsList"></div>
             <div class="add-row" style="grid-template-columns:1fr 2fr auto">
-              <input id="newVisitDate" type="text" placeholder="Дата — например, 18 июня 2026">
-              <input id="newVisitNote" type="text" placeholder="Заметка">
-              <button onclick="addVisit()">Добавить</button>
+              <input id="newVisitDate" type="text" placeholder="Date — e.g. June 18, 2026">
+              <input id="newVisitNote" type="text" placeholder="Note">
+              <button onclick="addVisit()">Add</button>
             </div>
           </div>
         </div>
@@ -506,13 +506,13 @@
     <div class="lb-side">
       <div class="lb-status" id="lbApproved"></div>
       <div class="lb-actions">
-        <button class="btn-line approve" onclick="setPhotoApproval(true)">✓ Согласовать</button>
-        <button class="btn-line reject" onclick="setPhotoApproval(false)">↺ На правки</button>
+        <button class="btn-line approve" onclick="setPhotoApproval(true)">✓ Approve</button>
+        <button class="btn-line reject" onclick="setPhotoApproval(false)">↺ Request changes</button>
       </div>
       <div class="lb-comments" id="lbComments"></div>
       <div class="lb-reply">
-        <input id="lbReplyInput" type="text" placeholder="Ответить клиенту..." onkeydown="if(event.key==='Enter')addStudioReply()">
-        <button onclick="addStudioReply()">Отправить</button>
+        <input id="lbReplyInput" type="text" placeholder="Reply to client..." onkeydown="if(event.key==='Enter')addStudioReply()">
+        <button onclick="addStudioReply()">Send</button>
       </div>
     </div>
   </div>
@@ -520,7 +520,7 @@
 
 <script>
   // ---- PROJECT DATA (loaded from backend — see initProjects() near the bottom) ----
-  const STEP_LABELS=['Консультация','Концепция','Дизайн','Визуализации','Закупка','Сдача'];
+  const STEP_LABELS=['Consultation','Concept','Design','Renders','Procurement','Handover'];
 
   const PROJECTS={};
   let currentProject=null;
@@ -577,11 +577,11 @@
     try{
       list=await fetchJSON('/api/client-projects');
     }catch(err){
-      sideLabel.insertAdjacentHTML('afterend','<div style="padding:14px 20px;font-size:12px;color:var(--muted)">Войдите как администратор, чтобы увидеть реальные проекты.</div>');
+      sideLabel.insertAdjacentHTML('afterend','<div style="padding:14px 20px;font-size:12px;color:var(--muted)">Sign in as admin to see real projects.</div>');
       return;
     }
     if(!list.length){
-      sideLabel.insertAdjacentHTML('afterend','<div style="padding:14px 20px;font-size:12px;color:var(--muted)">Пока нет ни одного проекта.</div>');
+      sideLabel.insertAdjacentHTML('afterend','<div style="padding:14px 20px;font-size:12px;color:var(--muted)">No projects yet.</div>');
       return;
     }
     let anchor=document.getElementById('subNav');
@@ -623,39 +623,39 @@
     });
 
     // status of the stage currently being viewed (current or an earlier one being revisited)
-    const stageStatusMap={draft:'Черновик / Ожидание',progress:'В работе',revise:'Правки / Отклонено',approved:'Согласовано'};
+    const stageStatusMap={draft:'Draft / Pending',progress:'In progress',revise:'Revisions / Rejected',approved:'Approved'};
     const vs=data.viewStage;
-    document.getElementById('stageStatusLabel').textContent='Статус «'+STEP_LABELS[vs]+'»:';
+    document.getElementById('stageStatusLabel').textContent='"'+STEP_LABELS[vs]+'" status:';
     const stageBtn=document.getElementById('stageStatusPill');
     stageBtn.className='pill status-'+data.stageStatuses[vs];
     stageBtn.textContent=stageStatusMap[data.stageStatuses[vs]];
 
     // client status pill
-    const statusMap2={ok:'Активный',wait:'На паузе',done:'Завершён'};
+    const statusMap2={ok:'Active',wait:'On hold',done:'Completed'};
     const statusBtn=document.getElementById('clientStatusPill');
     statusBtn.className='pill '+data.status;
-    statusBtn.textContent=statusMap2[data.status]||'Активный';
+    statusBtn.textContent=statusMap2[data.status]||'Active';
 
     // client info grid
     const c=data.client;
     const esc=v=>(v||'').toString().replace(/"/g,'&quot;');
-    const PROPERTY_TYPES=['Вилла','Апартаменты','Пентхаус','Таунхаус','Офис','Другое'];
+    const PROPERTY_TYPES=['Villa','Apartment','Penthouse','Townhouse','Office','Other'];
     const areaNum=(c.area||'').match(/\d+/);
 
     const rows=[];
-    rows.push(`<div class="cl-label">Имя клиента</div><input type="text" value="${esc(c.name)}" onchange="updateClientField('name',this.value)">`);
+    rows.push(`<div class="cl-label">Client Name</div><input type="text" value="${esc(c.name)}" onchange="updateClientField('name',this.value)">`);
     const phoneRest=(c.phone||'').replace(/^\+?971[\s-]?/,'');
-    rows.push(`<div class="cl-label">Телефон / WhatsApp</div><div><div class="phone-input"><span class="phone-prefix">+971</span><input type="tel" inputmode="numeric" placeholder="5X XXX XXXX" maxlength="12" value="${esc(phoneRest)}" onchange="updateClientField('phone','+971 '+this.value.trim())"></div><div class="cl-hint">Код страны зафиксирован — введите 9 цифр после него</div></div>`);
+    rows.push(`<div class="cl-label">Phone / WhatsApp</div><div><div class="phone-input"><span class="phone-prefix">+971</span><input type="tel" inputmode="numeric" placeholder="5X XXX XXXX" maxlength="12" value="${esc(phoneRest)}" onchange="updateClientField('phone','+971 '+this.value.trim())"></div><div class="cl-hint">Country code is fixed — enter 9 digits after it</div></div>`);
     const [emailUser,emailDomain]=(c.email||'').split('@');
     rows.push(`<div class="cl-label">Email</div><div class="email-input"><input type="text" placeholder="example" value="${esc(emailUser)}" onchange="updateEmailPart('user',this.value)"><span class="email-at">@</span><input type="text" placeholder="mail.com" value="${esc(emailDomain)}" onchange="updateEmailPart('domain',this.value)"></div>`);
-    rows.push(`<div class="cl-label">Объект (адрес)</div><input type="text" value="${esc(c.address)}" onchange="updateClientField('address',this.value)">`);
-    rows.push(`<div class="cl-label">Тип объекта</div><select onchange="updateClientField('propertyType',this.value)">${PROPERTY_TYPES.map(o=>`<option ${o===c.propertyType?'selected':''}>${o}</option>`).join('')}${c.propertyType&&!PROPERTY_TYPES.includes(c.propertyType)?`<option selected>${esc(c.propertyType)}</option>`:''}</select>`);
-    rows.push(`<div class="cl-label">Площадь</div><div class="cl-suffix"><input type="number" min="0" value="${areaNum?areaNum[0]:''}" onchange="updateAreaField(this.value)"><span>м²</span></div>`);
-    rows.push(`<div class="cl-label">Клиент с</div>${buildMonthYearPicker('since',c.since)}`);
-    rows.push(`<div class="cl-label">Замеры</div>${buildMonthYearPicker('measurements',c.measurements)}`);
-    rows.push(`<div class="cl-label">Плановая сдача</div>${buildMonthYearPicker('handover',c.handover)}`);
-    if(c.phone) rows.push(`<div class="cl-label">Написать</div><a href="https://wa.me/${(c.phone||'').replace(/[^\d]/g,'')}" target="_blank">WhatsApp →</a>`);
-    if(c.email) rows.push(`<div class="cl-label">Написать на почту</div><a href="mailto:${esc(c.email)}">${esc(c.email)} →</a>`);
+    rows.push(`<div class="cl-label">Property (address)</div><input type="text" value="${esc(c.address)}" onchange="updateClientField('address',this.value)">`);
+    rows.push(`<div class="cl-label">Property Type</div><select onchange="updateClientField('propertyType',this.value)">${PROPERTY_TYPES.map(o=>`<option ${o===c.propertyType?'selected':''}>${o}</option>`).join('')}${c.propertyType&&!PROPERTY_TYPES.includes(c.propertyType)?`<option selected>${esc(c.propertyType)}</option>`:''}</select>`);
+    rows.push(`<div class="cl-label">Area</div><div class="cl-suffix"><input type="number" min="0" value="${areaNum?areaNum[0]:''}" onchange="updateAreaField(this.value)"><span>m²</span></div>`);
+    rows.push(`<div class="cl-label">Client since</div>${buildMonthYearPicker('since',c.since)}`);
+    rows.push(`<div class="cl-label">Measurements</div>${buildMonthYearPicker('measurements',c.measurements)}`);
+    rows.push(`<div class="cl-label">Planned handover</div>${buildMonthYearPicker('handover',c.handover)}`);
+    if(c.phone) rows.push(`<div class="cl-label">Message</div><a href="https://wa.me/${(c.phone||'').replace(/[^\d]/g,'')}" target="_blank">WhatsApp →</a>`);
+    if(c.email) rows.push(`<div class="cl-label">Email</div><a href="mailto:${esc(c.email)}">${esc(c.email)} →</a>`);
 
     document.getElementById('clientGrid').innerHTML=rows.join('');
 
@@ -665,7 +665,7 @@
     // spec
     const specList=document.getElementById('specList');
     specList.innerHTML='';
-    const statusMap={wait:'Ожидание',go:'В поиске',done:'Заказано',ok:'Согласовано'};
+    const statusMap={wait:'Pending',go:'Sourcing',done:'Ordered',ok:'Approved'};
     data.spec.forEach((cat,ci)=>{
       const catEl=document.createElement('div');
       catEl.className='spec-cat';
@@ -680,14 +680,14 @@
             ${it.price?`<div class="item-price">${fmtMoney(it.price)}</div>`:''}
           </div>
           <button class="pill ${it.status}" onclick="cycleSpecStatus(${ci},${ii})">${statusMap[it.status]}</button>
-          <div class="item-qty">${it.qty} шт.</div>
+          <div class="item-qty">${it.qty} pcs</div>
           <div class="item-sum">${it.price?fmtMoney(it.price*(it.qty||1)):'—'}</div>
           <button class="del-btn" onclick="deleteSpecItem(${ci},${ii})">✕</button>
         </div>`;
       }).join('');
       catEl.innerHTML=`<div class="spec-cat-head">
           <div class="spec-cat-title">${esc(cat.cat)}<span class="cat-count">${cat.items.length}</span></div>
-          <button class="cat-add-btn" onclick="focusAddItem('${esc(cat.cat).replace(/'/g,"\\'")}')">+ Добавить позицию</button>
+          <button class="cat-add-btn" onclick="focusAddItem('${esc(cat.cat).replace(/'/g,"\\'")}')">+ Add Item</button>
         </div>${itemsHtml}`;
       specList.appendChild(catEl);
     });
@@ -695,11 +695,11 @@
 
     // room dropdown for the "add item" form — keep current pick if it still exists among this project's rooms
     const prevRoomVal=document.getElementById('newItemRoom')?.value;
-    const roomOptions=data.rooms.map(r=>[r.name,r.name]).concat([['Другое','Другое']]);
+    const roomOptions=data.rooms.map(r=>[r.name,r.name]).concat([['Other','Other']]);
     const roomVal=roomOptions.some(o=>o[0]===prevRoomVal)?prevRoomVal:roomOptions[0][0];
-    document.getElementById('newItemRoomWrap').innerHTML=buildSimpleDropdown('newItemRoom',roomOptions,roomVal,'Комната');
+    document.getElementById('newItemRoomWrap').innerHTML=buildSimpleDropdown('newItemRoom',roomOptions,roomVal,'Room');
 
-    // budget — "Потрачено" считается автоматически из позиций комплектации со статусом "Заказано"/"Согласовано"
+    // budget — "Spent" is calculated automatically from spec items with status "Ordered"/"Approved"
     const committed=it=>(it.status==='done'||it.status==='ok')?(it.price||0)*(it.qty||1):0;
     const specSpent=data.spec.reduce((sum,cat)=>sum+cat.items.reduce((s,it)=>s+committed(it),0),0);
     document.getElementById('budgetTotal').textContent=fmtMoney(data.budget.total);
@@ -712,10 +712,10 @@
     budgetBar.classList.toggle('over',over);
     const budgetPercentLabel=document.getElementById('budgetPercentLabel');
     if(over){
-      budgetPercentLabel.textContent=`Превышение бюджета на ${fmtMoney(specSpent-data.budget.total)}`;
+      budgetPercentLabel.textContent=`Over budget by ${fmtMoney(specSpent-data.budget.total)}`;
       budgetPercentLabel.classList.add('budget-warning');
     }else{
-      budgetPercentLabel.textContent=`Использовано ${pct}%`;
+      budgetPercentLabel.textContent=`${pct}% used`;
       budgetPercentLabel.classList.remove('budget-warning');
     }
 
@@ -728,7 +728,7 @@
           <div class="cat-spend-label"><span>${esc(cat)}</span><span class="amt">${fmtMoney(sum)}</span></div>
           <div class="bar"><div class="bar-fill" style="width:${catPct}%"></div></div>
         </div>`;
-    }).join(''):`<div class="note" style="margin-top:0">Нет позиций со статусом «Заказано» или «Согласовано».</div>`;
+    }).join(''):`<div class="note" style="margin-top:0">No items with status "Ordered" or "Approved" yet.</div>`;
 
     // visits
     const visitsList=document.getElementById('visitsList');
@@ -745,7 +745,7 @@
     ['renders','drawings'].forEach(cat=>{
       const list=document.getElementById('docList-'+cat);
       const docs=data.documents.filter(d=>d.category===cat);
-      list.innerHTML=docs.length?docs.map(d=>`<div class="doc-row"><span class="doc-name">${esc(d.fileName)}</span><a href="${esc(d.url)}" target="_blank" rel="noopener">Открыть →</a><button onclick="deleteDocument(${d.id})">✕</button></div>`).join(''):`<div class="note" style="margin-top:0">Ссылок пока нет.</div>`;
+      list.innerHTML=docs.length?docs.map(d=>`<div class="doc-row"><span class="doc-name">${esc(d.fileName)}</span><a href="${esc(d.url)}" target="_blank" rel="noopener">Open →</a><button onclick="deleteDocument(${d.id})">✕</button></div>`).join(''):`<div class="note" style="margin-top:0">No links yet.</div>`;
     });
   }
 
@@ -760,7 +760,7 @@
   }
 
   function updateAreaField(value){
-    const area=value?value+' м²':'';
+    const area=value?value+' m²':'';
     PROJECTS[currentProject].client.area=area;
     persistClientField('area',area);
   }
@@ -774,7 +774,7 @@
     renderClientPanelOnly();
   }
 
-  const MONTH_NAMES=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+  const MONTH_NAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
 
   function buildCustomDropdown(role,selectedLabel,options){
     const opts=options.map(([val,label])=>
@@ -782,7 +782,7 @@
     ).join('');
     return `<div class="csel" data-role="${role}">
       <button type="button" class="csel-btn" onclick="toggleDropdown(this)">
-        <span>${selectedLabel||(role==='day'?'День':role==='month'?'Месяц':'Год')}</span>
+        <span>${selectedLabel||(role==='day'?'Day':role==='month'?'Month':'Year')}</span>
         <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
       </button>
       <div class="csel-menu">${opts}</div>
@@ -836,7 +836,7 @@
     if(key==='handover'){
       const since=PROJECTS[currentProject].client.since;
       if(since && value<since){
-        alert('Плановая сдача не может быть раньше даты «Клиент с» ('+since+').');
+        alert('Planned handover can\'t be earlier than the "Client since" date ('+since+').');
         renderProject(currentProject);
         return;
       }
@@ -853,7 +853,7 @@
   function saveClientInfo(){
     const btn=document.getElementById('saveClientBtn');
     const original=btn.textContent;
-    btn.textContent='Сохранено ✓';
+    btn.textContent='Saved ✓';
     setTimeout(()=>{btn.textContent=original;},1500);
   }
 
@@ -913,13 +913,13 @@
       try{
         PROJECTS[slug]=await fetchJSON('/api/client-projects/'+slug);
       }catch(err){
-        alert('Не удалось загрузить проект');
+        alert('Failed to load project');
         return;
       }
     }
     renderProject(slug);
 
-    // reset to the first sub-page (О проекте) on every project switch
+    // reset to the first sub-page (Overview) on every project switch
     const firstSub=document.querySelector('.sub-item[data-page]');
     if(firstSub) switchPage(firstSub);
   }
@@ -969,7 +969,7 @@
     const hidden=document.getElementById(csel.dataset.hidden);
     if(opt.dataset.value==='__custom__'){
       csel.classList.remove('open');
-      const name=prompt('Название категории:');
+      const name=prompt('Category name:');
       if(!name||!name.trim()) return;
       const val=name.trim();
       const newOpt=document.createElement('div');
@@ -1000,7 +1000,7 @@
   async function addItem(){
     const name=document.getElementById('newItemName').value.trim();
     if(!name) return;
-    const cat=document.getElementById('newItemCat').value.trim()||'Другое';
+    const cat=document.getElementById('newItemCat').value.trim()||'Other';
     const room=document.getElementById('newItemRoom').value;
     const note=document.getElementById('newItemNote').value.trim();
     const price=parseFloat(document.getElementById('newItemPrice').value)||0;
@@ -1023,7 +1023,7 @@
 
   function editBudgetTotal(){
     const data=PROJECTS[currentProject];
-    const val=prompt('Бюджет проекта, AED:',data.budget.total||0);
+    const val=prompt('Project budget, AED:',data.budget.total||0);
     if(val===null) return;
     const num=parseFloat(val.replace(/[^\d.]/g,''));
     if(isNaN(num)) return;
@@ -1034,10 +1034,10 @@
   function updateSpecCount(){
     const cats=document.querySelectorAll('.spec-cat').length;
     const items=document.querySelectorAll('#specList .item').length;
-    document.getElementById('specCount').textContent=`${cats} категории · ${items} позиций`;
+    document.getElementById('specCount').textContent=`${cats} categories · ${items} items`;
   }
 
-  const ROOM_STATUS_MAP={draft:'Не отправлено',progress:'Ожидает решения',revise:'Правки',approved:'Согласовано'};
+  const ROOM_STATUS_MAP={draft:'Not sent',progress:'Awaiting decision',revise:'Revisions',approved:'Approved'};
   const fmtMoney=n=>Number(n||0).toLocaleString('ru-RU')+' AED';
   const esc=v=>(v||'').toString().replace(/"/g,'&quot;');
 
@@ -1062,7 +1062,7 @@
       const variant=room.variants[room.activeVariant];
       const tiles=variant.photos.map((p,pi)=>{
         let badge='';
-        if(p.approved) badge=`<span class="badge ok">✓ Согласовано</span>`;
+        if(p.approved) badge=`<span class="badge ok">✓ Approved</span>`;
         else if(p.comments&&p.comments.length) badge=`<span class="badge cm">💬 ${p.comments.length}</span>`;
         return `<div class="render-tile">
             <div class="img-wrap" onclick="openPhotoLightbox(${ri},${pi})">
@@ -1070,15 +1070,15 @@
               ${badge}
               <button class="rdel" onclick="event.stopPropagation();deletePhoto(${ri},${pi})">✕</button>
             </div>
-            <input class="photo-caption" placeholder="Подпись к фото..." value="${(p.caption||'').replace(/"/g,'&quot;')}" onchange="updateCaption(${ri},${pi},this.value)">
+            <input class="photo-caption" placeholder="Photo caption..." value="${(p.caption||'').replace(/"/g,'&quot;')}" onchange="updateCaption(${ri},${pi},this.value)">
           </div>`;
       }).join('');
 
       const tabs=room.variants.map((v,vi)=>
         `<span class="variant-tab-wrap${vi===room.activeVariant?' active':''}">
           <button class="variant-tab" onclick="switchVariant(${ri},${vi})">${v.label}</button>
-          <button class="variant-tab-action" onclick="renameVariant(${ri},${vi})" title="Переименовать">✎</button>
-          ${room.variants.length>1?`<button class="variant-tab-action del" onclick="deleteVariant(${ri},${vi})" title="Удалить вариант">✕</button>`:''}
+          <button class="variant-tab-action" onclick="renameVariant(${ri},${vi})" title="Rename">✎</button>
+          ${room.variants.length>1?`<button class="variant-tab-action del" onclick="deleteVariant(${ri},${vi})" title="Delete variant">✕</button>`:''}
         </span>`
       ).join('');
 
@@ -1087,16 +1087,16 @@
       block.innerHTML=`<div class="room-block-head">
           <div class="room-title-row">
             <div class="reorder-col">
-              <button class="reorder-btn" onclick="moveRoom(${ri},-1)" ${ri===0?'disabled':''} title="Выше"><svg viewBox="0 0 24 24"><path d="M5 15l7-7 7 7"/></svg></button>
-              <button class="reorder-btn" onclick="moveRoom(${ri},1)" ${ri===data.rooms.length-1?'disabled':''} title="Ниже"><svg viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></svg></button>
+              <button class="reorder-btn" onclick="moveRoom(${ri},-1)" ${ri===0?'disabled':''} title="Move up"><svg viewBox="0 0 24 24"><path d="M5 15l7-7 7 7"/></svg></button>
+              <button class="reorder-btn" onclick="moveRoom(${ri},1)" ${ri===data.rooms.length-1?'disabled':''} title="Move down"><svg viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></svg></button>
             </div>
             <h2>${room.name}</h2>
             <button class="pill status-${room.status}" onclick="cycleRoomStatus(${ri})">${ROOM_STATUS_MAP[room.status]}</button>
-            <button class="del-btn" onclick="deleteRoom(${ri})" title="Удалить комнату">✕</button>
+            <button class="del-btn" onclick="deleteRoom(${ri})" title="Delete room">✕</button>
           </div>
           <div class="room-block-actions">
-            <div class="variant-tabs">${tabs}<button class="variant-pill" onclick="addRoomVariant(${ri})">+ Вариант</button></div>
-            <button class="link-pill" onclick="copyLink(${ri})"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.66 0l3-3a4 4 0 10-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 00-5.66 0l-3 3a4 4 0 105.66 5.66l1-1"/></svg>Публичная ссылка</button>
+            <div class="variant-tabs">${tabs}<button class="variant-pill" onclick="addRoomVariant(${ri})">+ Variant</button></div>
+            <button class="link-pill" onclick="copyLink(${ri})"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.66 0l3-3a4 4 0 10-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 00-5.66 0l-3 3a4 4 0 105.66 5.66l1-1"/></svg>Public link</button>
           </div>
         </div>
         <div class="render-grid" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleRoomDrop(event,${ri})">
@@ -1119,10 +1119,10 @@
   }
 
   async function addDocLink(category){
-    const url=prompt('Ссылка на файл (Google Drive, Яндекс.Диск и т.п.):');
+    const url=prompt('File link (Google Drive, Yandex.Disk, etc.):');
     if(!url||!url.trim()) return;
-    if(!/^https?:\/\//i.test(url.trim())){ alert('Ссылка должна начинаться с http:// или https://'); return; }
-    const name=prompt('Название файла (как увидит клиент):',category==='renders'?'3D Visualisation':'Tech. Drawings');
+    if(!/^https?:\/\//i.test(url.trim())){ alert('Link must start with http:// or https://'); return; }
+    const name=prompt('File name (as the client will see it):',category==='renders'?'3D Visualisation':'Tech. Drawings');
     if(!name||!name.trim()) return;
     const slug=currentProject;
     try{
@@ -1130,7 +1130,7 @@
       PROJECTS[slug].documents.push(res);
       renderProject(slug);
     }catch(err){
-      alert('Не удалось сохранить ссылку: '+err.message);
+      alert('Failed to save link: '+err.message);
     }
   }
 
@@ -1192,7 +1192,7 @@
 
   async function addRoomVariant(ri){
     const room=PROJECTS[currentProject].rooms[ri];
-    const label='Вариант '+(room.variants.length+1);
+    const label='Variant '+(room.variants.length+1);
     const variant=await fetchJSON('/api/client-projects/rooms/'+room.id+'/variants',{method:'POST',body:JSON.stringify({label})});
     room.variants.push(variant);
     room.activeVariant=room.variants.length-1;
@@ -1202,7 +1202,7 @@
 
   function renameVariant(ri,vi){
     const room=PROJECTS[currentProject].rooms[ri];
-    const name=prompt('Название варианта:',room.variants[vi].label);
+    const name=prompt('Variant name:',room.variants[vi].label);
     if(!name||!name.trim()) return;
     room.variants[vi].label=name.trim();
     fetchJSON('/api/client-projects/room-variants/'+room.variants[vi].id,{method:'PATCH',body:JSON.stringify({label:name.trim()})}).catch(()=>{});
@@ -1212,7 +1212,7 @@
   function deleteVariant(ri,vi){
     const room=PROJECTS[currentProject].rooms[ri];
     if(room.variants.length<=1) return;
-    if(!confirm(`Удалить вариант «${room.variants[vi].label}» вместе со всеми его фото?`)) return;
+    if(!confirm(`Delete variant "${room.variants[vi].label}" along with all its photos?`)) return;
     fetchJSON('/api/client-projects/room-variants/'+room.variants[vi].id,{method:'DELETE'}).catch(()=>{});
     room.variants.splice(vi,1);
     if(room.activeVariant>=room.variants.length) room.activeVariant=room.variants.length-1;
@@ -1241,7 +1241,7 @@
   }
 
   function deleteRoom(ri){
-    if(!confirm('Удалить эту комнату со всеми фото?')) return;
+    if(!confirm('Delete this room along with all its photos?')) return;
     const room=PROJECTS[currentProject].rooms[ri];
     fetchJSON('/api/client-projects/rooms/'+room.id,{method:'DELETE'}).catch(()=>{});
     PROJECTS[currentProject].rooms.splice(ri,1);
@@ -1255,9 +1255,9 @@
       const {token}=await fetchJSON('/api/client-projects/room-variants/'+variant.id+'/public-link',{method:'POST'});
       const url=location.origin+'/view.html?token='+token;
       await navigator.clipboard.writeText(url);
-      alert('Ссылка скопирована:\n'+url);
+      alert('Link copied:\n'+url);
     }catch(err){
-      alert('Не удалось создать ссылку');
+      alert('Failed to create link');
     }
   }
 
@@ -1269,10 +1269,10 @@
     const photo=room.variants[room.activeVariant].photos[pi];
     resolvePhotoUrl(photo.id).then(url=>{document.getElementById('lbImg').src=url}).catch(()=>{});
     const commentsHtml=(photo.comments&&photo.comments.length)
-      ? photo.comments.map(c=>`<div class="lb-comment${c.from==='studio'?' studio':''}"><span class="who">${c.from==='studio'?'Студия':'Клиент'}</span>${c.text}</div>`).join('')
-      : `<div class="lb-empty">Комментариев от клиента пока нет.</div>`;
+      ? photo.comments.map(c=>`<div class="lb-comment${c.from==='studio'?' studio':''}"><span class="who">${c.from==='studio'?'Studio':'Client'}</span>${c.text}</div>`).join('')
+      : `<div class="lb-empty">No comments from the client yet.</div>`;
     document.getElementById('lbComments').innerHTML=commentsHtml;
-    document.getElementById('lbApproved').textContent=photo.approved?'✓ Клиент согласовал это фото':'Ожидает решения клиента';
+    document.getElementById('lbApproved').textContent=photo.approved?'✓ Client approved this photo':'Awaiting client decision';
     document.getElementById('photoLightbox').classList.add('open');
   }
 
@@ -1282,7 +1282,7 @@
     const photo=room.variants[room.activeVariant].photos[lbPi];
     photo.approved=approved;
     fetchJSON('/api/client-projects/room-photos/'+photo.id,{method:'PATCH',body:JSON.stringify({approved})}).catch(()=>{});
-    document.getElementById('lbApproved').textContent=approved?'✓ Клиент согласовал это фото':'Ожидает решения клиента';
+    document.getElementById('lbApproved').textContent=approved?'✓ Client approved this photo':'Awaiting client decision';
     renderRoomsList(PROJECTS[currentProject]);
   }
 
@@ -1327,7 +1327,7 @@
   }
 
   async function addProject(){
-    const name=prompt('Название проекта — например, Имя клиента · Название проекта:');
+    const name=prompt('Project name — e.g. Client Name · Project Title:');
     if(!name||!name.trim()) return;
     const slug=name.trim().toLowerCase()
       .replace(/[^a-zа-я0-9\s]/gi,'')
@@ -1338,7 +1338,7 @@
         slug,label:name.trim(),client:{name:name.trim()},
       })});
     }catch(err){
-      alert('Не удалось создать проект');
+      alert('Failed to create project');
       return;
     }
     const el=document.createElement('div');
@@ -1350,16 +1350,21 @@
     await switchProject(el);
   }
 
+  // Option values are kept as the original Russian strings — they're the actual
+  // category names already stored against existing client projects in the
+  // database, so changing them here would silently fork new items into a
+  // duplicate "Furniture" category instead of the existing "Мебель" one.
+  // Only the displayed labels are translated.
   const SPEC_CAT_OPTIONS=[
-    ['Мебель','Мебель'],['Освещение','Освещение'],['Декор','Декор'],['Текстиль','Текстиль'],
-    ['Шторы','Шторы'],['Сантехника','Сантехника'],['Кухонная техника','Кухонная техника'],
-    ['Двери и фурнитура','Двери и фурнитура'],['Напольные покрытия','Напольные покрытия'],
-    ['Отделка стен и потолков','Отделка стен и потолков'],['Зеркала и арт-объекты','Зеркала и арт-объекты'],
-    ['Прочее','Прочее'],['__custom__','+ Своя категория…']
+    ['Мебель','Furniture'],['Освещение','Lighting'],['Декор','Decor'],['Текстиль','Textiles'],
+    ['Шторы','Curtains'],['Сантехника','Plumbing'],['Кухонная техника','Kitchen Appliances'],
+    ['Двери и фурнитура','Doors & Hardware'],['Напольные покрытия','Flooring'],
+    ['Отделка стен и потолков','Wall & Ceiling Finishes'],['Зеркала и арт-объекты','Mirrors & Art Objects'],
+    ['Прочее','Miscellaneous'],['__custom__','+ Custom category…']
   ];
-  const SPEC_STATUS_OPTIONS=[['wait','Ожидание'],['go','В поиске'],['done','Заказано'],['ok','Согласовано']];
-  document.getElementById('newItemCatWrap').innerHTML=buildSimpleDropdown('newItemCat',SPEC_CAT_OPTIONS,'Мебель','Категория');
-  document.getElementById('newItemStatusWrap').innerHTML=buildSimpleDropdown('newItemStatus',SPEC_STATUS_OPTIONS,'wait','Статус');
+  const SPEC_STATUS_OPTIONS=[['wait','Pending'],['go','Sourcing'],['done','Ordered'],['ok','Approved']];
+  document.getElementById('newItemCatWrap').innerHTML=buildSimpleDropdown('newItemCat',SPEC_CAT_OPTIONS,'Мебель','Category');
+  document.getElementById('newItemStatusWrap').innerHTML=buildSimpleDropdown('newItemStatus',SPEC_STATUS_OPTIONS,'wait','Status');
 
   checkAuthAndInit();
 </script>
