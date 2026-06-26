@@ -294,8 +294,13 @@
         <div class="files" id="docList-drawings-group">
           <div class="file-group-label">Tech. Drawings</div>
         </div>
-        <div class="files" id="docList-boq-group">
+        <div class="files">
           <div class="file-group-label">BOQ</div>
+          <a class="file-lk" href="#" onclick="event.preventDefault();openBoq()">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M7 3h10v18H7zM10 8h4M10 12h4M10 16h4"/></svg>
+            <span class="txt"><b>Полная разбивка бюджета</b><small>Формируется автоматически из текущей комплектации</small></span>
+            <span class="arr">→</span>
+          </a>
         </div>
       </div>
 
@@ -444,13 +449,16 @@
     renderDocuments();
   }
 
+  function openBoq(){
+    window.open('/api/client-projects/'+PROJECT.slug+'/boq','_blank');
+  }
+
   function renderDocuments(){
     const icons={
       renders:'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>',
       drawings:'<path d="M4 4h16v16H4zM4 9h16M9 9v11"/>',
-      boq:'<path d="M7 3h10v18H7zM10 8h4M10 12h4M10 16h4"/>',
     };
-    ['renders','drawings','boq'].forEach(cat=>{
+    ['renders','drawings'].forEach(cat=>{
       const group=document.getElementById('docList-'+cat+'-group');
       const docs=(PROJECT.documents||[]).filter(d=>d.category===cat);
       group.querySelectorAll('.file-lk').forEach(el=>el.remove());

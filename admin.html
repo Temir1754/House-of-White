@@ -475,11 +475,9 @@
           </div>
         </div>
         <div class="panel">
-          <div class="panel-head"><b>BOQ</b><small>Полная разбивка бюджета</small></div>
+          <div class="panel-head"><b>BOQ</b><small>Формируется автоматически из «Комплектации» — отдельно грузить не нужно</small></div>
           <div class="panel-body">
-            <div id="docList-boq"></div>
-            <button class="btn-line" onclick="document.getElementById('docInput-boq').click()" style="margin-top:10px">+ Загрузить файл</button>
-            <input type="file" id="docInput-boq" multiple style="display:none" onchange="handleDocInput(event,'boq')">
+            <button class="btn-line" onclick="openBoq()">Открыть BOQ →</button>
           </div>
         </div>
       </div>
@@ -746,7 +744,7 @@
     });
 
     // project documents
-    ['renders','drawings','boq'].forEach(cat=>{
+    ['renders','drawings'].forEach(cat=>{
       const list=document.getElementById('docList-'+cat);
       const docs=data.documents.filter(d=>d.category===cat);
       list.innerHTML=docs.length?docs.map(d=>`<div class="doc-row"><span class="doc-name">${esc(d.fileName)}</span><button onclick="deleteDocument(${d.id})">✕</button></div>`).join(''):`<div class="note" style="margin-top:0">Файлов пока нет.</div>`;
@@ -1133,6 +1131,10 @@
     }
     e.target.value='';
     renderProject(slug);
+  }
+
+  function openBoq(){
+    window.open('/api/client-projects/'+currentProject+'/boq','_blank');
   }
 
   function deleteDocument(id){

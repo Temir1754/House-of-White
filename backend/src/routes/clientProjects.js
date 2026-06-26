@@ -440,7 +440,74 @@ router.patch('/:slug/client', requireAuth, requireAdmin, async (req, res) => {
   res.json(rows[0]);
 });
 
-const DOCUMENT_CATEGORIES = ['renders', 'drawings', 'boq'];
+const DOCUMENT_CATEGORIES = ['renders', 'drawings'];
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function fmtMoney(n) {
+  return Number(n || 0).toLocaleString('ru-RU') + ' AED';
+}
+
+router.get('/:slug/boq', requireAuth, async (req, res) => {
+  if (!(await canAccess(req, req.params.slug))) return res.status(403).json({ error: 'Forbidden' });
+  const project = await loadFullProject(req.params.slug);
+  if (!project) return res.status(404).json({ error: 'Not found' });
+
+  const isCommitted = (it) => it.status === 'done' || it.status === 'ok';
+  const statusLabels = { wait: 'Ожидание', go: 'В поиске', done: 'Заказано', ok: 'Согласовано' };
+  let grandTotal = 0;
+
+  const sections = project.spec
+    .map((cat) => {
+      const rows = cat.items
+        .map((it) => {
+          const sum = (it.price || 0) * (it.qty || 1);
+          if (isCommitted(it)) grandTotal += sum;
+          return `<tr>
+            <td>${escapeHtml(it.name)}</td>
+            <td>${escapeHtml(it.room || '')}</td>
+            <td>${escapeHtml(statusLabels[it.status] || it.status)}</td>
+            <td class="num">${it.qty || 1}</td>
+            <td class="num">${it.price ? fmtMoney(it.price) : '—'}</td>
+            <td class="num">${it.price ? fmtMoney(sum) : '—'}</td>
+          </tr>`;
+        })
+        .join('');
+      return `<h2>${escapeHtml(cat.cat)}</h2>
+        <table>
+          <thead><tr><th>Позиция</th><th>Комната</th><th>Статус</th><th class="num">Кол-во</th><th class="num">Цена</th><th class="num">Сумма</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+    })
+    .join('');
+
+  const html = `<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<title>BOQ — ${escapeHtml(project.label)}</title>
+<style>
+  body{font-family:Arial,sans-serif;color:#1a1a1a;max-width:900px;margin:40px auto;padding:0 20px}
+  h1{font-size:22px;margin-bottom:2px}
+  .meta{color:#666;font-size:13px;margin-bottom:28px}
+  h2{font-size:15px;margin:28px 0 8px;border-bottom:1px solid #ccc;padding-bottom:4px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:6px 8px;border-bottom:1px solid #eee;text-align:left}
+  th{color:#888;font-weight:normal;text-transform:uppercase;font-size:11px}
+  .num{text-align:right}
+  .total{margin-top:24px;font-size:16px;text-align:right;border-top:2px solid #1a1a1a;padding-top:10px}
+  @media print{body{margin:0;padding:20px}}
+</style></head>
+<body>
+  <h1>House of White — BOQ</h1>
+  <div class="meta">${escapeHtml(project.label)} · ${escapeHtml(project.client.name)} · ${new Date().toLocaleDateString('ru-RU')}</div>
+  ${sections || '<p>Позиций пока нет.</p>'}
+  <div class="total">Итого (заказано/согласовано): ${fmtMoney(grandTotal)}</div>
+</body></html>`;
+
+  res.set('Content-Type', 'text/html; charset=utf-8');
+  res.send(html);
+});
 
 router.post('/:slug/documents', requireAuth, requireAdmin, upload.single('file'), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file' });
