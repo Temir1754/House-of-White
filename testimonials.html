@@ -38,7 +38,8 @@
 
   /* NAV */
   nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:28px 48px;transition:all .5s ease;border-bottom:1px solid transparent}
-  nav.scrolled{background:rgba(21,18,13,0.85);backdrop-filter:blur(16px);padding:18px 48px;border-bottom:1px solid var(--line-soft)}
+  nav.scrolled{padding:18px 48px;border-bottom:1px solid var(--line-soft)}
+  nav.scrolled::before{content:'';position:absolute;inset:0;background:rgba(21,18,13,0.85);backdrop-filter:blur(16px);z-index:-1}
   .brand{font-family:var(--display);font-size:23px;font-weight:500;letter-spacing:0.02em}
   .brand i{font-style:normal;color:inherit}
   .nav-links{display:flex;gap:40px;align-items:center}
