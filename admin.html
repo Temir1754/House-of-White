@@ -215,6 +215,7 @@
   .del-btn:hover{color:var(--danger)}
 
   .add-row{display:grid;grid-template-columns:1.4fr 1fr 0.7fr auto;gap:8px;margin-top:14px}
+  .visit-add-row{grid-template-columns:1fr 2fr auto}
   .add-row input,.add-row select{background:var(--ink-3);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:16px 14px;font-family:var(--sans);font-size:13px}
   .add-row button{background:var(--sand);color:var(--ink);border:none;border-radius:4px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer}
 
@@ -289,11 +290,37 @@
     .menu-btn{display:inline-flex!important}
   }
   .menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:8px 12px;cursor:pointer;margin-right:10px}
+  @media(max-width:680px){
+    .topbar{flex-wrap:wrap;row-gap:10px}
+    .chip{max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-flex}
+    .chip span:not(.dot){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  }
   @media(max-width:520px){
     .topbar{padding:16px 18px}
     .topbar h1{font-size:18px}
     .content{padding:18px 18px 60px}
-    .chip{font-size:9px;padding:5px 9px}
+    .chip{font-size:9px;padding:5px 9px;max-width:120px}
+    .btn-line{font-size:10px;padding:8px 12px}
+  }
+  @media(max-width:680px){
+    .panel-body{padding:20px}
+    .client-grid{grid-template-columns:1fr;gap:4px}
+    .client-grid .cl-label{padding-top:0;margin-top:10px}
+    .item{grid-template-columns:44px 1fr 1fr;grid-template-areas:"thumb info info" "thumb status status" "thumb qty sum";row-gap:6px;padding:16px 0;position:relative;padding-right:24px}
+    .item-thumb{width:44px;height:44px;grid-area:thumb}
+    .item-info{grid-area:info}
+    .item .pill{grid-area:status;justify-self:start}
+    .item-qty{grid-area:qty;justify-self:start}
+    .item-sum{grid-area:sum;justify-self:end}
+    .del-btn{position:absolute;top:14px;right:0}
+    .add-row{grid-template-columns:1fr}
+    .spec-add-row1{grid-template-columns:1fr}
+    .spec-add-row3{grid-template-columns:1fr}
+    .spec-add-row3 .qty-field{width:100%}
+    .spec-add-card{padding:18px}
+    .lb-box{flex-direction:column;max-height:95vh}
+    .lb-box img{max-height:40vh}
+    .lb-side{max-width:none;min-width:0}
   }
 
   .login-screen{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;justify-content:center;z-index:100}
@@ -486,7 +513,7 @@
           <div class="panel-head"><b>Site Visits</b><small>Photo reports with dates</small></div>
           <div class="panel-body">
             <div id="visitsList"></div>
-            <div class="add-row" style="grid-template-columns:1fr 2fr auto">
+            <div class="add-row visit-add-row">
               <input id="newVisitDate" type="text" placeholder="Date — e.g. June 18, 2026">
               <input id="newVisitNote" type="text" placeholder="Note">
               <button onclick="addVisit()">Add</button>
