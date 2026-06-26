@@ -52,7 +52,7 @@
   .pstep:first-child::before{display:none}
 
   /* APP SHELL (sidebar layout) */
-  .app{display:flex;min-height:100vh}
+  .app{display:none;min-height:100vh}
 
   .sidebar{width:260px;flex:none;background:var(--ink-2);border-right:1px solid var(--line-soft);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
   .side-brand{padding:22px 20px;border-bottom:1px solid var(--line-soft);font-family:var(--display);font-size:18px;display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--cream)}
@@ -196,26 +196,38 @@
   .login-box h1{font-family:var(--display);font-weight:400;font-size:20px;margin-bottom:10px}
   .login-box p{color:var(--muted);font-size:12.5px;margin-bottom:24px;line-height:1.6}
   .login-note{margin-top:16px;font-size:11px;color:var(--faint)}
+  .login-logo{height:48px;width:auto;display:block;margin:0 auto 18px}
   .logo-34{height:34px;width:auto}
+  #g_id_signin{display:flex;justify-content:center}
+  #demoBanner{display:none;background:linear-gradient(135deg,var(--sand),#c9b08a);color:#211d16;position:relative;z-index:20;padding:14px 20px;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;text-align:center;box-shadow:0 2px 14px rgba(0,0,0,0.25)}
+  .demo-banner-text{font-size:13px;line-height:1.4}
+  .demo-banner-cta{background:#211d16;color:var(--sand);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:8px 16px;border-radius:30px;text-decoration:none;white-space:nowrap}
+  .topbar-left{display:flex;align-items:center}
+  #demoIntro{display:none;background:var(--ink-2);border:1px solid var(--sand);border-radius:8px;padding:24px 26px;margin-bottom:28px}
+  .demo-intro-label{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--sand);margin-bottom:10px}
+  .demo-intro-text{font-size:14px;line-height:1.6;color:var(--cream);max-width:640px}
+  .demo-hint{display:none;background:rgba(180,155,120,0.1);border:1px solid var(--sand);border-radius:6px;padding:12px 16px;margin-bottom:18px;font-size:12.5px;color:var(--cream);line-height:1.5}
+  .file-lk.album-link{margin-bottom:22px}
+  .note{font-size:11px;color:var(--faint);margin-top:10px;letter-spacing:.02em}
 </style>
 </head>
 <body>
 
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
-    <img src="logo/logo-new.png" alt="House of White" style="height:48px;width:auto;display:block;margin:0 auto 18px">
+    <img src="logo/logo-new.png" alt="House of White" class="login-logo">
     <p>Войдите через Google, чтобы увидеть ваш проект</p>
-    <div id="g_id_signin" style="display:flex;justify-content:center"></div>
+    <div id="g_id_signin"></div>
     <div class="login-note" id="loginNote"></div>
   </div>
 </div>
 
-<div id="demoBanner" style="display:none;background:linear-gradient(135deg,var(--sand),#c9b08a);color:#211d16;position:relative;z-index:20;padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;text-align:center;box-shadow:0 2px 14px rgba(0,0,0,0.25)">
-  <span style="font-size:13px;line-height:1.4"><b>Это демо-версия</b> · так выглядит личный кабинет клиента House of White</span>
-  <a href="/portal" style="background:#211d16;color:var(--sand);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;padding:8px 16px;border-radius:30px;text-decoration:none;white-space:nowrap">Войти в свой кабинет →</a>
+<div id="demoBanner">
+  <span class="demo-banner-text"><b>Это демо-версия</b> · так выглядит личный кабинет клиента House of White</span>
+  <a href="/portal" class="demo-banner-cta">Войти в свой кабинет →</a>
 </div>
 
-<div class="app" id="appRoot" style="display:none">
+<div class="app" id="appRoot">
 
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
@@ -244,7 +256,7 @@
   <!-- MAIN -->
   <div class="main">
     <div class="topbar">
-      <div style="display:flex;align-items:center">
+      <div class="topbar-left">
         <button class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
         <h1 id="topTitle">О проекте</h1>
       </div>
@@ -255,9 +267,9 @@
 
       <!-- OVERVIEW -->
       <div class="page active" data-page="overview">
-        <div id="demoIntro" style="display:none;background:var(--ink-2);border:1px solid var(--sand);border-radius:8px;padding:24px 26px;margin-bottom:28px">
-          <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--sand);margin-bottom:10px">👋 Что это такое</div>
-          <p style="font-size:14px;line-height:1.6;color:var(--cream);max-width:640px">Каждый клиент House of White получает такой личный кабинет сразу после начала проекта. Здесь — этапы работы, рендеры комнат на согласование, живая комплектация с бюджетом и все файлы проекта в одном месте. Полистайте разделы слева, чтобы увидеть, как это работает.</p>
+        <div id="demoIntro">
+          <div class="demo-intro-label">👋 Что это такое</div>
+          <p class="demo-intro-text">Каждый клиент House of White получает такой личный кабинет сразу после начала проекта. Здесь — этапы работы, рендеры комнат на согласование, живая комплектация с бюджетом и все файлы проекта в одном месте. Полистайте разделы слева, чтобы увидеть, как это работает.</p>
         </div>
         <div class="hero">
           <span class="eyebrow" id="heroEyebrow">—</span>
@@ -271,21 +283,21 @@
 
       <!-- 3D VISUALIZATIONS -->
       <div class="page" data-page="renders">
-        <div class="demo-hint" style="display:none;background:rgba(180,155,120,0.1);border:1px solid var(--sand);border-radius:6px;padding:12px 16px;margin-bottom:18px;font-size:12.5px;color:var(--cream);line-height:1.5">💬 В реальном проекте здесь вы смотрите рендеры по комнатам, оставляете комментарии прямо на фото и согласовываете каждый вариант.</div>
-        <a class="file-lk" href="#" style="margin-bottom:22px" onclick="switchPage(document.querySelector('.sub-item[data-page=files]'));return false">
+        <div class="demo-hint">💬 В реальном проекте здесь вы смотрите рендеры по комнатам, оставляете комментарии прямо на фото и согласовываете каждый вариант.</div>
+        <a class="file-lk album-link" href="#" onclick="switchPage(document.querySelector('.sub-item[data-page=files]'));return false">
           <svg class="ic" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 9h16M9 9v11"/></svg>
           <span class="txt"><b>Drawings album</b><small>Все чертежи и планы — в одном альбоме</small></span>
           <span class="arr">→</span>
         </a>
         <div id="vizBody">
           <!-- populated by script from PHOTOS -->
-          <div class="note" style="font-size:11px;color:var(--faint);margin-top:10px;letter-spacing:.02em">Нажмите на любое фото, чтобы оставить комментарий или согласовать его.</div>
+          <div class="note">Нажмите на любое фото, чтобы оставить комментарий или согласовать его.</div>
         </div>
       </div>
 
       <!-- SPECIFICATION -->
       <div class="page" data-page="spec">
-        <div class="demo-hint" style="display:none;background:rgba(180,155,120,0.1);border:1px solid var(--sand);border-radius:6px;padding:12px 16px;margin-bottom:18px;font-size:12.5px;color:var(--cream);line-height:1.5">📋 Полная комплектация мебели и материалов с ценами — студия обновляет статусы по ходу проекта, а бюджет считается автоматически.</div>
+        <div class="demo-hint">📋 Полная комплектация мебели и материалов с ценами — студия обновляет статусы по ходу проекта, а бюджет считается автоматически.</div>
         <div id="specBody"></div>
         <div class="spec-foot" id="specFoot"></div>
       </div>
@@ -293,7 +305,7 @@
       <!-- DOWNLOAD PROJECT -->
       <div class="page" data-page="files">
 
-        <div class="demo-hint" style="display:none;background:rgba(180,155,120,0.1);border:1px solid var(--sand);border-radius:6px;padding:12px 16px;margin-bottom:18px;font-size:12.5px;color:var(--cream);line-height:1.5">📁 Когда материалы готовы, здесь появляются финальные визуализации, чертежи и смета — доступны для просмотра и скачивания в любое время.</div>
+        <div class="demo-hint">📁 Когда материалы готовы, здесь появляются финальные визуализации, чертежи и смета — доступны для просмотра и скачивания в любое время.</div>
 
         <div class="album-card">
           <span class="album-eyebrow">Ваш альбом проекта</span>
