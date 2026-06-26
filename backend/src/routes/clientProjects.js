@@ -262,7 +262,7 @@ router.post('/:slug/rooms', requireAuth, requireAdmin, async (req, res) => {
     [projectRows[0].id, name]
   );
   const { rows: variantRows } = await pool.query(
-    "INSERT INTO room_variants (room_id, label) VALUES ($1, 'Вариант 1') RETURNING *",
+    "INSERT INTO room_variants (room_id, label) VALUES ($1, 'Variant 1') RETURNING *",
     [roomRows[0].id]
   );
 
