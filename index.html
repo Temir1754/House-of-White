@@ -48,6 +48,8 @@
   .nav-links a:hover{color:var(--sand)}
   .nav-cta{border:1px solid var(--line);padding:11px 22px;color:var(--cream)!important;transition:all .35s ease}
   .nav-cta:hover{border-color:var(--sand);background:rgba(180,155,120,0.08)}
+  .nav-toggle{display:none;background:none;border:none;padding:8px;cursor:pointer;z-index:101}
+  .nav-toggle svg{width:24px;height:24px;stroke:var(--cream);fill:none;stroke-width:1.6;stroke-linecap:round}
 
   /* ───── HERO ───── */
   .hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding-top:120px}
@@ -173,7 +175,7 @@
   footer{padding:28px 0 40px;border-top:1px solid var(--line-soft)}
   .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:22px}
   .foot .brand{font-size:19px}
-  .foot-links{display:flex;gap:26px}
+  .foot-links{display:flex;gap:26px;flex-wrap:wrap}
   .foot-links a{color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;transition:color .3s}
   .foot-links a:hover{color:var(--cream)}
   .foot .cp{font-size:11px;color:var(--faint);letter-spacing:0.08em}
@@ -183,6 +185,10 @@
     .wrap{padding:0 24px}
     nav,nav.scrolled{padding:18px 24px}
     .nav-links{display:none}
+    .nav-toggle{display:flex}
+    .nav-links.open{display:flex;position:fixed;inset:0;flex-direction:column;justify-content:center;align-items:center;gap:30px;background:rgba(10,9,7,0.97);backdrop-filter:blur(20px);z-index:99}
+    .nav-links.open a{font-size:16px}
+    .hero p.lead{white-space:normal;max-width:90%;margin-left:auto;margin-right:auto}
     .about-grid{grid-template-columns:1fr;gap:40px}
     .founder{height:460px}
     .work-grid{grid-template-columns:1fr;gap:14px}
@@ -200,8 +206,8 @@
   }
   @media(max-width:520px){
     .wrap{padding:0 16px}
-    .hero h1{font-size:clamp(42px,12vw,80px)}
-    .hero p.lead{font-size:15px}
+    .hero h1{font-size:clamp(34px,11vw,80px);white-space:normal}
+    .hero p.lead{font-size:14px;max-width:96%}
     .btn{padding:15px 24px;font-size:11px}
     .about-body p{font-size:15px}
     .founder{height:360px}
@@ -231,7 +237,7 @@
   <a href="index.html" class="logo-mark" aria-label="House of White">
     <img src="logo/logo-icon-new-transparent.png" alt="House of White" style="height:57px;width:auto">
   </a>
-  <div class="nav-links">
+  <div class="nav-links" id="navLinks">
     <a href="#studio">About Us</a>
     <a href="#work">Projects</a>
     <a href="#services">Services</a>
@@ -239,6 +245,9 @@
     <a href="portal.html">Client Portal</a>
     <a href="book.html" class="nav-cta">Book consultation</a>
   </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+    <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -359,6 +368,19 @@
 <script>
   const nav=document.getElementById('nav');
   addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
+
+  const navToggle=document.getElementById('navToggle');
+  const navLinks=document.getElementById('navLinks');
+  navToggle.addEventListener('click',()=>{
+    const open=navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded',open);
+    document.body.style.overflow=open?'hidden':'';
+  });
+  navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+    navLinks.classList.remove('open');
+    navToggle.setAttribute('aria-expanded','false');
+    document.body.style.overflow='';
+  }));
 
   addEventListener('load',()=>{
     document.querySelectorAll('.hero h1 .ln span').forEach((s,i)=>{
