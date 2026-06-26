@@ -48,7 +48,7 @@
   .nav-links a:hover{color:var(--sand)}
   .nav-cta{border:1px solid var(--line);padding:11px 22px;color:var(--cream)!important;transition:all .35s ease}
   .nav-cta:hover{border-color:var(--sand);background:rgba(180,155,120,0.08)}
-  .nav-toggle{display:none;background:none;border:none;padding:8px;cursor:pointer;z-index:101}
+  .nav-toggle{display:none;background:none;border:none;padding:8px;cursor:pointer;position:relative;z-index:300}
   .nav-toggle svg{width:24px;height:24px;stroke:var(--cream);fill:none;stroke-width:1.6;stroke-linecap:round}
 
   /* ───── HERO ───── */
@@ -93,7 +93,7 @@
   .founder{position:relative;height:620px;overflow:hidden}
   .founder .ag-item{position:absolute;inset:0;opacity:0;transition:opacity 1s ease}
   .founder .ag-item.active{opacity:1}
-  .founder .ag-item img{width:100%;height:100%;object-fit:cover;filter:grayscale(22%)}
+  .founder .ag-item img{width:100%;height:100%;object-fit:cover;object-position:center 20%;filter:grayscale(22%)}
   .founder .cap{position:absolute;left:24px;bottom:24px;right:24px;padding:22px 24px;background:rgba(21,18,13,0.82);backdrop-filter:blur(10px);border:1px solid var(--line)}
   .founder .cap .n{font-family:var(--display);font-size:22px}
   .founder .cap .r{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-top:5px}
@@ -190,7 +190,7 @@
     .nav-links.open a{font-size:16px}
     .hero p.lead{white-space:normal;max-width:90%;margin-left:auto;margin-right:auto}
     .about-grid{grid-template-columns:1fr;gap:40px}
-    .founder{height:460px}
+    .founder{height:520px}
     .work-grid{grid-template-columns:1fr;gap:14px}
     .pc.a,.pc.b,.pc.c,.pc.d{grid-column:auto;aspect-ratio:4/3}
     .svc{grid-template-columns:1fr}
@@ -210,7 +210,7 @@
     .hero p.lead{font-size:14px;max-width:96%}
     .btn{padding:15px 24px;font-size:11px}
     .about-body p{font-size:15px}
-    .founder{height:360px}
+    .founder{height:440px}
     .svc-i h3{font-size:24px}
     .pcard-top,.pcard-foot{font-size:10px;padding:13px 16px}
     .pcard-body{padding:18px 16px}
@@ -371,16 +371,16 @@
 
   const navToggle=document.getElementById('navToggle');
   const navLinks=document.getElementById('navLinks');
-  navToggle.addEventListener('click',()=>{
-    const open=navLinks.classList.toggle('open');
+  const menuIcon='<svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+  const closeIcon='<svg viewBox="0 0 24 24"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>';
+  function setMenuOpen(open){
+    navLinks.classList.toggle('open',open);
     navToggle.setAttribute('aria-expanded',open);
+    navToggle.innerHTML=open?closeIcon:menuIcon;
     document.body.style.overflow=open?'hidden':'';
-  });
-  navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
-    navLinks.classList.remove('open');
-    navToggle.setAttribute('aria-expanded','false');
-    document.body.style.overflow='';
-  }));
+  }
+  navToggle.addEventListener('click',()=>setMenuOpen(!navLinks.classList.contains('open')));
+  navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenuOpen(false)));
 
   addEventListener('load',()=>{
     document.querySelectorAll('.hero h1 .ln span').forEach((s,i)=>{

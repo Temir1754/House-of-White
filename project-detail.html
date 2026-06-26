@@ -243,6 +243,9 @@
 
   // Justified gallery: row height adapts to each photo's real aspect ratio,
   // so every image is shown in full (no crop) while rows still fill the width exactly (no gaps).
+  // Loaded in small batches as the user scrolls — measuring a photo's ratio means
+  // downloading it, so doing that for all 40-100 renders up front (the old behavior)
+  // blocked the page for a very long time before showing anything.
   function loadRatio(src){
     return new Promise(resolve=>{
       const img=new Image();
@@ -255,10 +258,12 @@
   let justifyResizeTimer;
   async function buildJustifiedGallery(renders){
     const gallery=document.getElementById('gallery');
-    const ratios=await Promise.all(renders.map(loadRatio));
-    const metas=renders.map((src,index)=>({src,index,ratio:ratios[index]}));
+    const metas=[];
+    let nextIndex=0,loading=false;
+    const sentinel=document.createElement('div');
+    sentinel.style.height='1px';
 
-    function render(){
+    function layout(){
       gallery.innerHTML='';
       const containerWidth=gallery.clientWidth||window.innerWidth;
       const targetRowHeight=window.innerWidth<700?260:480;
@@ -296,15 +301,34 @@
         });
         gallery.appendChild(rowEl);
       });
+      gallery.appendChild(sentinel);
 
       const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:0.1});
       document.querySelectorAll('.gallery-row.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*60)+'ms';io.observe(el)});
     }
 
-    render();
+    async function loadNextBatch(){
+      if(loading||nextIndex>=renders.length)return;
+      loading=true;
+      const batch=renders.slice(nextIndex,nextIndex+12);
+      const ratios=await Promise.all(batch.map(loadRatio));
+      batch.forEach((src,i)=>metas.push({src,index:nextIndex+i,ratio:ratios[i]}));
+      nextIndex+=batch.length;
+      layout();
+      loading=false;
+      if(nextIndex>=renders.length){sentinelObserver.disconnect();sentinel.remove()}
+    }
+
+    const sentinelObserver=new IntersectionObserver(es=>{
+      if(es.some(e=>e.isIntersecting))loadNextBatch();
+    },{rootMargin:'600px'});
+
+    await loadNextBatch();
+    sentinelObserver.observe(sentinel);
+
     addEventListener('resize',()=>{
       clearTimeout(justifyResizeTimer);
-      justifyResizeTimer=setTimeout(render,200);
+      justifyResizeTimer=setTimeout(layout,200);
     });
   }
 

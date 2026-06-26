@@ -46,7 +46,7 @@
   .nav-links a:hover{color:var(--sand)}
   .nav-cta{border:1px solid var(--line);padding:11px 22px;color:var(--cream)!important;transition:all .35s ease}
   .nav-cta:hover{border-color:var(--sand);background:rgba(180,155,120,0.08)}
-  .nav-toggle{display:none;background:none;border:none;padding:8px;cursor:pointer;z-index:101}
+  .nav-toggle{display:none;background:none;border:none;padding:8px;cursor:pointer;position:relative;z-index:300}
   .nav-toggle svg{width:24px;height:24px;stroke:var(--cream);fill:none;stroke-width:1.6;stroke-linecap:round}
 
   /* HERO */
@@ -249,16 +249,16 @@
 
   const navToggle=document.getElementById('navToggle');
   const navLinks=document.getElementById('navLinks');
-  navToggle.addEventListener('click',()=>{
-    const open=navLinks.classList.toggle('open');
+  const menuIcon='<svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+  const closeIcon='<svg viewBox="0 0 24 24"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>';
+  function setMenuOpen(open){
+    navLinks.classList.toggle('open',open);
     navToggle.setAttribute('aria-expanded',open);
+    navToggle.innerHTML=open?closeIcon:menuIcon;
     document.body.style.overflow=open?'hidden':'';
-  });
-  navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
-    navLinks.classList.remove('open');
-    navToggle.setAttribute('aria-expanded','false');
-    document.body.style.overflow='';
-  }));
+  }
+  navToggle.addEventListener('click',()=>setMenuOpen(!navLinks.classList.contains('open')));
+  navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenuOpen(false)));
 
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:0.15});
   document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*80)+'ms';io.observe(el)});
