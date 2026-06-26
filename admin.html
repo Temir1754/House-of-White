@@ -459,19 +459,17 @@
       <!-- PROJECT DOCUMENTS (Файлы проекта) -->
       <div class="page" data-page="documents">
         <div class="panel">
-          <div class="panel-head"><b>3D Visualisation</b><small>Рендеры в полном разрешении — клиент видит их на странице «Скачать проект»</small></div>
+          <div class="panel-head"><b>3D Visualisation</b><small>Ссылка на альбом рендеров (Google Drive, Яндекс.Диск и т.п.) — клиент видит её на странице «Скачать проект»</small></div>
           <div class="panel-body">
             <div id="docList-renders"></div>
-            <button class="btn-line" onclick="document.getElementById('docInput-renders').click()" style="margin-top:10px">+ Загрузить файл</button>
-            <input type="file" id="docInput-renders" multiple style="display:none" onchange="handleDocInput(event,'renders')">
+            <button class="btn-line" onclick="addDocLink('renders')" style="margin-top:10px">+ Добавить ссылку</button>
           </div>
         </div>
         <div class="panel">
-          <div class="panel-head"><b>Tech. Drawings</b><small>Планировки, электрика, мебель на заказ</small></div>
+          <div class="panel-head"><b>Tech. Drawings</b><small>Ссылка на чертежи — планировки, электрика, мебель на заказ</small></div>
           <div class="panel-body">
             <div id="docList-drawings"></div>
-            <button class="btn-line" onclick="document.getElementById('docInput-drawings').click()" style="margin-top:10px">+ Загрузить файл</button>
-            <input type="file" id="docInput-drawings" multiple style="display:none" onchange="handleDocInput(event,'drawings')">
+            <button class="btn-line" onclick="addDocLink('drawings')" style="margin-top:10px">+ Добавить ссылку</button>
           </div>
         </div>
         <div class="panel">
@@ -747,7 +745,7 @@
     ['renders','drawings'].forEach(cat=>{
       const list=document.getElementById('docList-'+cat);
       const docs=data.documents.filter(d=>d.category===cat);
-      list.innerHTML=docs.length?docs.map(d=>`<div class="doc-row"><span class="doc-name">${esc(d.fileName)}</span><button onclick="deleteDocument(${d.id})">✕</button></div>`).join(''):`<div class="note" style="margin-top:0">Файлов пока нет.</div>`;
+      list.innerHTML=docs.length?docs.map(d=>`<div class="doc-row"><span class="doc-name">${esc(d.fileName)}</span><a href="${esc(d.url)}" target="_blank" rel="noopener">Открыть →</a><button onclick="deleteDocument(${d.id})">✕</button></div>`).join(''):`<div class="note" style="margin-top:0">Ссылок пока нет.</div>`;
     });
   }
 
@@ -1120,26 +1118,20 @@
     return res.json();
   }
 
-  async function handleDocInput(e,category){
+  async function addDocLink(category){
+    const url=prompt('Ссылка на файл (Google Drive, Яндекс.Диск и т.п.):');
+    if(!url||!url.trim()) return;
+    if(!/^https?:\/\//i.test(url.trim())){ alert('Ссылка должна начинаться с http:// или https://'); return; }
+    const name=prompt('Название файла (как увидит клиент):',category==='renders'?'3D Visualisation':'Tech. Drawings');
+    if(!name||!name.trim()) return;
     const slug=currentProject;
-    for(const file of [...e.target.files]){
-      const form=new FormData();
-      form.append('file',file);
-      form.append('category',category);
-      try{
-        const res=await fetch('/api/client-projects/'+slug+'/documents',{method:'POST',credentials:'include',body:form});
-        if(res.ok){
-          PROJECTS[slug].documents.push(await res.json());
-        }else{
-          const body=await res.text().catch(()=>'');
-          alert('Не удалось загрузить файл «'+file.name+'»: '+res.status+' '+body);
-        }
-      }catch(err){
-        alert('Не удалось загрузить файл «'+file.name+'»: '+err.message);
-      }
+    try{
+      const res=await fetchJSON('/api/client-projects/'+slug+'/documents',{method:'POST',body:JSON.stringify({category,url:url.trim(),fileName:name.trim()})});
+      PROJECTS[slug].documents.push(res);
+      renderProject(slug);
+    }catch(err){
+      alert('Не удалось сохранить ссылку: '+err.message);
     }
-    e.target.value='';
-    renderProject(slug);
   }
 
   function openBoq(){

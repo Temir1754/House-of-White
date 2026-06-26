@@ -94,10 +94,10 @@ async function loadFullProject(slug) {
   const visits = visitRows.map((v) => ({ id: v.id, date: v.visit_date, note: v.note, fileKey: v.file_key }));
 
   const { rows: documentRows } = await pool.query(
-    'SELECT id, category, file_name, created_at FROM project_documents WHERE client_project_id = $1 ORDER BY sort_order, id',
+    'SELECT id, category, file_name, file_key, created_at FROM project_documents WHERE client_project_id = $1 ORDER BY sort_order, id',
     [project.id]
   );
-  const documents = documentRows.map((d) => ({ id: d.id, category: d.category, fileName: d.file_name }));
+  const documents = documentRows.map((d) => ({ id: d.id, category: d.category, fileName: d.file_name, url: d.file_key }));
 
   return {
     id: project.id,
@@ -509,23 +509,18 @@ router.get('/:slug/boq', requireAuth, async (req, res) => {
   res.send(html);
 });
 
-router.post('/:slug/documents', requireAuth, requireAdmin, upload.single('file'), async (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'No file' });
-  const { category } = req.body;
+router.post('/:slug/documents', requireAuth, requireAdmin, async (req, res) => {
+  const { category, url, fileName } = req.body;
   if (!DOCUMENT_CATEGORIES.includes(category)) return res.status(400).json({ error: 'Invalid category' });
+  if (!url || !/^https?:\/\//i.test(url)) return res.status(400).json({ error: 'Missing or invalid url' });
 
   const { rows: projectRows } = await pool.query('SELECT id FROM client_projects WHERE slug = $1', [req.params.slug]);
   if (!projectRows[0]) return res.status(404).json({ error: 'Project not found' });
 
-  const key = `documents/${projectRows[0].id}/${randomUUID()}-${req.file.originalname}`;
-  await minioClient.putObject(BUCKET, key, req.file.buffer, req.file.size, {
-    'Content-Type': req.file.mimetype,
-  });
-
   const { rows } = await pool.query(
     `INSERT INTO project_documents (client_project_id, category, file_key, file_name)
      VALUES ($1, $2, $3, $4) RETURNING id, category, file_name, created_at`,
-    [projectRows[0].id, category, key, req.file.originalname]
+    [projectRows[0].id, category, url, fileName || url]
   );
   res.status(201).json({ id: rows[0].id, category: rows[0].category, fileName: rows[0].file_name });
 });
@@ -534,18 +529,10 @@ router.get('/documents/:id/url', requireAuth, async (req, res) => {
   if (!(await canAccessDocument(req, req.params.id))) return res.status(403).json({ error: 'Forbidden' });
   const { rows } = await pool.query('SELECT file_key FROM project_documents WHERE id = $1', [req.params.id]);
   if (!rows[0]) return res.status(404).json({ error: 'Not found' });
-  try {
-    const url = await minioPublicClient.presignedGetObject(BUCKET, rows[0].file_key, 24 * 60 * 60);
-    res.json({ url });
-  } catch (err) {
-    console.error('Failed to generate presigned URL:', err);
-    res.status(500).json({ error: 'Failed to generate URL' });
-  }
+  res.json({ url: rows[0].file_key });
 });
 
 router.delete('/documents/:id', requireAuth, requireAdmin, async (req, res) => {
-  const { rows } = await pool.query('SELECT file_key FROM project_documents WHERE id = $1', [req.params.id]);
-  if (rows[0]) await minioClient.removeObject(BUCKET, rows[0].file_key).catch(() => {});
   await pool.query('DELETE FROM project_documents WHERE id = $1', [req.params.id]);
   res.json({ ok: true });
 });
