@@ -209,6 +209,10 @@
   </div>
 </div>
 
+<div id="demoBanner" style="display:none;background:var(--sand);color:var(--ink);text-align:center;font-size:12.5px;padding:10px 16px;position:relative;z-index:20">
+  Это демо-проект с примерами данных. <a href="portal.html" style="color:var(--ink);font-weight:600;text-decoration:underline">Войдите через Google</a>, чтобы увидеть свой реальный проект.
+</div>
+
 <div class="app" id="appRoot" style="display:none">
 
   <!-- SIDEBAR -->
@@ -369,6 +373,58 @@
 
   const STEP_LABELS=['Консультация','Концепция','Дизайн','Визуализации','Закупка','Сдача'];
 
+  let IS_DEMO=false;
+
+  // Sample data for the unauthenticated "?demo=1" preview — uses real public
+  // portfolio photos (already shown on projects.html) so it actually looks
+  // like a finished project, with no client PII anywhere.
+  function buildDemoProject(){
+    const img=(n)=>`assets/projects/Azizi Mina_ Palm Jumeirah/Living room & Kitchen/${n}.jpg`;
+    const bed=(n)=>`assets/projects/Azizi Mina_ Palm Jumeirah/Master bedroom/${n}.jpg`;
+    return {
+      slug:'demo',label:'Sample Villa — Palm Jumeirah',stage:3,
+      stageStatuses:['approved','approved','approved','progress','draft','draft'],
+      status:'ok',budget:{total:180000},
+      client:{name:'Sample Client',address:'Palm Jumeirah, Dubai'},
+      rooms:[
+        {id:'demo-1',name:'Living Room',activeVariant:0,variants:[{photos:[
+          {id:'demo-p1',url:img(10000),approved:true,comments:[]},
+          {id:'demo-p2',url:img(20000),approved:false,comments:[{id:1,text:'Можно немного теплее оттенок дерева?',x:32,y:54,from:'client'},{id:2,text:'Конечно, подберём образцы на следующей неделе.',x:32,y:54,from:'studio'}]},
+          {id:'demo-p3',url:img(30000),approved:false,comments:[]},
+        ]}]},
+        {id:'demo-2',name:'Master Bedroom',activeVariant:0,variants:[{photos:[
+          {id:'demo-p4',url:bed(10000),approved:true,comments:[]},
+          {id:'demo-p5',url:bed(20000),approved:false,comments:[]},
+        ]}]},
+      ],
+      spec:[
+        {cat:'Furniture',items:[
+          {name:'B&B Italia Sofa',room:'Living Room',note:'Grey velvet',price:12000,qty:1,status:'ok'},
+          {name:'Coffee Table',room:'Living Room',note:'Walnut',price:3000,qty:2,status:'done'},
+          {name:'Bed Frame',room:'Master Bedroom',note:'Upholstered, king',price:8500,qty:1,status:'go'},
+        ]},
+        {cat:'Lighting',items:[
+          {name:'Pendant Light',room:'Living Room',note:'Brass, large',price:2200,qty:2,status:'wait'},
+        ]},
+      ],
+      visits:[],
+      documents:[
+        {id:'demo-d1',category:'renders',fileName:'3D Visualisation — Sample Villa',url:'projects.html'},
+        {id:'demo-d2',category:'drawings',fileName:'Floor Plans — Sample Villa',url:'projects.html'},
+      ],
+    };
+  }
+
+  function enterDemoMode(){
+    IS_DEMO=true;
+    PROJECT=buildDemoProject();
+    loggedIn=false;
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('demoBanner').style.display='block';
+    document.getElementById('appRoot').style.display='flex';
+    renderAll();
+  }
+
   async function fetchJSON(url,opts){
     const res=await fetch(url,{credentials:'include',headers:{'Content-Type':'application/json'},...opts});
     if(!res.ok) throw new Error('Request failed: '+res.status);
@@ -395,6 +451,10 @@
   }
 
   async function checkAuthAndInit(){
+    if(new URLSearchParams(location.search).get('demo')==='1'){
+      enterDemoMode();
+      return;
+    }
     try{
       await fetchJSON('/api/auth/me');
       await showApp();
@@ -450,6 +510,7 @@
   }
 
   function openBoq(){
+    if(IS_DEMO){ alert('Это демо — реальная смета будет доступна после входа в ваш личный кабинет.'); return; }
     window.open('/api/client-projects/'+PROJECT.slug+'/boq','_blank');
   }
 
@@ -468,7 +529,7 @@
         a.href='#';
         a.innerHTML=`<svg class="ic" viewBox="0 0 24 24">${icons[cat]}</svg><span class="txt"><b></b></span><span class="arr">→</span>`;
         a.querySelector('b').textContent=doc.fileName;
-        a.onclick=(e)=>{e.preventDefault();downloadDocument(doc.id)};
+        a.onclick=(e)=>{e.preventDefault();IS_DEMO?window.open(doc.url,'_blank'):downloadDocument(doc.id)};
         group.appendChild(a);
       });
       if(!docs.length){
@@ -493,6 +554,7 @@
 
   const photoUrlCache={};
   async function resolvePhotoUrl(photoId){
+    if(IS_DEMO) return (PHOTOS.find(p=>p.id===photoId)||{}).url;
     if(photoUrlCache[photoId]) return photoUrlCache[photoId];
     const {url}=await fetchJSON('/api/client-projects/room-photos/'+photoId+'/url');
     photoUrlCache[photoId]=url;
@@ -628,7 +690,9 @@
     if(!text||!pendingPin) return;
     const p=PHOTOS[currentIndex];
     if(!p.comments) p.comments=[];
-    const comment=await fetchJSON('/api/client-projects/room-photos/'+p.id+'/comments',{method:'POST',body:JSON.stringify({text,x:pendingPin.x,y:pendingPin.y})}).catch(()=>null);
+    const comment=IS_DEMO
+      ? {id:Date.now(),text,x:pendingPin.x,y:pendingPin.y,from:'client'}
+      : await fetchJSON('/api/client-projects/room-photos/'+p.id+'/comments',{method:'POST',body:JSON.stringify({text,x:pendingPin.x,y:pendingPin.y})}).catch(()=>null);
     if(comment) p.comments.push(comment);
     document.getElementById('reviewInput').value='';
     document.querySelectorAll('.pin.temp').forEach(el=>el.remove());
@@ -662,7 +726,7 @@
   function setApproval(approved){
     const p=PHOTOS[currentIndex];
     p.approved=approved;
-    fetchJSON('/api/client-projects/room-photos/'+p.id,{method:'PATCH',body:JSON.stringify({approved})}).catch(()=>{});
+    if(!IS_DEMO) fetchJSON('/api/client-projects/room-photos/'+p.id,{method:'PATCH',body:JSON.stringify({approved})}).catch(()=>{});
     document.getElementById('apYes').classList.toggle('active',approved);
     document.getElementById('apNo').classList.toggle('active',!approved);
   }
