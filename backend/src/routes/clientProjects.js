@@ -461,8 +461,8 @@ function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
-function fmtMoney(n) {
-  return Number(n || 0).toLocaleString('ru-RU') + ' AED';
+function fmtMoney(n, locale = 'ru-RU') {
+  return Number(n || 0).toLocaleString(locale) + ' AED';
 }
 
 router.get('/:slug/boq', requireAuth, async (req, res) => {
@@ -477,6 +477,7 @@ router.get('/:slug/boq', requireAuth, async (req, res) => {
 
   const isCommitted = (it) => it.status === 'done' || it.status === 'ok';
   const statusLabels = t.status;
+  const locale = isEn ? 'en-US' : 'ru-RU';
   let grandTotal = 0;
 
   const sections = project.spec
@@ -490,8 +491,8 @@ router.get('/:slug/boq', requireAuth, async (req, res) => {
             <td>${escapeHtml(it.room || '')}</td>
             <td>${escapeHtml(statusLabels[it.status] || it.status)}</td>
             <td class="num">${it.qty || 1}</td>
-            <td class="num">${it.price ? fmtMoney(it.price) : '—'}</td>
-            <td class="num">${it.price ? fmtMoney(sum) : '—'}</td>
+            <td class="num">${it.price ? fmtMoney(it.price, locale) : '—'}</td>
+            <td class="num">${it.price ? fmtMoney(sum, locale) : '—'}</td>
           </tr>`;
         })
         .join('');
@@ -522,7 +523,7 @@ router.get('/:slug/boq', requireAuth, async (req, res) => {
   <h1>House of White — ${t.title}</h1>
   <div class="meta">${escapeHtml(project.label)} · ${escapeHtml(project.client.name)} · ${new Date().toLocaleDateString(isEn ? 'en-GB' : 'ru-RU')}</div>
   ${sections || `<p>${t.empty}</p>`}
-  <div class="total">${t.total}: ${fmtMoney(grandTotal)}</div>
+  <div class="total">${t.total}: ${fmtMoney(grandTotal, locale)}</div>
 </body></html>`;
 
   res.set('Content-Type', 'text/html; charset=utf-8');

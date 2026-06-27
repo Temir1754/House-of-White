@@ -588,7 +588,7 @@
 
   function openBoq(){
     if(IS_DEMO){ alert('This is a demo — the real BOQ will be available once you sign in to your portal.'); return; }
-    window.open('/api/client-projects/'+PROJECT.slug+'/boq','_blank');
+    window.open('/api/client-projects/'+PROJECT.slug+'/boq?lang=en','_blank');
   }
 
   function renderDocuments(){
