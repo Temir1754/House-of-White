@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>House of White — Studio Panel</title>
+<meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -31,6 +32,23 @@
   *::-webkit-scrollbar-thumb:hover{background:var(--sand)}
   a{color:inherit}
   button{font-family:var(--sans)}
+
+  .hidden{display:none!important}
+  .flex-center{display:flex;align-items:center}
+  .flex-gap-10{display:flex;gap:10px;align-items:center}
+  .w-full-center{width:100%;text-align:center}
+  .mt-10{margin-top:10px}
+  .mt-18{margin-top:18px}
+  .cursor-pointer{cursor:pointer}
+  .login-logo{height:48px;width:auto;display:block;margin:0 auto 18px}
+  .pw-field{position:relative}
+  .pw-input{padding-right:40px}
+  .pw-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;display:flex}
+  .side-brand-logo{width:160px;height:auto}
+  .stage-status-row{display:flex;align-items:center;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line-soft)}
+  .stage-status-label{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--sand)}
+  .panel-head-split{display:flex;align-items:center;justify-content:space-between}
+  .bar-fill{width:0%}
 
   .app{display:flex;min-height:100vh}
 
@@ -340,25 +358,25 @@
 
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
-    <img src="logo/logo-new.png" alt="House of White" style="height:48px;width:auto;display:block;margin:0 auto 18px">
+    <img class="login-logo" src="logo/logo-new.png" alt="House of White">
     <h1>Sign in</h1>
     <div class="login-error" id="loginError">Invalid email or password</div>
     <input type="email" id="loginEmail" placeholder="Email" autocomplete="username">
-    <div style="position:relative">
-      <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password" style="padding-right:40px">
-      <button type="button" id="loginPwToggle" onclick="toggleLoginPasswordVisibility()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;padding:4px;display:flex">
+    <div class="pw-field">
+      <input class="pw-input" type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
+      <button type="button" id="loginPwToggle" class="pw-toggle" onclick="toggleLoginPasswordVisibility()" title="Show password" aria-label="Show password">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z"/><circle cx="12" cy="12" r="3"/></svg>
       </button>
     </div>
-    <button class="btn-line" style="width:100%;text-align:center" onclick="doAdminLogin()">Sign in</button>
+    <button type="button" class="btn-line w-full-center" onclick="doAdminLogin()">Sign in</button>
   </div>
 </div>
 
-<div class="app" id="appRoot" style="display:none">
+<div class="app hidden" id="appRoot">
 
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
-    <a href="/links" class="side-brand"><img src="logo/logo-new.png" alt="House of White" style="width:160px;height:auto"></a>
+    <a href="/links" class="side-brand"><img class="side-brand-logo" src="logo/logo-new.png" alt="House of White"></a>
 
     <div class="side-label">Projects</div>
     <div class="sub-nav" id="subNav">
@@ -389,11 +407,11 @@
   <!-- MAIN -->
   <div class="main">
     <div class="topbar">
-      <div style="display:flex;align-items:center">
-        <button class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+      <div class="flex-center">
+        <button type="button" class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')" title="Toggle menu" aria-label="Toggle menu">☰</button>
         <h1 id="topTitle">Overview</h1>
       </div>
-      <div style="display:flex;gap:10px;align-items:center">
+      <div class="flex-gap-10">
         <div class="chip"><span class="dot"></span><span id="topProj">Leila A. — Palm Jumeirah Villa</span></div>
         <a href="/portal" target="_blank" rel="noopener" class="btn-line">View as Client →</a>
       </div>
@@ -407,20 +425,20 @@
           <div class="panel-head"><b>Project Stage</b><small>Approve the current stage to unlock the next one. Past stages can be reopened for review</small></div>
           <div class="panel-body">
             <div class="steps" id="stepsRow"></div>
-            <div style="display:flex;align-items:center;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line-soft)">
-              <span style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--sand)" id="stageStatusLabel"></span>
-              <button class="pill" id="stageStatusPill" onclick="cycleStageStatus()"></button>
+            <div class="stage-status-row">
+              <span class="stage-status-label" id="stageStatusLabel"></span>
+              <button type="button" class="pill" id="stageStatusPill" onclick="cycleStageStatus()" title="Click to change stage status"></button>
             </div>
           </div>
         </div>
         <div class="panel">
-          <div class="panel-head" style="display:flex;align-items:center;justify-content:space-between">
+          <div class="panel-head panel-head-split">
             <div><b>Client</b><small>Click a field to edit it</small></div>
-            <button class="pill" id="clientStatusPill" onclick="cycleClientStatus()"></button>
+            <button type="button" class="pill" id="clientStatusPill" onclick="cycleClientStatus()" title="Click to change client status"></button>
           </div>
           <div class="panel-body">
             <div class="client-grid" id="clientGrid"></div>
-            <button class="btn-line" id="saveClientBtn" onclick="saveClientInfo()" style="margin-top:18px">Save</button>
+            <button type="button" class="btn-line mt-18" id="saveClientBtn" onclick="saveClientInfo()">Save</button>
           </div>
         </div>
       </div>
@@ -432,7 +450,7 @@
 
         <div class="room-add-row">
           <input id="newRoomBlockName" type="text" placeholder="Room name — e.g. Entrance Hall">
-          <button onclick="addRoomBlock()">Add Room</button>
+          <button type="button" onclick="addRoomBlock()">Add Room</button>
         </div>
       </div>
 
@@ -458,7 +476,7 @@
                   <button type="button" class="qty-btn" onclick="stepQty(1)">+</button>
                 </div>
                 <div class="price-field"><input id="newItemPrice" type="text" inputmode="decimal" placeholder="0"><span class="field-unit">AED</span></div>
-                <button class="add-btn-wide" onclick="addItem()">+ Add Item</button>
+                <button type="button" class="add-btn-wide" onclick="addItem()">+ Add Item</button>
               </div>
             </div>
             <div class="note">Click the status to cycle it: Pending → Sourcing → Ordered → Approved. The Budget page totals are calculated automatically from items with status "Ordered" or "Approved".</div>
@@ -469,14 +487,14 @@
       <!-- BUDGET -->
       <div class="page" data-page="budget">
         <div class="budget-cards">
-          <div class="bcard"><div class="lb">Total Budget</div><div class="val" id="budgetTotal" onclick="editBudgetTotal()" style="cursor:pointer" title="Click to edit"></div></div>
+          <div class="bcard"><div class="lb">Total Budget</div><div class="val cursor-pointer" id="budgetTotal" onclick="editBudgetTotal()" title="Click to edit"></div></div>
           <div class="bcard"><div class="lb">Spent</div><div class="val" id="budgetSpent"></div></div>
           <div class="bcard"><div class="lb">Remaining</div><div class="val" id="budgetLeft"></div></div>
         </div>
         <div class="panel">
           <div class="panel-head"><b>Budget Spend</b><small id="budgetPercentLabel"></small></div>
           <div class="panel-body">
-            <div class="bar"><div class="bar-fill" id="budgetBar" style="width:0%"></div></div>
+            <div class="bar"><div class="bar-fill" id="budgetBar"></div></div>
           </div>
         </div>
         <div class="panel">
@@ -494,20 +512,20 @@
           <div class="panel-head"><b>3D Visualisation</b><small>Link to the render album (Google Drive, Yandex.Disk, etc.) — the client sees it on the "Download Project" page</small></div>
           <div class="panel-body">
             <div id="docList-renders"></div>
-            <button class="btn-line" onclick="addDocLink('renders')" style="margin-top:10px">+ Add Link</button>
+            <button type="button" class="btn-line mt-10" onclick="addDocLink('renders')">+ Add Link</button>
           </div>
         </div>
         <div class="panel">
           <div class="panel-head"><b>Tech. Drawings</b><small>Link to drawings — floor plans, electrical, custom furniture</small></div>
           <div class="panel-body">
             <div id="docList-drawings"></div>
-            <button class="btn-line" onclick="addDocLink('drawings')" style="margin-top:10px">+ Add Link</button>
+            <button type="button" class="btn-line mt-10" onclick="addDocLink('drawings')">+ Add Link</button>
           </div>
         </div>
         <div class="panel">
           <div class="panel-head"><b>BOQ</b><small>Generated automatically from the Specification — no need to upload separately</small></div>
           <div class="panel-body">
-            <button class="btn-line" onclick="openBoq()">Open BOQ →</button>
+            <button type="button" class="btn-line" onclick="openBoq()">Open BOQ →</button>
           </div>
         </div>
       </div>
@@ -521,7 +539,7 @@
             <div class="add-row visit-add-row">
               <input id="newVisitDate" type="text" placeholder="Date — e.g. June 18, 2026">
               <input id="newVisitNote" type="text" placeholder="Note">
-              <button onclick="addVisit()">Add</button>
+              <button type="button" onclick="addVisit()">Add</button>
             </div>
           </div>
         </div>
@@ -533,18 +551,18 @@
 
 <div class="lightbox" id="photoLightbox">
   <div class="lb-box">
-    <button class="lb-close" onclick="closePhotoLightbox()">✕</button>
-    <img id="lbImg" src="">
+    <button type="button" class="lb-close" onclick="closePhotoLightbox()" title="Close" aria-label="Close">✕</button>
+    <img id="lbImg" src="" alt="Project photo preview">
     <div class="lb-side">
       <div class="lb-status" id="lbApproved"></div>
       <div class="lb-actions">
-        <button class="btn-line approve" onclick="setPhotoApproval(true)">✓ Approve</button>
-        <button class="btn-line reject" onclick="setPhotoApproval(false)">↺ Request changes</button>
+        <button type="button" class="btn-line approve" onclick="setPhotoApproval(true)">✓ Approve</button>
+        <button type="button" class="btn-line reject" onclick="setPhotoApproval(false)">↺ Request changes</button>
       </div>
       <div class="lb-comments" id="lbComments"></div>
       <div class="lb-reply">
         <input id="lbReplyInput" type="text" placeholder="Reply to client..." onkeydown="if(event.key==='Enter')addStudioReply()">
-        <button onclick="addStudioReply()">Send</button>
+        <button type="button" onclick="addStudioReply()">Send</button>
       </div>
     </div>
   </div>
@@ -582,6 +600,9 @@
     const showing=input.type==='text';
     input.type=showing?'password':'text';
     btn.innerHTML=showing?EYE_OPEN:EYE_CLOSED;
+    const label=showing?'Show password':'Hide password';
+    btn.title=label;
+    btn.setAttribute('aria-label',label);
   }
 
   async function doAdminLogin(){
@@ -599,7 +620,7 @@
 
   function showApp(){
     document.getElementById('loginScreen').style.display='none';
-    document.getElementById('appRoot').style.display='flex';
+    document.getElementById('appRoot').classList.remove('hidden');
     initProjects();
   }
 
@@ -1395,5 +1416,6 @@
 
   checkAuthAndInit();
 </script>
+<script src="/assets/cookie-consent.js"></script>
 </body>
 </html>

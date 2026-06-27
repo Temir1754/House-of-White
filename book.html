@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Book a Consultation — House of White</title>
+<title>Book a Consultation — House of White Interior Design, Dubai</title>
+<meta name="description" content="Book a free interior design consultation with House of White in Dubai, UAE. Choose a date and time that works for you.">
+<meta name="robots" content="index, follow">
+<meta name="geo.region" content="AE-DU">
+<meta name="geo.placename" content="Dubai">
+<link rel="canonical" href="https://howdesign.ae/book">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="House of White">
+<meta property="og:title" content="Book a Consultation — House of White Interior Design, Dubai">
+<meta property="og:description" content="Book a free interior design consultation with House of White in Dubai, UAE.">
+<meta property="og:url" content="https://howdesign.ae/book">
+<meta property="og:image" content="https://howdesign.ae/android-chrome-512x512.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -109,6 +121,9 @@
     .brand{font-size:15px}
   }
   .logo-45{height:45px;width:auto}
+  .nav-spacer{width:60px}
+  .nav-logo-link{display:flex;align-items:center;text-decoration:none;color:var(--cream)}
+  .lead-muted{font-size:13px;color:var(--muted);line-height:1.7}
 </style>
 </head>
 <body>
@@ -118,10 +133,10 @@
     <svg viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
     <span class="back-label">Back</span>
   </a>
-  <a href="/" style="display:flex;align-items:center;text-decoration:none;color:var(--cream)">
+  <a href="/" class="nav-logo-link">
     <img src="logo/logo-new.png" alt="House of White" class="logo-45">
   </a>
-  <div style="width:60px" class="nav-spacer"></div>
+  <div class="nav-spacer"></div>
 </nav>
 
 <div class="page">
@@ -147,7 +162,7 @@
       </div>
     </div>
     <div class="divider"></div>
-    <p style="font-size:13px;color:var(--muted);line-height:1.7">A free 5–30 minute call to discuss your project, space and vision.</p>
+    <p class="lead-muted">A free 5–30 minute call to discuss your project, space and vision.</p>
   </div>
 
   <!-- RIGHT -->
@@ -162,8 +177,8 @@
       <div class="cal-header">
         <div class="month" id="monthLabel"></div>
         <div class="cal-nav">
-          <button onclick="changeMonth(-1)"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
-          <button onclick="changeMonth(1)"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+          <button type="button" onclick="changeMonth(-1)" title="Previous month" aria-label="Previous month"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button type="button" onclick="changeMonth(1)" title="Next month" aria-label="Next month"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
         </div>
       </div>
       <div class="cal-grid" id="calGrid"></div>
@@ -284,5 +299,6 @@
 
   renderCal();
 </script>
+<script src="/assets/cookie-consent.js"></script>
 </body>
 </html>

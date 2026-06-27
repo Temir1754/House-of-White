@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Project — House of White</title>
+<meta name="robots" content="noindex, follow">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -133,6 +134,8 @@
   }
   .logo-42{height:42px;width:auto}
   .logo-45{height:45px;width:auto}
+  .nav-logo-center{display:flex;align-items:center;position:absolute;left:50%;transform:translateX(-50%);text-decoration:none}
+  .nav-logo-link{display:flex;align-items:center;text-decoration:none}
 </style>
 </head>
 <body>
@@ -140,7 +143,7 @@
 <!-- NAV -->
 <nav id="nav">
   <a href="/projects" class="back-btn">← <span class="back-label">All Projects</span></a>
-  <a href="/" style="display:flex;align-items:center;position:absolute;left:50%;transform:translateX(-50%);text-decoration:none">
+  <a href="/" class="nav-logo-center">
     <img src="logo/logo-icon-new-transparent.png" alt="House of White" class="logo-42">
   </a>
   <a href="/book" class="nav-cta-pill"><span class="pill-full">Book a consultation</span><span class="pill-short">Book</span></a>
@@ -169,8 +172,8 @@
     <img class="lightbox-image" id="lightboxImage" src="" alt="Full size image">
     <div class="lightbox-controls">
       <div class="lightbox-nav">
-        <button class="lightbox-btn" id="prevBtn">← Previous</button>
-        <button class="lightbox-btn" id="nextBtn">Next →</button>
+        <button type="button" class="lightbox-btn" id="prevBtn">← Previous</button>
+        <button type="button" class="lightbox-btn" id="nextBtn">Next →</button>
       </div>
       <div class="lightbox-counter">
         <span id="imageCounter">1</span> / <span id="totalImages">8</span>
@@ -198,7 +201,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="wrap foot">
-    <a href="/" style="display:flex;align-items:center;text-decoration:none">
+    <a href="/" class="nav-logo-link">
       <img src="logo/logo-new.png" alt="House of White" class="logo-45">
     </a>
     <div class="foot-links">
@@ -400,5 +403,6 @@
     scrollTopBtn.addEventListener('click',e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'})});
   }
 </script>
+<script src="/assets/cookie-consent.js"></script>
 </body>
 </html>
