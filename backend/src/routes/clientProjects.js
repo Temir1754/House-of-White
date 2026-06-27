@@ -236,15 +236,16 @@ router.post('/', requireAuth, requireAdmin, async (req, res) => {
 });
 
 router.patch('/:slug', requireAuth, requireAdmin, async (req, res) => {
-  const { stage, stageStatuses, status, budgetTotal } = req.body;
+  const { label, stage, stageStatuses, status, budgetTotal } = req.body;
   const { rows } = await pool.query(
     `UPDATE client_projects SET
-       stage = COALESCE($1, stage),
-       stage_statuses = COALESCE($2, stage_statuses),
-       status = COALESCE($3, status),
-       budget_total = COALESCE($4, budget_total)
-     WHERE slug = $5 RETURNING *`,
-    [stage ?? null, stageStatuses ? JSON.stringify(stageStatuses) : null, status || null, budgetTotal ?? null, req.params.slug]
+       label = COALESCE($1, label),
+       stage = COALESCE($2, stage),
+       stage_statuses = COALESCE($3, stage_statuses),
+       status = COALESCE($4, status),
+       budget_total = COALESCE($5, budget_total)
+     WHERE slug = $6 RETURNING *`,
+    [label || null, stage ?? null, stageStatuses ? JSON.stringify(stageStatuses) : null, status || null, budgetTotal ?? null, req.params.slug]
   );
   if (!rows[0]) return res.status(404).json({ error: 'Not found' });
   res.json(rows[0]);

@@ -59,7 +59,11 @@
 
   .side-label{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--faint);padding:18px 20px 8px}
 
-  .proj-item{padding:11px 20px;cursor:pointer;font-size:13px;color:var(--muted);border-left:2px solid transparent;transition:all .2s}
+  .proj-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px 20px;cursor:pointer;font-size:13px;color:var(--muted);border-left:2px solid transparent;transition:all .2s}
+  .proj-item .proj-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .proj-item .proj-rename{flex:none;opacity:0;background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:2px 4px;transition:opacity .2s}
+  .proj-item:hover .proj-rename{opacity:1}
+  .proj-item .proj-rename:hover{color:var(--sand)}
   .proj-item:hover{color:var(--cream)}
   .proj-item.active{color:var(--cream);background:var(--ink-3);border-left-color:var(--sand)}
 
@@ -650,8 +654,8 @@
     list.forEach(p=>{
       const el=document.createElement('div');
       el.className='proj-item';
-      el.textContent=p.label;
       el.dataset.project=p.slug;
+      el.innerHTML=`<span class="proj-name">${esc(p.label)}</span><button type="button" class="proj-rename" onclick="renameProject(event,this)" title="Rename project" aria-label="Rename project">✎</button>`;
       el.onclick=()=>switchProject(el);
       anchor.after(el);
       anchor=el;
@@ -984,6 +988,26 @@
     // reset to the first sub-page (Overview) on every project switch
     const firstSub=document.querySelector('.sub-item[data-page]');
     if(firstSub) switchPage(firstSub);
+  }
+
+  async function renameProject(event,btn){
+    event.stopPropagation();
+    const el=btn.closest('.proj-item');
+    const slug=el.dataset.project;
+    const nameEl=el.querySelector('.proj-name');
+    const current=nameEl.textContent;
+    const name=prompt('Project name:',current);
+    if(!name||!name.trim()||name.trim()===current) return;
+    const trimmed=name.trim();
+    try{
+      await fetchJSON('/api/client-projects/'+slug,{method:'PATCH',body:JSON.stringify({label:trimmed})});
+    }catch(err){
+      alert('Failed to rename project');
+      return;
+    }
+    nameEl.textContent=trimmed;
+    if(PROJECTS[slug]) PROJECTS[slug].label=trimmed;
+    if(currentProject===slug) document.getElementById('topProj').textContent=trimmed;
   }
 
   function cycleSpecStatus(ci,ii){
@@ -1410,8 +1434,8 @@
     }
     const el=document.createElement('div');
     el.className='proj-item';
-    el.textContent=name.trim();
     el.dataset.project=project.slug;
+    el.innerHTML=`<span class="proj-name">${esc(name.trim())}</span><button type="button" class="proj-rename" onclick="renameProject(event,this)" title="Rename project" aria-label="Rename project">✎</button>`;
     el.onclick=()=>switchProject(el);
     document.getElementById('subNav').after(el);
     await switchProject(el);
