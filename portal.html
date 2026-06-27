@@ -112,7 +112,6 @@
   .room-block{margin-bottom:22px}
   .room-block:last-child{margin-bottom:0}
   .room-block-title{display:flex;align-items:center;gap:8px;cursor:pointer;font-family:var(--display);font-size:16px;margin-bottom:10px;-webkit-user-select:none;user-select:none}
-  .room-block-title .count{font-family:var(--sans);font-size:11px;color:var(--muted);font-weight:300}
   .room-block-title .chevron{width:14px;height:14px;stroke:var(--muted);fill:none;stroke-width:2;transition:transform .25s;flex:none;margin-left:auto}
   .room-block.collapsed .room-block-title .chevron{transform:rotate(-90deg)}
   .render-grid.collapsed{display:none}
@@ -657,6 +656,7 @@
   }
 
   const collapsedRooms=new Set();
+  let roomsCollapseInitialized=false;
 
   function toggleRoomBlock(roomId){
     if(collapsedRooms.has(roomId)) collapsedRooms.delete(roomId);
@@ -670,6 +670,13 @@
   function renderRooms(){
     const wrap=document.getElementById('vizBody');
     wrap.querySelectorAll('.room-block').forEach(b=>b.remove());
+    if(!roomsCollapseInitialized){
+      PROJECT.rooms.forEach(room=>{
+        const variant=room.variants[room.activeVariant];
+        if((variant?.photos||[]).length) collapsedRooms.add(room.id);
+      });
+      roomsCollapseInitialized=true;
+    }
     PROJECT.rooms.forEach(room=>{
       const variant=room.variants[room.activeVariant];
       const photos=variant?.photos||[];
@@ -687,7 +694,7 @@
         tile.innerHTML=`<img class="lazy-photo" loading="lazy" data-photo-id="${photo.id}" alt="">${badgeHtml(photo)}`;
         grid.appendChild(tile);
       });
-      block.innerHTML=`<div class="room-block-title" onclick="toggleRoomBlock('${room.id}')">${room.name}<span class="count">${photos.length} photo${photos.length===1?'':'s'}</span><svg class="chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>`;
+      block.innerHTML=`<div class="room-block-title" onclick="toggleRoomBlock('${room.id}')">${room.name}<svg class="chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>`;
       block.appendChild(grid);
       wrap.insertBefore(block,wrap.querySelector('.note'));
     });
