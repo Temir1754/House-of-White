@@ -583,11 +583,12 @@
 
   async function checkAuthAndInit(){
     try{
-      await fetchJSON('/api/auth/me');
+      const {user}=await fetchJSON('/api/auth/me');
+      if(!user?.isAdmin) throw new Error('Not an admin session');
       showApp();
     }catch(err){
       document.getElementById('loginScreen').style.display='flex';
-      document.getElementById('appRoot').style.display='none';
+      document.getElementById('appRoot').classList.add('hidden');
     }
   }
 
