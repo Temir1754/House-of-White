@@ -564,10 +564,14 @@
 
     const c=PROJECT.client;
     const esc=v=>(v||'').toString();
+    const fmtDate=v=>{
+      const d=new Date(v);
+      return isNaN(d)?esc(v):d.toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'});
+    };
     const metaCells=[];
     if(c.propertyType) metaCells.push(`<div><div class="cm-label">Property Type</div><div class="cm-val">${esc(c.propertyType)}</div></div>`);
     if(c.area) metaCells.push(`<div><div class="cm-label">Area</div><div class="cm-val">${esc(c.area)}</div></div>`);
-    if(c.handover) metaCells.push(`<div><div class="cm-label">Planned Handover</div><div class="cm-val">${esc(c.handover)}</div></div>`);
+    if(c.handover) metaCells.push(`<div><div class="cm-label">Planned Handover</div><div class="cm-val">${fmtDate(c.handover)}</div></div>`);
     if(c.phone) metaCells.push(`<div><div class="cm-label">Phone</div><a class="cm-val" href="https://wa.me/${esc(c.phone).replace(/[^\d]/g,'')}" target="_blank" rel="noopener">${esc(c.phone)}</a></div>`);
     if(c.email) metaCells.push(`<div><div class="cm-label">Email</div><a class="cm-val" href="mailto:${esc(c.email)}">${esc(c.email)}</a></div>`);
     document.getElementById('clientMetaGrid').innerHTML=metaCells.join('');
