@@ -449,12 +449,12 @@
       ],
       spec:[
         {cat:'Furniture',items:[
-          {name:'B&B Italia Sofa',room:'Living Room',note:'Grey velvet',price:12000,qty:1,status:'ok'},
-          {name:'Coffee Table',room:'Living Room',note:'Walnut',price:3000,qty:2,status:'done'},
-          {name:'Bed Frame',room:'Master Bedroom',note:'Upholstered, king',price:8500,qty:1,status:'go'},
+          {name:'B&B Italia Sofa',room:'Living Room',note:'Grey velvet',dimensions:'3000 x 1600',unit:'pc',code:'BBI-SF-12',price:12000,qty:1,status:'ok'},
+          {name:'Coffee Table',room:'Living Room',note:'Walnut',dimensions:'1000 x 500',unit:'pc',code:'CT-04',price:3000,qty:2,status:'done'},
+          {name:'Bed Frame',room:'Master Bedroom',note:'Upholstered, king',dimensions:'2200 x 2100',unit:'pc',code:'BF-KG-01',price:8500,qty:1,status:'go'},
         ]},
-        {cat:'Lighting',items:[
-          {name:'Pendant Light',room:'Living Room',note:'Brass, large',price:2200,qty:2,status:'wait'},
+        {cat:'Electricals',items:[
+          {name:'Pendant Light',room:'Living Room',note:'Brass, large',dimensions:'',unit:'pc',code:'PL-BR-02',price:2200,qty:2,status:'wait'},
         ]},
       ],
       visits:[],
@@ -688,14 +688,16 @@
         const sum=(it.price||0)*(it.qty||1);
         catSum+=sum;totalItems++;totalSum+=sum;
         return `<tr><td><div class="name">${it.name}</div><div class="desc">${[it.room,it.note].filter(Boolean).join(' · ')}</div></td>
-          <td class="num">${it.qty}</td><td class="num">${(it.price||0).toLocaleString('en-US')}</td><td class="num">${sum.toLocaleString('en-US')}</td>
+          <td>${it.dimensions||'—'}</td><td>${it.unit||'pc'}</td>
+          <td class="num">${it.qty}</td><td>${it.code||'—'}</td>
+          <td class="num">${(it.price||0).toLocaleString('en-US')}</td><td class="num">${sum.toLocaleString('en-US')}</td>
           <td><span class="pill ${it.status}">${statusMap[it.status]||it.status}</span></td></tr>`;
       }).join('');
       catEl.innerHTML=`<div class="spec-cat-title">${cat.cat}</div>
         <div class="spec-table-wrap"><table class="spec-table">
-          <thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Price, AED</th><th class="num">Total, AED</th><th>Status</th></tr></thead>
+          <thead><tr><th>Item</th><th>Dimensions</th><th>Unit</th><th class="num">Qty</th><th>Code</th><th class="num">Price, AED</th><th class="num">Total, AED</th><th>Status</th></tr></thead>
           <tbody>${rowsHtml}</tbody>
-          <tfoot><tr><td colspan="3">Category total</td><td class="num"><b>${catSum.toLocaleString('en-US')}</b></td><td></td></tr></tfoot>
+          <tfoot><tr><td colspan="6">Category total</td><td class="num"><b>${catSum.toLocaleString('en-US')}</b></td><td></td></tr></tfoot>
         </table></div>`;
       body.appendChild(catEl);
     });

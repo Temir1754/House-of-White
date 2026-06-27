@@ -91,7 +91,7 @@ async function loadFullProject(slug) {
   const spec = [];
   for (const category of categoryRows) {
     const { rows: itemRows } = await pool.query(
-      'SELECT id, name, room, note, price, qty, status FROM spec_items WHERE category_id = $1 ORDER BY sort_order, id',
+      'SELECT id, name, room, note, dimensions, unit, code, price, qty, status FROM spec_items WHERE category_id = $1 ORDER BY sort_order, id',
       [category.id]
     );
     spec.push({
@@ -407,24 +407,25 @@ router.post('/:slug/spec-categories', requireAuth, requireAdmin, async (req, res
 });
 
 router.post('/spec-categories/:id/items', requireAuth, requireAdmin, async (req, res) => {
-  const { name, room, note, price, qty, status } = req.body;
+  const { name, room, note, dimensions, unit, code, price, qty, status } = req.body;
   if (!name) return res.status(400).json({ error: 'Missing name' });
 
   const { rows } = await pool.query(
-    `INSERT INTO spec_items (category_id, name, room, note, price, qty, status)
-     VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
-    [req.params.id, name, room || null, note || null, price || 0, qty || 1, status || 'wait']
+    `INSERT INTO spec_items (category_id, name, room, note, dimensions, unit, code, price, qty, status)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+    [req.params.id, name, room || null, note || null, dimensions || null, unit || null, code || null, price || 0, qty || 1, status || 'wait']
   );
   res.status(201).json(rows[0]);
 });
 
 router.patch('/spec-items/:id', requireAuth, requireAdmin, async (req, res) => {
-  const { name, room, note, price, qty, status } = req.body;
+  const { name, room, note, dimensions, unit, code, price, qty, status } = req.body;
   const { rows } = await pool.query(
     `UPDATE spec_items SET name = COALESCE($1, name), room = COALESCE($2, room),
-       note = COALESCE($3, note), price = COALESCE($4, price), qty = COALESCE($5, qty),
-       status = COALESCE($6, status) WHERE id = $7 RETURNING *`,
-    [name || null, room ?? null, note ?? null, price ?? null, qty ?? null, status || null, req.params.id]
+       note = COALESCE($3, note), dimensions = COALESCE($4, dimensions), unit = COALESCE($5, unit),
+       code = COALESCE($6, code), price = COALESCE($7, price), qty = COALESCE($8, qty),
+       status = COALESCE($9, status) WHERE id = $10 RETURNING *`,
+    [name || null, room ?? null, note ?? null, dimensions ?? null, unit ?? null, code ?? null, price ?? null, qty ?? null, status || null, req.params.id]
   );
   if (!rows[0]) return res.status(404).json({ error: 'Not found' });
   res.json(rows[0]);
@@ -472,8 +473,8 @@ router.get('/:slug/boq', requireAuth, async (req, res) => {
 
   const isEn = req.query.lang === 'en';
   const t = isEn
-    ? { title: 'BOQ', col: ['Item', 'Room', 'Status', 'Qty', 'Price', 'Sum'], status: { wait: 'Pending', go: 'Sourcing', done: 'Ordered', ok: 'Approved' }, empty: 'No items yet.', total: 'Total (ordered/approved)' }
-    : { title: 'BOQ', col: ['Позиция', 'Комната', 'Статус', 'Кол-во', 'Цена', 'Сумма'], status: { wait: 'Ожидание', go: 'В поиске', done: 'Заказано', ok: 'Согласовано' }, empty: 'Позиций пока нет.', total: 'Итого (заказано/согласовано)' };
+    ? { title: 'BOQ', col: ['Sr', 'Item Description', 'Dimensions', 'Unit', 'Room', 'Qty', 'Code', 'Status', 'Price', 'Total'], status: { wait: 'Pending', go: 'Sourcing', done: 'Ordered', ok: 'Approved' }, empty: 'No items yet.', total: 'Total (ordered/approved)' }
+    : { title: 'BOQ', col: ['№', 'Позиция', 'Размеры', 'Ед.', 'Комната', 'Кол-во', 'Код', 'Статус', 'Цена', 'Сумма'], status: { wait: 'Ожидание', go: 'В поиске', done: 'Заказано', ok: 'Согласовано' }, empty: 'Позиций пока нет.', total: 'Итого (заказано/согласовано)' };
 
   const isCommitted = (it) => it.status === 'done' || it.status === 'ok';
   const statusLabels = t.status;
@@ -482,23 +483,30 @@ router.get('/:slug/boq', requireAuth, async (req, res) => {
 
   const sections = project.spec
     .map((cat) => {
+      let sr = 0;
       const rows = cat.items
         .map((it) => {
           const sum = (it.price || 0) * (it.qty || 1);
           if (isCommitted(it)) grandTotal += sum;
+          sr += 1;
           return `<tr>
+            <td>${sr}</td>
             <td>${escapeHtml(it.name)}</td>
+            <td>${escapeHtml(it.dimensions || '')}</td>
+            <td>${escapeHtml(it.unit || '')}</td>
             <td>${escapeHtml(it.room || '')}</td>
-            <td>${escapeHtml(statusLabels[it.status] || it.status)}</td>
             <td class="num">${it.qty || 1}</td>
+            <td>${escapeHtml(it.code || '')}</td>
+            <td>${escapeHtml(statusLabels[it.status] || it.status)}</td>
             <td class="num">${it.price ? fmtMoney(it.price, locale) : '—'}</td>
             <td class="num">${it.price ? fmtMoney(sum, locale) : '—'}</td>
           </tr>`;
         })
         .join('');
+      const numericCols = [0, 5, 8, 9]; // Sr, Qty, Price, Total
       return `<h2>${escapeHtml(cat.cat)}</h2>
         <table>
-          <thead><tr><th>${t.col[0]}</th><th>${t.col[1]}</th><th>${t.col[2]}</th><th class="num">${t.col[3]}</th><th class="num">${t.col[4]}</th><th class="num">${t.col[5]}</th></tr></thead>
+          <thead><tr>${t.col.map((label, i) => `<th${numericCols.includes(i) ? ' class="num"' : ''}>${label}</th>`).join('')}</tr></thead>
           <tbody>${rows}</tbody>
         </table>`;
     })
@@ -508,13 +516,14 @@ router.get('/:slug/boq', requireAuth, async (req, res) => {
 <html lang="${isEn ? 'en' : 'ru'}"><head><meta charset="utf-8">
 <title>BOQ — ${escapeHtml(project.label)}</title>
 <style>
-  body{font-family:Arial,sans-serif;color:#1a1a1a;max-width:900px;margin:40px auto;padding:0 20px}
+  body{font-family:Arial,sans-serif;color:#1a1a1a;max-width:1100px;margin:40px auto;padding:0 20px}
   h1{font-size:22px;margin-bottom:2px}
   .meta{color:#666;font-size:13px;margin-bottom:28px}
   h2{font-size:15px;margin:28px 0 8px;border-bottom:1px solid #ccc;padding-bottom:4px}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th,td{padding:6px 8px;border-bottom:1px solid #eee;text-align:left}
-  th{color:#888;font-weight:normal;text-transform:uppercase;font-size:11px}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th,td{padding:5px 7px;border-bottom:1px solid #eee;text-align:left;white-space:nowrap}
+  td:nth-child(2){white-space:normal}
+  th{color:#888;font-weight:normal;text-transform:uppercase;font-size:10px}
   .num{text-align:right}
   .total{margin-top:24px;font-size:16px;text-align:right;border-top:2px solid #1a1a1a;padding-top:10px}
   @media print{body{margin:0;padding:20px}}

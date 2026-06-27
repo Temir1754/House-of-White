@@ -246,6 +246,9 @@
   .spec-add-title{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--sand);margin-bottom:20px}
   .spec-add-row1{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:14px;margin-bottom:20px}
   .spec-add-row1 input{width:100%;background:var(--ink-2);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:16px 14px;font-family:var(--sans);font-size:13px}
+  .spec-add-row2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px}
+  .spec-add-row2 input{width:100%;background:var(--ink-2);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:16px 14px;font-family:var(--sans);font-size:13px}
+  .spec-add-row2 .csel-btn{background:var(--ink-2)}
   .spec-add-note{width:100%;background:var(--ink-2);border:1px solid var(--line);color:var(--cream);border-radius:4px;padding:16px 14px;font-family:var(--sans);font-size:13px;margin-bottom:20px}
   .spec-add-row3{display:grid;grid-template-columns:auto 1fr 2fr;gap:14px;align-items:stretch}
   .spec-add-row3 .qty-field{width:140px}
@@ -468,7 +471,12 @@
                 <div id="newItemRoomWrap" class="csel-wrap"></div>
                 <div id="newItemStatusWrap" class="csel-wrap"></div>
               </div>
-              <input id="newItemNote" class="spec-add-note" type="text" placeholder="Details — color, material, dimensions, SKU, notes...">
+              <div class="spec-add-row2">
+                <input id="newItemDimensions" type="text" placeholder="Dimensions — e.g. 1000 x 1500">
+                <div id="newItemUnitWrap" class="csel-wrap"></div>
+                <input id="newItemCode" type="text" placeholder="Code / SKU">
+              </div>
+              <input id="newItemNote" class="spec-add-note" type="text" placeholder="Details — color, material, notes...">
               <div class="spec-add-row3">
                 <div class="qty-field">
                   <button type="button" class="qty-btn" onclick="stepQty(-1)">−</button>
@@ -725,7 +733,7 @@
       catEl.className='spec-cat';
       catEl.dataset.cat=cat.cat;
       const itemsHtml=cat.items.map((it,ii)=>{
-        const descParts=[it.room,it.note].filter(Boolean);
+        const descParts=[it.room,it.dimensions,it.code,it.note].filter(Boolean);
         return `<div class="item">
           <div class="item-thumb"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
           <div class="item-info">
@@ -734,7 +742,7 @@
             ${it.price?`<div class="item-price">${fmtMoney(it.price)}</div>`:''}
           </div>
           <button class="pill ${it.status}" onclick="cycleSpecStatus(${ci},${ii})">${statusMap[it.status]}</button>
-          <div class="item-qty">${it.qty} pcs</div>
+          <div class="item-qty">${it.qty} ${esc(it.unit||'pc')}</div>
           <div class="item-sum">${it.price?fmtMoney(it.price*(it.qty||1)):'—'}</div>
           <button class="del-btn" onclick="deleteSpecItem(${ci},${ii})">✕</button>
         </div>`;
@@ -1057,6 +1065,9 @@
     const cat=document.getElementById('newItemCat').value.trim()||'Other';
     const room=document.getElementById('newItemRoom').value;
     const note=document.getElementById('newItemNote').value.trim();
+    const dimensions=document.getElementById('newItemDimensions').value.trim();
+    const unit=document.getElementById('newItemUnit').value;
+    const code=document.getElementById('newItemCode').value.trim();
     const price=parseFloat(document.getElementById('newItemPrice').value)||0;
     const qty=parseInt(document.getElementById('newItemQty').value,10)||1;
     const status=document.getElementById('newItemStatus').value;
@@ -1066,10 +1077,12 @@
       catData=await fetchJSON('/api/client-projects/'+currentProject+'/spec-categories',{method:'POST',body:JSON.stringify({name:cat})});
       data.spec.push(catData);
     }
-    const item=await fetchJSON('/api/client-projects/spec-categories/'+catData.id+'/items',{method:'POST',body:JSON.stringify({name,room,note,price,qty,status})});
+    const item=await fetchJSON('/api/client-projects/spec-categories/'+catData.id+'/items',{method:'POST',body:JSON.stringify({name,room,note,dimensions,unit,code,price,qty,status})});
     catData.items.push(item);
     document.getElementById('newItemName').value='';
     document.getElementById('newItemNote').value='';
+    document.getElementById('newItemDimensions').value='';
+    document.getElementById('newItemCode').value='';
     document.getElementById('newItemPrice').value='';
     document.getElementById('newItemQty').value='1';
     renderProject(currentProject);
@@ -1405,15 +1418,16 @@
   }
 
   const SPEC_CAT_OPTIONS=[
-    ['Furniture','Furniture'],['Lighting','Lighting'],['Decor','Decor'],['Textiles','Textiles'],
-    ['Curtains','Curtains'],['Plumbing','Plumbing'],['Kitchen Appliances','Kitchen Appliances'],
-    ['Doors & Hardware','Doors & Hardware'],['Flooring','Flooring'],
-    ['Wall & Ceiling Finishes','Wall & Ceiling Finishes'],['Mirrors & Art Objects','Mirrors & Art Objects'],
-    ['Miscellaneous','Miscellaneous'],['__custom__','+ Custom category…']
+    ['Sanitary ware','Sanitary ware'],['Tiles','Tiles'],['Electricals','Electricals'],['Ceiling','Ceiling'],
+    ['Walls','Walls'],['Flooring','Flooring'],['Kitchen','Kitchen'],['Laundry','Laundry'],
+    ['Doors','Doors'],['Furniture','Furniture'],['Curtains','Curtains'],['Mirrors','Mirrors'],
+    ['Joinery','Joinery'],['Balcony','Balcony'],['Works','Works'],['__custom__','+ Custom category…']
   ];
+  const SPEC_UNIT_OPTIONS=[['pc','pc'],['m','m'],['m2','m2'],['sq m','sq m'],['set','set'],['__custom__','+ Custom unit…']];
   const SPEC_STATUS_OPTIONS=[['wait','Pending'],['go','Sourcing'],['done','Ordered'],['ok','Approved']];
   document.getElementById('newItemCatWrap').innerHTML=buildSimpleDropdown('newItemCat',SPEC_CAT_OPTIONS,'Furniture','Category');
   document.getElementById('newItemStatusWrap').innerHTML=buildSimpleDropdown('newItemStatus',SPEC_STATUS_OPTIONS,'wait','Status');
+  document.getElementById('newItemUnitWrap').innerHTML=buildSimpleDropdown('newItemUnit',SPEC_UNIT_OPTIONS,'pc','Unit');
 
   checkAuthAndInit();
 </script>
