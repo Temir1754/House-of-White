@@ -64,6 +64,11 @@
   .pstep.status-approved .st{color:#2E7D32}
   .pstep::before{content:"";position:absolute;top:7px;left:-50%;width:100%;height:1px;background:var(--line);z-index:1}
   .pstep:first-child::before{display:none}
+  @media(max-width:420px){
+    .pstep{width:54px;min-width:0;gap:6px}
+    .pstep .lb{font-size:7.5px;letter-spacing:0.02em;white-space:normal;line-height:1.3}
+    .pstep .st{font-size:7px}
+  }
 
   /* PROJECT META (status pill + client details) */
   .meta-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
@@ -175,6 +180,19 @@
   .spec-foot{display:flex;justify-content:space-between;padding:14px 0 0;font-size:12px;color:var(--muted);margin-top:6px;border-top:1px solid var(--line-soft)}
   .spec-foot b{color:var(--cream);font-family:var(--display);font-size:18px}
   @media(max-width:700px){.spec-table{font-size:11.5px}.spec-table th,.spec-table td{padding:8px 6px}}
+  /* below ~560px, the 8-column BOQ table no longer fits — collapse each row into a labeled card */
+  @media(max-width:560px){
+    .spec-table thead{display:none}
+    .spec-table,.spec-table tbody,.spec-table tr,.spec-table td{display:block;width:100%}
+    .spec-table tr{border:1px solid var(--line-soft);border-radius:6px;padding:12px 14px;margin-bottom:10px}
+    .spec-table tr:last-child{margin-bottom:0}
+    .spec-table td{border-bottom:none;padding:4px 0}
+    .spec-table td.row-main{padding:0 0 8px;margin-bottom:6px;border-bottom:1px solid var(--line-soft)}
+    .spec-table td[data-label]{display:flex;justify-content:space-between;align-items:baseline;text-align:right;gap:10px}
+    .spec-table td[data-label]::before{content:attr(data-label);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left}
+    .spec-table tfoot,.spec-table tfoot tr,.spec-table tfoot td{display:block;width:100%}
+    .spec-table tfoot td{border-top:1px solid var(--line-soft);padding:10px 0 0;display:flex;justify-content:space-between;text-align:right}
+  }
 
   /* CONTACT */
   .contact-body{display:flex;flex-direction:column;gap:10px}
@@ -719,17 +737,17 @@
       const rowsHtml=cat.items.map(it=>{
         const sum=(it.price||0)*(it.qty||1);
         catSum+=sum;totalItems++;totalSum+=sum;
-        return `<tr><td><div class="name">${it.name}</div><div class="desc">${[it.room,it.note].filter(Boolean).join(' · ')}</div></td>
-          <td>${it.dimensions||'—'}</td><td>${it.unit||'pc'}</td>
-          <td class="num">${it.qty}</td><td>${it.code||'—'}</td>
-          <td class="num">${(it.price||0).toLocaleString('en-US')}</td><td class="num">${sum.toLocaleString('en-US')}</td>
-          <td><span class="pill ${it.status}">${statusMap[it.status]||it.status}</span></td></tr>`;
+        return `<tr><td class="row-main"><div class="name">${it.name}</div><div class="desc">${[it.room,it.note].filter(Boolean).join(' · ')}</div></td>
+          <td data-label="Dimensions">${it.dimensions||'—'}</td><td data-label="Unit">${it.unit||'pc'}</td>
+          <td class="num" data-label="Qty">${it.qty}</td><td data-label="Code">${it.code||'—'}</td>
+          <td class="num" data-label="Price, AED">${(it.price||0).toLocaleString('en-US')}</td><td class="num" data-label="Total, AED">${sum.toLocaleString('en-US')}</td>
+          <td data-label="Status"><span class="pill ${it.status}">${statusMap[it.status]||it.status}</span></td></tr>`;
       }).join('');
       catEl.innerHTML=`<div class="spec-cat-title">${cat.cat}</div>
         <div class="spec-table-wrap"><table class="spec-table">
           <thead><tr><th>Item</th><th>Dimensions</th><th>Unit</th><th class="num">Qty</th><th>Code</th><th class="num">Price, AED</th><th class="num">Total, AED</th><th>Status</th></tr></thead>
           <tbody>${rowsHtml}</tbody>
-          <tfoot><tr><td colspan="6">Category total</td><td class="num"><b>${catSum.toLocaleString('en-US')}</b></td><td></td></tr></tfoot>
+          <tfoot><tr><td colspan="6">Category total</td><td class="num" data-label="Total"><b>${catSum.toLocaleString('en-US')}</b></td><td></td></tr></tfoot>
         </table></div>`;
       body.appendChild(catEl);
     });
