@@ -153,14 +153,19 @@
   .work-link{font-size:12px;letter-spacing:0.16em;text-transform:uppercase;text-decoration:none;color:var(--cream);border-bottom:1px solid var(--cream);padding-bottom:5px;transition:opacity .3s}
   .work-link:hover{opacity:.55}
 
-  /* ───── SERVICES ───── */
-  .svc{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-top:60px}
-  .svc-i{background:var(--ink);padding:48px 44px 52px;transition:background .45s ease}
-  .svc-i:hover{background:var(--ink-2)}
-  .svc-img{width:100%;height:200px;object-fit:cover;display:block;margin-bottom:24px;filter:grayscale(10%)}
-  .svc-i .n{font-family:var(--display);font-size:14px;color:var(--sand);letter-spacing:0.05em}
-  .svc-i h3{font-family:var(--display);font-weight:400;font-size:30px;margin:20px 0 14px}
-  .svc-i p{color:var(--muted);font-size:14.5px;max-width:42ch}
+  /* ───── PRICES & SERVICES ───── */
+  .price-list{margin-top:60px;border-top:1px solid var(--line-soft)}
+  .price-row{display:flex;align-items:flex-start;justify-content:space-between;gap:48px;padding:46px 0;border-bottom:1px solid var(--line-soft);transition:opacity .3s ease}
+  .price-left{display:flex;gap:28px;max-width:620px;min-width:0}
+  .price-body{flex:1;min-width:0}
+  .price-num{flex:none;width:30px;font-family:var(--display);font-size:14px;color:var(--sand);letter-spacing:0.05em;padding-top:3px}
+  .price-left h3{font-family:var(--display);font-weight:400;font-size:28px;margin-bottom:16px;transition:color .3s ease}
+  .price-row:hover h3{color:var(--sand)}
+  .price-label{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .price-left ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .price-left li{position:relative;padding-left:18px;color:var(--muted);font-size:14.5px;line-height:1.5}
+  .price-left li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--sand)}
+  .price-right{flex:none;font-family:var(--display);font-style:italic;font-size:19px;color:var(--sand);white-space:nowrap;text-align:right;padding-top:3px}
 
   /* ───── PORTAL TEASER ───── */
   .portal{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
@@ -218,14 +223,15 @@
     .founder{height:520px}
     .work-grid{grid-template-columns:1fr;gap:14px}
     .pc.a,.pc.b,.pc.c,.pc.d{grid-column:auto;aspect-ratio:4/3}
-    .svc{grid-template-columns:1fr}
     .portal{grid-template-columns:1fr;gap:36px}
     .scrollcue{display:none}
     section.blk{padding:90px 0}
     .hero-inner{padding-bottom:60px}
     .hero-actions{flex-direction:column;gap:12px}
     .hero-actions .btn{text-align:center}
-    .svc-i{padding:32px 24px 36px}
+    .price-row{flex-direction:column;align-items:stretch;gap:18px;padding:34px 0}
+    .price-left{max-width:none}
+    .price-right{text-align:left;white-space:normal}
     .contact h2{font-size:clamp(32px,8vw,60px)}
     .contact .lines{flex-direction:column;align-items:center;gap:16px}
   }
@@ -236,7 +242,7 @@
     .btn{padding:15px 24px;font-size:11px}
     .about-body p{font-size:15px}
     .founder{height:440px}
-    .svc-i h3{font-size:24px}
+    .price-left h3{font-size:23px}
     .pcard-top,.pcard-foot{font-size:10px;padding:13px 16px}
     .pcard-body{padding:18px 16px}
     .stage .t{font-size:12.5px}
@@ -256,8 +262,6 @@
   }
   .logo-45{height:45px;width:auto}
   .logo-57{height:57px;width:auto}
-  .sec-services{font-size:clamp(26px,3.2vw,46px)}
-  .svc-img-furnishing{object-position:75% 65%}
   #portal{background:var(--ink-2);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
   .contact-inner{position:relative;z-index:2}
   .hours{margin-top:18px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
@@ -367,16 +371,62 @@
   </div>
 </section>
 
-<!-- SERVICES -->
+<!-- PRICES & SERVICES -->
 <section class="blk" id="services">
   <div class="wrap">
-    <div class="sec-eyebrow reveal"><span class="eyebrow">What we do</span></div>
-    <h2 class="sec reveal sec-services">A complete service, <i>start to finish.</i></h2>
-    <div class="svc">
-      <div class="svc-i reveal"><img class="svc-img" loading="lazy" src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=900&q=80" alt="Interior Design"><div class="n">01</div><h3>Interior Design</h3><p>Concept, space planning, 3D visualization and material selection — a home shaped around the way you live.</p></div>
-      <div class="svc-i reveal"><img class="svc-img" loading="lazy" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=900&q=80" alt="Renovation"><div class="n">02</div><h3>Renovation</h3><p>Full construction management, from demolition to handover. One manager, clear timelines, quality controlled at every stage.</p></div>
-      <div class="svc-i reveal"><img class="svc-img svc-img-furnishing" loading="lazy" src="assets/services/furnishing.jpg" alt="Furnishing and Styling"><div class="n">03</div><h3>Furnishing and Styling</h3><p>Sourcing, logistics and installation — European and local suppliers, curated down to the last cushion.</p></div>
-      <div class="svc-i reveal"><img class="svc-img" loading="lazy" src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80" alt="Project Delivery"><div class="n">04</div><h3>Project Delivery</h3><p>A private page for every client — visuals, drawings, the full specification and live progress, all in one place.</p></div>
+    <div class="sec-eyebrow reveal"><span class="eyebrow">Prices &amp; Services</span></div>
+    <h2 class="sec reveal">Prices &amp; <i>Services.</i></h2>
+    <div class="price-list">
+      <div class="price-row reveal">
+        <div class="price-left">
+          <span class="price-num">01</span>
+          <div class="price-body">
+            <h3>Interior Design</h3>
+            <div class="price-label">What you receive</div>
+            <ul>
+              <li>Detailed project brief</li>
+              <li>Space planning solutions</li>
+              <li>Interior concept development</li>
+              <li>Complete working drawings</li>
+              <li>Furniture joinery drawings</li>
+              <li>Material and finish specifications</li>
+            </ul>
+          </div>
+        </div>
+        <div class="price-right">150 AED / m²</div>
+      </div>
+      <div class="price-row reveal">
+        <div class="price-left">
+          <span class="price-num">02</span>
+          <div class="price-body">
+            <h3>Author Supervision</h3>
+            <div class="price-label">What you receive</div>
+            <ul>
+              <li>Project implementation according to approved design</li>
+              <li>Site inspections and quality control</li>
+              <li>Construction change management</li>
+              <li>Regular supervision visits</li>
+            </ul>
+          </div>
+        </div>
+        <div class="price-right">Discussed individually</div>
+      </div>
+      <div class="price-row reveal">
+        <div class="price-left">
+          <span class="price-num">03</span>
+          <div class="price-body">
+            <h3>Procurement</h3>
+            <div class="price-label">What you receive</div>
+            <ul>
+              <li>Complete furnishing according to the approved project</li>
+              <li>Budget control</li>
+              <li>Supplier coordination</li>
+              <li>Logistics management</li>
+            </ul>
+          </div>
+        </div>
+        <div class="price-right">Discussed individually</div>
+      </div>
     </div>
   </div>
 </section>
