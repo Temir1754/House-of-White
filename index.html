@@ -337,10 +337,7 @@
 <section class="blk" id="studio">
   <div class="wrap about-grid">
     <div class="founder reveal" id="aboutGallery">
-      <div class="ag-item active"><img src="assets/team/samal-iskakova-founder.jpg" alt="Samal Iskakova, Founder of House of White"><div class="cap"><div class="n">Samal Iskakova</div><div class="r">Founder &amp; Lead Designer</div></div></div>
-      <div class="ag-item"><img loading="lazy" src="assets/about/materials.jpg" alt="Materials"><span class="ag-cap">Materials</span></div>
-      <div class="ag-item"><img loading="lazy" src="assets/about/drawlings.jpg" alt="Drawings"><span class="ag-cap">Drawings</span></div>
-      <div class="ag-item"><img loading="lazy" src="assets/about/project-album.jpg" alt="Project Album"><span class="ag-cap">Project Album</span></div>
+      <div class="ag-item active"><img src="assets/team/samal-iskakova-founder.jpg" alt="Samal Iskakova, Interior Designer at House of White"><div class="cap"><div class="n">Samal Iskakova</div><div class="r">Interior Designer</div></div></div>
     </div>
     <div class="about-body reveal">
       <span class="eyebrow">About us</span>
@@ -471,16 +468,6 @@
       el.style.opacity=0;
       setTimeout(()=>{i=(i+1)%words.length;el.textContent=words[i];el.style.opacity=1},400);
     },2200);
-  })();
-
-  (()=>{
-    const items=document.querySelectorAll('#aboutGallery .ag-item');
-    let i=0;
-    setInterval(()=>{
-      items[i].classList.remove('active');
-      i=(i+1)%items.length;
-      items[i].classList.add('active');
-    },3000);
   })();
 
   document.querySelectorAll('.pc img, .hero-img, .founder img, .contact-bg').forEach(img=>{
