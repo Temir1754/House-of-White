@@ -1,5 +1,5 @@
 (function () {
-  var side = document.querySelector('.scroll-top-btn') ? 'left' : 'right';
+  var side = 'left';
 
   var style = document.createElement('style');
   style.textContent = [
