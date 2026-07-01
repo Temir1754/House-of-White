@@ -154,18 +154,27 @@
   .work-link:hover{opacity:.55}
 
   /* ───── PRICES & SERVICES ───── */
-  .price-list{margin-top:60px;border-top:1px solid var(--line-soft)}
-  .price-row{display:flex;align-items:flex-start;justify-content:space-between;gap:48px;padding:46px 0;border-bottom:1px solid var(--line-soft);transition:opacity .3s ease}
-  .price-left{display:flex;gap:28px;max-width:620px;min-width:0}
-  .price-body{flex:1;min-width:0}
-  .price-num{flex:none;width:30px;font-family:var(--display);font-size:14px;color:var(--sand);letter-spacing:0.05em;padding-top:3px}
-  .price-left h3{font-family:var(--display);font-weight:400;font-size:28px;margin-bottom:16px;transition:color .3s ease}
-  .price-row:hover h3{color:var(--sand)}
-  .price-label{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
-  .price-left ul{list-style:none;display:flex;flex-direction:column;gap:9px}
-  .price-left li{position:relative;padding-left:18px;color:var(--muted);font-size:14.5px;line-height:1.5}
-  .price-left li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--sand)}
-  .price-right{flex:none;font-family:var(--display);font-style:italic;font-size:19px;color:var(--sand);white-space:nowrap;text-align:right;padding-top:3px}
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:60px}
+  .psc-card{background:var(--ink-2);border:1px solid var(--line);border-radius:4px;padding:40px 36px;display:flex;flex-direction:column;transition:border-color .3s ease}
+  .psc-card:hover{border-color:var(--sand)}
+  .psc-num{font-family:var(--display);font-size:13px;color:var(--sand);letter-spacing:0.06em;margin-bottom:10px}
+  .psc-bar{width:28px;height:1px;background:var(--sand);margin-bottom:30px}
+  .psc-card h3{font-family:var(--display);font-weight:400;font-size:26px;color:var(--cream);margin-bottom:22px}
+  .psc-divider{height:1px;background:var(--line);margin-bottom:20px}
+  .psc-what{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+  .psc-card ul{list-style:none;display:flex;flex-direction:column;gap:10px;flex:1}
+  .psc-card li{position:relative;padding-left:16px;color:var(--muted);font-size:14px;line-height:1.55}
+  .psc-card li::before{content:"";position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--sand)}
+  .psc-foot{margin-top:36px;padding-top:20px;border-top:1px solid var(--line)}
+  .psc-foot-label{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .psc-price{font-family:var(--display);color:var(--sand)}
+  .psc-price .big{font-size:52px;line-height:1;font-weight:400}
+  .psc-price .unit{font-size:15px;margin-left:5px}
+  .psc-price.disc{font-size:22px;font-style:italic;line-height:1.3}
+  .psc-contact-bar{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:28px;padding:28px 36px;border:1px solid var(--line);border-radius:4px}
+  .psc-contact-bar p{color:var(--muted);font-size:14px;max-width:60ch;line-height:1.6}
+  @media(max-width:1100px){.price-grid{gap:14px}.psc-card{padding:32px 26px}}
+  @media(max-width:760px){.price-grid{grid-template-columns:1fr}.psc-contact-bar{flex-direction:column;align-items:flex-start;gap:18px}}
 
   /* ───── PORTAL TEASER ───── */
   .portal{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
@@ -229,9 +238,6 @@
     .hero-inner{padding-bottom:60px}
     .hero-actions{flex-direction:column;gap:12px}
     .hero-actions .btn{text-align:center}
-    .price-row{flex-direction:column;align-items:stretch;gap:18px;padding:34px 0}
-    .price-left{max-width:none}
-    .price-right{text-align:left;white-space:normal}
     .contact h2{font-size:clamp(32px,8vw,60px)}
     .contact .lines{flex-direction:column;align-items:center;gap:16px}
   }
@@ -376,55 +382,66 @@
   <div class="wrap">
     <div class="sec-eyebrow reveal"><span class="eyebrow">Prices &amp; Services</span></div>
     <h2 class="sec reveal">Prices &amp; <i>Services.</i></h2>
-    <div class="price-list">
-      <div class="price-row reveal">
-        <div class="price-left">
-          <span class="price-num">01</span>
-          <div class="price-body">
-            <h3>Interior Design</h3>
-            <div class="price-label">What you receive</div>
-            <ul>
-              <li>Detailed project brief</li>
-              <li>Space planning solutions</li>
-              <li>Interior concept development</li>
-              <li>Material and finish specifications</li>
-            </ul>
-          </div>
+    <div class="price-grid">
+
+      <div class="psc-card reveal">
+        <div class="psc-num">01</div>
+        <div class="psc-bar"></div>
+        <h3>Interior Design</h3>
+        <div class="psc-divider"></div>
+        <div class="psc-what">What you receive</div>
+        <ul>
+          <li>Detailed project brief</li>
+          <li>Space planning solutions</li>
+          <li>Interior concept development</li>
+          <li>Material and finish specifications</li>
+        </ul>
+        <div class="psc-foot">
+          <div class="psc-foot-label">Starting from</div>
+          <div class="psc-price"><span class="big">150</span><span class="unit">AED / m²</span></div>
         </div>
-        <div class="price-right">150 AED / m²</div>
       </div>
-      <div class="price-row reveal">
-        <div class="price-left">
-          <span class="price-num">02</span>
-          <div class="price-body">
-            <h3>Author Supervision</h3>
-            <div class="price-label">What you receive</div>
-            <ul>
-              <li>Project implementation according to approved design</li>
-              <li>Site inspections and quality control</li>
-              <li>Construction change management</li>
-              <li>Regular supervision visits</li>
-            </ul>
-          </div>
+
+      <div class="psc-card reveal">
+        <div class="psc-num">02</div>
+        <div class="psc-bar"></div>
+        <h3>Author Supervision</h3>
+        <div class="psc-divider"></div>
+        <div class="psc-what">What you receive</div>
+        <ul>
+          <li>Project implementation according to approved design</li>
+          <li>Site inspections and quality control</li>
+          <li>Construction change management</li>
+          <li>Regular supervision visits</li>
+        </ul>
+        <div class="psc-foot">
+          <div class="psc-foot-label">Price</div>
+          <div class="psc-price disc">Discussed individually</div>
         </div>
-        <div class="price-right">Discussed individually</div>
       </div>
-      <div class="price-row reveal">
-        <div class="price-left">
-          <span class="price-num">03</span>
-          <div class="price-body">
-            <h3>Procurement</h3>
-            <div class="price-label">What you receive</div>
-            <ul>
-              <li>Complete furnishing according to the approved project</li>
-              <li>Budget control</li>
-              <li>Supplier coordination</li>
-              <li>Logistics management</li>
-            </ul>
-          </div>
+
+      <div class="psc-card reveal">
+        <div class="psc-num">03</div>
+        <div class="psc-bar"></div>
+        <h3>Procurement</h3>
+        <div class="psc-divider"></div>
+        <div class="psc-what">What you receive</div>
+        <ul>
+          <li>Complete furnishing according to the approved project</li>
+          <li>Budget control</li>
+          <li>Supplier coordination</li>
+          <li>Logistics management</li>
+        </ul>
+        <div class="psc-foot">
+          <div class="psc-foot-label">Price</div>
+          <div class="psc-price disc">Discussed individually</div>
         </div>
-        <div class="price-right">Discussed individually</div>
       </div>
+
+    </div>
+    <div class="psc-contact-bar reveal">
+      <p>For more details about the process and working conditions, please contact us for a consultation with our designer.</p>
+      <a href="#contact" class="btn btn-line">Contact us &nbsp;→</a>
     </div>
   </div>
 </section>
