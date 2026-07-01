@@ -30,7 +30,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#000000;          /* pure black */
@@ -48,6 +48,7 @@
     --line-bone:rgba(33,29,22,0.14);
     --display:'Jost', -apple-system, system-ui, sans-serif;
     --sans:'Jost', -apple-system, system-ui, sans-serif;
+    --manrope:'Manrope', -apple-system, system-ui, sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -157,24 +158,24 @@
   .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:60px}
   .psc-card{background:var(--ink-2);border:1px solid var(--line);border-radius:4px;padding:40px 36px;display:flex;flex-direction:column;transition:border-color .3s ease}
   .psc-card:hover{border-color:var(--sand)}
-  .psc-num{font-family:var(--display);font-size:13px;color:var(--sand);letter-spacing:0.06em;margin-bottom:10px}
+  .psc-num{font-family:var(--manrope);font-weight:500;font-size:13px;color:var(--sand);letter-spacing:0.06em;margin-bottom:10px}
   .psc-bar{width:28px;height:1px;background:var(--sand);margin-bottom:30px}
-  .psc-card h3{font-family:var(--display);font-weight:400;font-size:26px;color:var(--cream);margin-bottom:22px}
+  .psc-card h3{font-family:var(--manrope);font-weight:300;font-size:36px;color:var(--cream);margin-bottom:22px;line-height:1.15;letter-spacing:-0.01em}
   .psc-divider{height:1px;background:var(--line);margin-bottom:20px}
-  .psc-what{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+  .psc-what{font-family:var(--manrope);font-weight:500;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
   .psc-card ul{list-style:none;display:flex;flex-direction:column;gap:10px;flex:1}
-  .psc-card li{position:relative;padding-left:16px;color:var(--muted);font-size:14px;line-height:1.55}
-  .psc-card li::before{content:"";position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--sand)}
+  .psc-card li{font-family:var(--manrope);font-weight:400;position:relative;padding-left:16px;color:var(--muted);font-size:16px;line-height:1.6}
+  .psc-card li::before{content:"";position:absolute;left:0;top:9px;width:4px;height:4px;border-radius:50%;background:var(--sand)}
   .psc-foot{margin-top:36px;padding-top:20px;border-top:1px solid var(--line)}
-  .psc-foot-label{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-  .psc-price{font-family:var(--display);color:var(--sand)}
-  .psc-price .big{font-size:52px;line-height:1;font-weight:400}
-  .psc-price .unit{font-size:15px;margin-left:5px}
-  .psc-price.disc{font-size:22px;font-style:italic;line-height:1.3}
+  .psc-foot-label{font-family:var(--manrope);font-weight:400;font-size:13px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .psc-price{font-family:var(--manrope);color:var(--sand)}
+  .psc-price .big{font-size:58px;line-height:1;font-weight:300;letter-spacing:-0.02em}
+  .psc-price .unit{font-size:16px;font-weight:400;margin-left:6px;vertical-align:middle}
+  .psc-price.disc{font-size:34px;font-weight:300;font-style:italic;line-height:1.2;letter-spacing:-0.01em}
   .psc-contact-bar{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:28px;padding:28px 36px;border:1px solid var(--line);border-radius:4px}
-  .psc-contact-bar p{color:var(--muted);font-size:14px;max-width:60ch;line-height:1.6}
-  @media(max-width:1100px){.price-grid{gap:14px}.psc-card{padding:32px 26px}}
-  @media(max-width:760px){.price-grid{grid-template-columns:1fr}.psc-contact-bar{flex-direction:column;align-items:flex-start;gap:18px}}
+  .psc-contact-bar p{font-family:var(--manrope);font-weight:400;color:var(--muted);font-size:16px;max-width:60ch;line-height:1.65}
+  @media(max-width:1100px){.price-grid{gap:14px}.psc-card{padding:32px 26px}.psc-card h3{font-size:30px}.psc-price .big{font-size:48px}}
+  @media(max-width:760px){.price-grid{grid-template-columns:1fr}.psc-contact-bar{flex-direction:column;align-items:flex-start;gap:18px}.psc-card h3{font-size:34px}}
 
   /* ───── PORTAL TEASER ───── */
   .portal{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
